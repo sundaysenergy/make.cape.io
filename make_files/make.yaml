@@ -68,7 +68,7 @@ view:
           data:
             view: data
           make_files:
-            view: display
+            view: make_files
         template:
           api: theme
           resource: raw
