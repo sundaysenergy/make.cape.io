@@ -18,7 +18,7 @@ api: # An API is just a set of default information.
       _id: path # Define the _id field. Required. If set as true it expects an array of id values.
       arg:
         recursive: true # We want the entire repo.
-        sha: db21a0d31eef2c0f8f7d5cf4d3c87a512cbf7648 # Not yet sure how to get this dynamically.
+        sha: master # Instead of the sha, try putting in the branch name. Seems to work!
 
 # As content is added or updated it is sent through the make file.
 view: # This is the most important part.
