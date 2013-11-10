@@ -75,7 +75,7 @@ view:
           arg:
             file: '/make_files/{{_filename}}.json' # At this file address.
 
-      index:
+      index_html:
         style: page
         type: html
         field:
@@ -94,4 +94,18 @@ view:
           resource: upload # Upload it to cloud files.
           arg:
             file: '/index.html' # At this file address.
+      index_json:
+        style: page
+        type: html
+        template:
+          api: theme
+          resource: raw
+          arg:
+            path: cape/json-array.mustache
+          convert: mustache
+        destination:
+          api: cloudfiles
+          resource: upload
+          arg:
+            file: '/index.json'
 ---
