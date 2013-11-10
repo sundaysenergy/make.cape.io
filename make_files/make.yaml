@@ -63,8 +63,11 @@ view:
       link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
     display:
       json:
-        style: page
+        style: pages
         type: object
+        pager: # Style pages requires a pager.
+          per_pg: 1 # Entities per page. 1 is the default.
+          id: _filename # Default is to ID the pages with a number. This overrides that.
         destination: # What to do with the page. Where to send it.
           api: cloudfiles
           resource: upload # Upload it to cloud files.
