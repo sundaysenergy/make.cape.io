@@ -61,6 +61,7 @@ view:
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
       link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
+      edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
     display:
       json:
         style: pages
