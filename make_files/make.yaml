@@ -60,7 +60,17 @@ view:
         type: yaml # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
+      link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
     display:
+      json:
+        style: page
+        type: object
+        destination: # What to do with the page. Where to send it.
+          api: cloudfiles
+          resource: upload # Upload it to cloud files.
+          arg:
+            file: '/make_files/{{_filename}}.json' # At this file address.
+
       index:
         style: page
         type: html
