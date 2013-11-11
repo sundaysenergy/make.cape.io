@@ -1,5 +1,5 @@
 ---
-domain: www.bridetobeconsignment.com # This is not used for anything yet.
+domain: www.bridetobeconsignment.com #AKA cache_cname
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
 
 # Updated and new content must match an API before it checks the views.

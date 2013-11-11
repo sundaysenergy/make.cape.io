@@ -37,7 +37,7 @@ api: # An API is a set of default information. Think of an API as a collection o
         sha: 164c4391fa83877488b5713a650523c4cd04b7c6 # Only problem is having to update the sha.
         # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
 
-view:
+model:
   theme:  # theme - all the files...#
     style: files
     filter:
@@ -106,27 +106,27 @@ view:
         type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
-    display:
-      pages:
-        style: pages
-        type: html
-        field:
-          data:
-            view: data
-            map:
-              navigation: navigation
-        pager: # Style pages requires a pager.
-          per_pg: 1 # Entities per page. 1 is the default.
-          id: _filename # Default is to ID the pages with a number. This overrides that.
-        template:
-          api: theme
-          resource: raw
-          arg:
-            path: templates/default.mustache
-          convert: mustache
-        destination: # What to do with the page. Where to send it.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: '/{{&page._no_ext}}.html' # At this file address.
+view:
+  pages:
+    style: pages
+    type: html
+    field:
+      data:
+        view: data
+        map:
+          navigation: navigation
+    pager: # Style pages requires a pager.
+      per_pg: 1 # Entities per page. 1 is the default.
+      id: _filename # Default is to ID the pages with a number. This overrides that.
+    template:
+      api: theme
+      resource: raw
+      arg:
+        path: templates/default.mustache
+      convert: mustache
+    destination: # What to do with the page. Where to send it.
+      api: cloudfiles
+      resource: upload # Upload it to cloud files.
+      arg:
+        file: '/{{&page._no_ext}}.html' # At this file address.
 

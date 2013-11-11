@@ -1,5 +1,5 @@
 ---
-domain: make.cape.io # This is the domain used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
+domain: make.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 
 api: # An API is a set of default information. Think of an API as a collection of content.
@@ -28,14 +28,18 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
+    field:
 
-view:
+
+model:
   data:
-    style: object
+    type: object
+    file_id: '/{{&id}}' # When this field has a value it saves that field as a file.
     filter:
       api: content
       must:
         _id: data.yaml
+    data_id: /data.json # This must be a text string. Always single file.
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
@@ -44,9 +48,17 @@ view:
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
+      _file: # fetch the file without processing it.
+        api: content # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: any # This tells CAPE what to do with the file that it gets.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
 
   make_files:
-    style: list
+    data_id: /make_files/in.json
+    file_id: '/{{&id}}'
+    type: list
     filter:
       api: content
       must:
@@ -60,52 +72,44 @@ view:
         type: yaml # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
+      _file: # _self is a special meta-field that will place its own fields within the base context.
+        api: content # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: any # This tells CAPE what to do with the file that it gets.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
       link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
       edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
-    display:
-      json:
-        style: pages
-        type: object
-        pager: # Style pages requires a pager.
-          per_pg: 1 # Entities per page. 1 is the default.
-          id: _filename # Default is to ID the pages with a number. This overrides that.
-        destination: # What to do with the page. Where to send it.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: '/make_files/{{_filename}}.json' # At this file address.
 
-      index_html:
-        style: page
-        type: html
-        field:
-          data:
-            view: data
-          make_files:
-            view: make_files
-        template:
-          api: theme
-          resource: raw
-          arg:
-            path: cape/default.mustache
-          convert: mustache
-        destination: # What to do with the page. Where to send it.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: '/index.html' # At this file address.
-      index_json:
-        style: page
-        type: html
-        template:
-          api: theme
-          resource: raw
-          arg:
-            path: cape/json-array.mustache
-          convert: mustache
-        destination:
-          api: cloudfiles
-          resource: upload
-          arg:
-            file: '/index.json'
+view:
+  json:
+    field: make_files # when string it just gets the data of that model.
+    type: string # Output type of this display.
+    pager: # Style pages requires a pager.
+      iterate: make_files # what field to iterate over.
+      per_pg: 1 # Entities per page. 1 is the default.
+    file_id: '/make_files/{{_filename}}.json' # Default is to ID the pages with a number. This overrides that.
+
+  index_html:
+    file_id: 'index.html'
+    field:
+      data: true # when value is true use key as the model_id and just get its data.
+      make_files: true
+    type: string
+    pager: false
+    template:
+      api: theme
+      resource: raw
+      arg:
+        path: cape/default.mustache
+      convert: mustache
+
+  index_json:
+    file_id: index.json
+    field:
+      make_files: true
+    type: list
+    iterate: make_files
+    emit: '{{_filename}}'
+
 ---
