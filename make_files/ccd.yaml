@@ -39,7 +39,9 @@ api: # An API is a set of default information. Think of an API as a collection o
 
 model:
   theme:  # theme - all the files...#
-    style: files
+    type: files
+    data_id: '/_model/theme/data.json' # When files, the data is a list of file_id's. This is the default.
+    file_id: '/{{&_id}}'
     filter:
       api: theme
       must:
@@ -51,14 +53,11 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
-    destination: # What to do with the page. Where to send it.
-      api: cloudfiles
-      resource: upload # Upload it to cloud files.
-      arg:
-        file: '/{{&_id}}' # At this file address.
 
   files: # site files within content repo#
-    style: files
+    type: files
+    data_id: '/files/index.json'
+    file_id: '/{{&_id}}'
     filter:
       api: content
       must:
@@ -70,14 +69,11 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
-    destination: # What to do with the page. Where to send it.
-      api: cloudfiles
-      resource: upload # Upload it to cloud files.
-      arg:
-        file: '/{{&_id}}' # At this file address.
 
   data: # data view #
-    style: object
+    type: object
+    data_id: '/data.json'
+    file_id: '/{{&_id}}'
     filter:
       api: content
       must:
@@ -90,9 +86,16 @@ model:
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
+      _file: # _self is a special meta-field that will place its own fields within the base context.
+        api: content # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
+
 
   pages: # pages view #
-    style: list
+    type: list
     filter:
       api: content
       must:
@@ -108,25 +111,19 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 view:
   pages:
-    style: pages
-    type: html
+    type: string
     field:
-      data:
-        view: data
-        map:
-          navigation: navigation
+      data: true
+      pages: true
+
     pager: # Style pages requires a pager.
+      iterate: pages
       per_pg: 1 # Entities per page. 1 is the default.
-      id: _filename # Default is to ID the pages with a number. This overrides that.
+      file_id: '/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
     template:
       api: theme
       resource: raw
       arg:
         path: templates/default.mustache
       convert: mustache
-    destination: # What to do with the page. Where to send it.
-      api: cloudfiles
-      resource: upload # Upload it to cloud files.
-      arg:
-        file: '/{{&page._no_ext}}.html' # At this file address.
 
