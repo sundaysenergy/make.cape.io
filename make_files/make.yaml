@@ -34,7 +34,6 @@ api: # An API is a set of default information. Think of an API as a collection o
 model:
   data:
     type: object
-    file_id: '/{{&id}}' # When the _file field has a value it saves that field as a file.
     filter:
       api: content
       must:
@@ -43,12 +42,14 @@ model:
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: 'data.json' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
       _file: # fetch the file without processing it.
+        file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: any # This tells CAPE what to do with the file that it gets.
@@ -56,8 +57,7 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
   make_files:
-    data_id: /make_files/in.json # The big bloated json file with all the entities loaded into one file.
-    file_id: '/{{&id}}'
+    data_id: /make_files/_all.json # The big bloated json file with all the entities loaded into one file.
     type: list
     filter:
       api: content
@@ -67,12 +67,14 @@ model:
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: '{{&_no_ext}}.json'
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
       _file: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: any # This tells CAPE what to do with the file that it gets.
@@ -82,21 +84,13 @@ model:
       edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
 
 view:
-  json:
-    field: make_files # when string it just gets the data of that model.
-    type: string # Output type of this display.
-    pager: # Style pages requires a pager.
-      iterate: make_files # what field to iterate over.
-      per_pg: 1 # Entities per page. 1 is the default.
-    file_id: '/make_files/{{_filename}}.json' # Default is to ID the pages with a number. This overrides that.
-
   index_html:
+    type: string
+    pager: false
     file_id: 'index.html'
     field:
       data: true # when value is true use key as the model_id and just get its data.
       make_files: true
-    type: string
-    pager: false
     template:
       api: theme
       resource: raw
@@ -105,11 +99,13 @@ view:
       convert: mustache
 
   index_json:
-    file_id: index.json
+    type: list
+    data_id: index.json
     field:
       make_files: true
-    type: list
-    iterate: make_files
-    emit: '{{_filename}}'
+    pager:
+      iterate: make_files
+      field_id: make
+    emit: '{{make._filename}}' # similar to processing a template.
 
 ---

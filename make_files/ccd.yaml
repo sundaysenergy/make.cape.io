@@ -117,6 +117,7 @@ view:
 
     pager: # Style pages requires a pager.
       iterate: pages
+      field_id: page # The field name for the iteration.
       per_pg: 1 # Entities per page. 1 is the default.
       file_id: '{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
     template:
