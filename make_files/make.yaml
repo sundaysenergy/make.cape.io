@@ -101,12 +101,12 @@ view:
 
   index_json:
     type: list
-    data_id: index.json
     field:
       make_files: true
     pager:
       iterate: make_files
       field_id: make
     emit: '{{make._filename}}' # similar to processing a template.
+    output_id: index.json
 
 ---
