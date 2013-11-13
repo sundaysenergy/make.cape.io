@@ -34,7 +34,7 @@ api: # An API is a set of default information. Think of an API as a collection o
 model:
   data:
     type: object
-    file_id: '/{{&id}}' # When this field has a value it saves that field as a file.
+    file_id: '/{{&id}}' # When the _file field has a value it saves that field as a file.
     filter:
       api: content
       must:
@@ -56,7 +56,7 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
   make_files:
-    data_id: /make_files/in.json
+    data_id: /make_files/in.json # The big bloated json file with all the entities loaded into one file.
     file_id: '/{{&id}}'
     type: list
     filter:

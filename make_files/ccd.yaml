@@ -72,7 +72,6 @@ model:
 
   data: # data view #
     type: object
-    data_id: '/data.json'
     filter:
       api: content
       must:
@@ -80,7 +79,7 @@ model:
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '{{&_id}}'
+        file_id: 'data.json'
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
