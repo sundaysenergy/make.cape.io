@@ -47,7 +47,7 @@ model:
         _ext: .css
     field:
       _file:
-        file_id: '/{{&_id}}' # A file_id on a field like this will save the result to disk.
+        file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
         api: theme
         resource: raw
         type: any
@@ -63,7 +63,7 @@ model:
         _dirname: files
     field:
       _file:
-        file_id: '/{{&_id}}'
+        file_id: '{{&_id}}'
         api: content
         resource: raw
         type: any
@@ -80,14 +80,14 @@ model:
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '/{{&_id}}'
+        file_id: '{{&_id}}'
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
       _file: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '/{{&_id}}'
+        file_id: '{{&_id}}'
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
@@ -119,7 +119,7 @@ view:
     pager: # Style pages requires a pager.
       iterate: pages
       per_pg: 1 # Entities per page. 1 is the default.
-      file_id: '/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
+      file_id: '{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
     template:
       api: theme
       resource: raw
