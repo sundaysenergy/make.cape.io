@@ -2,7 +2,6 @@
 domain: cape.sundaysenergy.com
 uid: 1
 
-
 api:
   gh:
     provider: github
