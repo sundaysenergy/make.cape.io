@@ -1,10 +1,9 @@
 ---
 domain: cape.sundaysenergy.com
-base_path: /
 uid: 1
 
 
-collection:
+api:
   gh:
     provider: github
     index: sundaysenergy/www.sundaysenergy.com
@@ -39,7 +38,7 @@ collection:
           repo: www.sundaysenergy.com
           branch: master
 
-view:
+model:
   data:
     gh:
       filter:
