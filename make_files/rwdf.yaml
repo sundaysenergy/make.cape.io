@@ -21,7 +21,7 @@ api: # An API is just a set of default information.
         recursive: true # Thankfully they have an option to get results recursively.
         sha: 819478b5bdf41a8733ee3915bfefdf23373476b5 # Only problem is having to update the sha.
         # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
-view:
+model:
   homepage: # (dek, hed, legacy, tellus)
     style: set # We want to be able to do stuff like {{homepage.dek}} so we save it as a set instead of an array.
     # A set has key/value pairs. What field should we use for the key?

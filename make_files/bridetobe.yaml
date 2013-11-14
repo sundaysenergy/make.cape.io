@@ -30,7 +30,7 @@ api: # An API is a set of default information. Think of an API as a collection o
         sha: master # Only problem is having to update the sha. Try using master branch as sha.
         # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
 
-view:
+model:
   data:
     style: object
     filter:

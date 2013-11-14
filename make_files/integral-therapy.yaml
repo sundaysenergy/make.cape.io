@@ -21,7 +21,7 @@ api: # An API is just a set of default information.
         sha: master # Instead of the sha, try putting in the branch name. Seems to work!
 
 # As content is added or updated it is sent through the make file.
-view: # This is the most important part.
+model: # This is the most important part.
 
   # CAPE checks to see if content belongs to a view based on the filter criteria.
   data: # Machine name of the view.
