@@ -24,8 +24,7 @@ model:
     filter:
       api: content
       must_not:
-        _source:
-          type: tree
+        _ext: false
     field: # The base "entity" in CAPE is the _id field. That's it.
       _file:
         file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
