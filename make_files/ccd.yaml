@@ -60,14 +60,14 @@ model:
       api: theme
       must:
         _dirname: media
-      field:
-        _file:
-        file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
-        api: theme
-        resource: raw
-        type: any
-        arg:
-          path: '{{&_id}}'
+    field:
+      _file:
+      file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
+      api: theme
+      resource: raw
+      type: any
+      arg:
+        path: '{{&_id}}'
 
   files: # site files within content repo#
     type: files
