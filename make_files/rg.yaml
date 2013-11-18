@@ -4,7 +4,7 @@ uid: 1 # The CAPE user ID to use for authenticating against the providers when r
 cape_version: 2.0.3 # Current version of cape can be found at v2.api.cape.io/version
 
 api: # An API is a set of default information. Think of an API as a collection of content.
-  content: # Used to get content from github.
+  old_demo: # Used to get content from github.
     provider: github
     arg:
       owner: ookb
@@ -16,22 +16,23 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
-    field:
+  content: # Used to get content from github.
+    provider: github
+    arg:
+      owner: bjornmeansbear
+      repo: rogers-and-goffigon
+      branch: master
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: raw # Github has a nice index of all content in a repo.
+      type: json
+      _id: itemnum
+      arg:
+        path: 'reference/randglist/randg_price.json'
 
 model:
   files:
-    type: files
+    type: list
     filter:
       api: content
-      must_not:
-        _ext: false
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      _file:
-        file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: any # This tells CAPE what to do with the file that it gets.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
 
 ---
