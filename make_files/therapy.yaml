@@ -108,17 +108,14 @@ view:
     file_id: credentials/_index.html
 
   navigation: # Machine name of the display.
-    style: page # What we should do with this display. A page is expected to be saved somewhere.
-    type: html # What format to save the data in.
+    type: string # What format to save the data in.
     template: # The page style requires the template attribute.
       api: content # Where do we get the layout file from?
       id: theme/navigation.html # What ID does the layout file have?
       convert: mustache # What type of conversion should we do?
-    destination: # Where to save the page.
-      api: cloudfiles # Send it to cloudfiles. API contains the default container.
-      resource: upload # How to send it? By using the upload method.
-      arg: # The upload method wants to know where to save it.
-        file: /_navigation.html # Save it so it is accessible be visiting {container_name}/_navigation.html
+    field:
+      navigation: true
+    file_id: navigation.html
 
   staff_index:
     type: string
