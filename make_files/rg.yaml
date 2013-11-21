@@ -31,9 +31,18 @@ api: # An API is a set of default information. Think of an API as a collection o
         url: 'reference/randglist/randg_price.json'
 
 model:
-  files:
-    type: list
+  admin:
+    type: files
     filter:
       api: content
+      _dirname: admin
+    field:
+      _file:
+        file_id: '{{&_di}}'
+        api: content
+        resource: raw
+        type: any
+        arg:
+          path: '{{&_id}}'
 
 ---
