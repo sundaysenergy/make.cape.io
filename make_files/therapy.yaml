@@ -63,7 +63,7 @@ model: # This is the most important part.
         _ext: .md
     field: # These fields should be what is required for filtering or what is needed in more than one display.
       _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
-        file_id: '{{_no_ext}}.json' # Default is to ID the pages with a number. This overrides that.
+        file_id: '{{&_no_ext}}.json' # Default is to ID the pages with a number. This overrides that.
         api: content # Default values for provider and arguments to load the stuff.
         resource: raw # What provider resource should we use.
         type: md # What to do with the result. Markdown with YAML frontmatter processor.
