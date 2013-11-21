@@ -47,7 +47,7 @@ model:
       _file:
         file_id: '{{&_di}}'
         api: gh_repo
-        resource: raw
+        resource: raw_api
         type: any
         arg:
           path: '{{&_id}}'
