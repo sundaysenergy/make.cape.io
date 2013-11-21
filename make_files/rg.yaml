@@ -42,7 +42,7 @@ model:
     filter:
       api: gh_repo
       must:
-        _dirname: admin
+        _dir1: admin
     field:
       _file:
         file_id: '{{&_di}}'
