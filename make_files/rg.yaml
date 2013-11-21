@@ -23,11 +23,12 @@ api: # An API is a set of default information. Think of an API as a collection o
       repo: rogers-and-goffigon
       branch: master
     load: # To load previously created content from this API you need to specificy the load param.
+      api: wget
       resource: raw # Github has a nice index of all content in a repo.
       type: json
       _id: itemnum
       arg:
-        path: 'reference/randglist/randg_price.json'
+        url: 'reference/randglist/randg_price.json'
 
 model:
   files:

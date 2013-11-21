@@ -1,0 +1,138 @@
+---
+domain: www.integral-therapy.com # This is not used for anything yet.
+uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
+
+api: # An API is just a set of default information.
+  cloudfiles: # Machine name of the API
+    provider: cloudfiles # CAPE provider that is defined in providers.yml
+    arg: # Default arguments to send to the provider.
+      container: www.integral-therapy.com # Cloudfiles container to use.
+  content: # Machine name. This is where most of our content should live.
+    provider: github
+    arg:
+      repo: integral-therapy
+      owner: sundaysenergy
+      branch: master
+    load: # Define a way to load the data initially or if data needs to be processed again.
+      resource: tree # Resource to use for the provider listed in this API.
+      _id: path # Define the _id field. Required. If set as true it expects an array of id values.
+      arg:
+        recursive: true # We want the entire repo.
+        sha: master # Instead of the sha, try putting in the branch name. Seems to work!
+
+# As content is added or updated it is sent through the make file.
+model: # This is the most important part.
+
+  # CAPE checks to see if content belongs to a view based on the filter criteria.
+  data: # Machine name of the view.
+    type: object # Possibly random entity is used as the data value. Default when filter must _id is single value.
+    filter:
+      api: content # An API is a bunch of default values about where the content comes from.
+      must: # If you filter against a field that isn't set it will try to find it (and load) that field.
+        _id: data.yaml # The most basic. Match the path field with the value 'data.yaml'.
+    field: # We need to load the raw file and parse it.
+      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
+        file_id: 'data.json'
+        api: content # Default values for provider and arguments to load the stuff.
+        resource: raw # What provider resource should we use.
+        type: yaml # What to do with the result. Parse the yaml into a native hash/object/dict.
+        arg:
+          path: '{{&_id}}'
+
+  navigation:
+    type: object # Possibly random entity is used as the data value. Default when filter must _id is single value.
+    filter:
+      api: content
+      must:
+        _id: navigation.yaml
+    field: # We need to load the raw file and parse it.
+      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
+        file_id: 'navigation.json'
+        api: content # Default values for provider and arguments to load the stuff.
+        resource: raw # What provider resource should we use.
+        type: yaml # What to do with the result. Parse the yaml into a native hash/object/dict.
+        arg:
+          path: '{{&_id}}'
+
+  staff: # A listing of staff profiles.
+    type: list
+    filter:
+      api: content # github content repo for the site.
+      must:
+        _dirname: staff # The ID is the only required field.
+        _ext: .md
+    field: # These fields should be what is required for filtering or what is needed in more than one display.
+      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
+        file_id: '{{_no_ext}}.json' # Default is to ID the pages with a number. This overrides that.
+        api: content # Default values for provider and arguments to load the stuff.
+        resource: raw # What provider resource should we use.
+        type: md # What to do with the result. Markdown with YAML frontmatter processor.
+        arg:
+          path: '{{&_id}}'
+      # img_info is used for defining height and width attributes on the img tag.
+      img_info: # Yaml contains an imagefield. Expand it into more info. I want the dimensions.
+        file_id: 'staff/{{_self.photo}}.json'
+        provider: wget # Generic provider that just calls a specific url.
+        resource: json # The json resource expects json and converts it programming language native table/hash/object.
+        arg: # Only need to pass it the url argument. This uses our img.labori.us service.
+          url: 'http://raw.github.com.img.labori.us/info/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
+      img_url: '/staff/{{_self.photo}}'
+      img:
+        file_id: 'staff/{{_self.photo}}'
+        provider: wget
+        resource: raw
+        arg:
+          url: 'http://raw.github.com.img.labori.us/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
+      _list: true # Default value can be overwritten. This value is only used when one isn't found already in the cache.
+
+    sort: # Define how to sort the view entities.
+      field: sort # Look for the order field.
+      default: 1 # Default sort value.
+      order: ascending
+
+view:
+  staff: # the machine name of the display.
+    type: string # Type of page. html allows a template variable. See below.
+    field:
+      data: true
+      staff: true
+    filter: # You can refine the model to output just the entities you want.
+      must: # Only publish nodes that are in the 'added' list.
+        _list: true
+    template: # The page style requires the template attribute.
+      api: content # Where do we get the layout file from?
+      resource: raw
+      arg:
+        path: theme/layouts/staff.html # Works the same way that fields do. Loads the external resource.
+      convert: mustache # What type of conversion should we do?
+    file_id: credentials/_index.html
+
+  navigation: # Machine name of the display.
+    style: page # What we should do with this display. A page is expected to be saved somewhere.
+    type: html # What format to save the data in.
+    template: # The page style requires the template attribute.
+      api: content # Where do we get the layout file from?
+      id: theme/navigation.html # What ID does the layout file have?
+      convert: mustache # What type of conversion should we do?
+    destination: # Where to save the page.
+      api: cloudfiles # Send it to cloudfiles. API contains the default container.
+      resource: upload # How to send it? By using the upload method.
+      arg: # The upload method wants to know where to save it.
+        file: /_navigation.html # Save it so it is accessible be visiting {container_name}/_navigation.html
+
+  staff_index:
+    type: string
+    field: # You can add fields to a specific display. These fields are not available during filtering.
+      # The most basic field definition is just a text string.
+      title: Minneapolis Psychologist - Dr. David Thompson
+      content: staff
+      data: true # Define the field data as...
+      navigation: navigation# The navigation variable will be the output from the default display on the navigation view.
+    file_id: credentials/index.html
+    template: # Send the field variables through the mustache converter.
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/default.html
+      convert: mustache
+
