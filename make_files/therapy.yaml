@@ -75,14 +75,14 @@ model: # This is the most important part.
         provider: wget # Generic provider that just calls a specific url.
         resource: json # The json resource expects json and converts it programming language native table/hash/object.
         arg: # Only need to pass it the url argument. This uses our img.labori.us service.
-          uri: 'http://raw.github.com.img.labori.us/info/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
+          url: 'http://raw.github.com.img.labori.us/info/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
       img_url: '/staff/{{_self.photo}}'
       img:
         file_id: 'staff/{{_self.photo}}'
         provider: wget
         resource: raw
         arg:
-          uri: 'http://raw.github.com.img.labori.us/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
+          url: 'http://raw.github.com.img.labori.us/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
       _list: true # Default value can be overwritten. This value is only used when one isn't found already in the cache.
 
     sort: # Define how to sort the view entities.
