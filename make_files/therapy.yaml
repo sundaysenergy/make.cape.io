@@ -111,7 +111,9 @@ view:
     type: string # What format to save the data in.
     template: # The page style requires the template attribute.
       api: content # Where do we get the layout file from?
-      id: theme/navigation.html # What ID does the layout file have?
+      resource: raw
+      arg:
+        path: theme/navigation.html # What ID does the layout file have?
       convert: mustache # What type of conversion should we do?
     field:
       navigation: true
