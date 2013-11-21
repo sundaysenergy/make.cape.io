@@ -41,7 +41,8 @@ model:
     type: files
     filter:
       api: content
-      _dirname: admin
+      must:
+        _dirname: admin
     field:
       _file:
         file_id: '{{&_di}}'
