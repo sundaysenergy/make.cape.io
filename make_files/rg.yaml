@@ -16,19 +16,25 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
-  content: # Used to get content from github.
+  gh_repo: # Used to get content from github.
     provider: github
     arg:
       owner: bjornmeansbear
       repo: rogers-and-goffigon
       branch: master
-    load: # To load previously created content from this API you need to specificy the load param.
-      api: wget
-      resource: raw # Github has a nice index of all content in a repo.
-      type: json
-      _id: itemnum
+    load:
+      resource: tree
+      _id: path
       arg:
-        url: 'reference/randglist/randg_price.json'
+        recursive: true
+        sha: master
+    # load: # To load previously created content from this API you need to specificy the load param.
+    #   api: wget
+    #   resource: raw # Github has a nice index of all content in a repo.
+    #   type: json
+    #   _id: itemnum
+    #   arg:
+    #     url: 'reference/randglist/randg_price.json'
 
 model:
   admin:
@@ -39,7 +45,7 @@ model:
     field:
       _file:
         file_id: '{{&_di}}'
-        api: content
+        api: gh_repo
         resource: raw
         type: any
         arg:
