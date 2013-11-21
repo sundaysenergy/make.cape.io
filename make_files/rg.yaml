@@ -40,7 +40,7 @@ model:
   admin:
     type: files
     filter:
-      api: content
+      api: gh_repo
       must:
         _dirname: admin
     field:
