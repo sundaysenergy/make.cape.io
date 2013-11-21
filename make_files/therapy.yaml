@@ -113,7 +113,7 @@ view:
       api: content # Where do we get the layout file from?
       resource: raw
       arg:
-        path: theme/navigation.html # What ID does the layout file have?
+        path: theme/layouts/navigation.html # What ID does the layout file have?
       convert: mustache # What type of conversion should we do?
     field:
       navigation: true
