@@ -45,7 +45,7 @@ model:
         _dir1: admin
     field:
       _file:
-        file_id: '{{&_di}}'
+        file_id: '{{&_id}}'
         api: gh_repo
         resource: raw_api
         type: any
