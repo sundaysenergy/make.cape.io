@@ -146,7 +146,7 @@ view:
     field:
       data: true
       pages: true
-      sitemap: true
+      sitemap: yes
     template:
       api: theme
       resource: raw
