@@ -171,9 +171,9 @@ view:
       data: true
     pager:
       iterate: pages
-      field_id: content
+      field_id: page
       per_pg: 1
-      file_id: '{{&content._no_ext}}.html'
+      file_id: '{{&page._no_ext}}.html'
     template:
       api: content
       resource: raw
