@@ -59,7 +59,7 @@ model: # This is the most important part.
     filter:
       api: content
       should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico']
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif']
     field:
       _file:
         api: content
