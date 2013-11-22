@@ -54,6 +54,21 @@ model: # This is the most important part.
         arg:
           path: '{{&_id}}'
 
+  files:
+    type: files
+    filter:
+      api: content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico']
+    field:
+      _file:
+        api: content
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          path: '{{&_id}}'
+
   staff: # A listing of staff profiles.
     type: list
     filter:
@@ -77,7 +92,7 @@ model: # This is the most important part.
         arg: # Only need to pass it the url argument. This uses our img.labori.us service.
           url: 'http://raw.github.com.img.labori.us/info/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
       img_url: '/staff/{{_self.photo}}'
-      img:
+      _file:
         file_id: 'staff/{{_self.photo}}'
         provider: wget
         resource: raw
