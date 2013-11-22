@@ -136,6 +136,18 @@ view:
       convert: mustache # What type of conversion should we do?
     file_id: credentials_stub.html
 
+  wufoo:
+    type: string
+    field:
+      data: true
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/wufoo.html
+      convert: mustache
+    file_id: contact_stub.html
+
   navigation: # Machine name of the display.
     type: string # What format to save the data in.
     template: # The page style requires the template attribute.
@@ -169,6 +181,7 @@ view:
     field:
       pages: true
       data: true
+      wufoo: wufoo
     pager:
       iterate: pages
       field_id: page
