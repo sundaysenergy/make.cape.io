@@ -141,20 +141,20 @@ view:
       arg:
         path: templates/default.mustache
       convert: mustache
-  # old:
-  #   type: string
-  #   field:
-  #     data: true
-  #     pages: true
+  old:
+    type: string
+    field:
+      data: true
+      pages: true
 
-  #   pager: # Style pages requires a pager.
-  #     iterate: pages
-  #     field_id: page # The field name for the iteration.
-  #     per_pg: 1 # Entities per page. 1 is the default.
-  #     file_id: 'old/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
-  #   template:
-  #     api: theme
-  #     resource: raw
-  #     arg:
-  #       path: templates/old.mustache
-  #     convert: mustache
+    pager: # Style pages requires a pager.
+      iterate: pages
+      field_id: page # The field name for the iteration.
+      per_pg: 1 # Entities per page. 1 is the default.
+      file_id: 'old/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
+    template:
+      api: theme
+      resource: raw
+      arg:
+        path: templates/old.mustache
+      convert: mustache
