@@ -129,7 +129,6 @@ view:
     field:
       data: true
       pages: true
-
     pager: # Style pages requires a pager.
       iterate: pages
       field_id: page # The field name for the iteration.
@@ -141,12 +140,25 @@ view:
       arg:
         path: templates/default.mustache
       convert: mustache
+
+  index:
+    type: string
+    field:
+      data: true
+      pages: true
+    template:
+      api: theme
+      resource: raw
+      arg:
+        path: templates/index.mustache
+      convert: mustache
+    file_id: 'sitemap.html'
+
   old:
     type: string
     field:
       data: true
       pages: true
-
     pager: # Style pages requires a pager.
       iterate: pages
       field_id: page # The field name for the iteration.
