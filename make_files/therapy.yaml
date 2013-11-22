@@ -99,11 +99,25 @@ model: # This is the most important part.
         arg:
           url: 'http://raw.github.com.img.labori.us/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
       _list: true # Default value can be overwritten. This value is only used when one isn't found already in the cache.
-
     sort: # Define how to sort the view entities.
       field: sort # Look for the order field.
       default: 1 # Default sort value.
       order: ascending
+
+  pages:
+    type: list
+    filter:
+      api: content
+      must:
+        _ext: .md
+        _dirname: false
+    field:
+      _self:
+        api: content
+        resource: raw
+        type: md
+        arg:
+          path: '{{&_id}}'
 
 view:
   staff: # the machine name of the display.
@@ -120,7 +134,7 @@ view:
       arg:
         path: theme/layouts/staff.html # Works the same way that fields do. Loads the external resource.
       convert: mustache # What type of conversion should we do?
-    file_id: credentials/_index.html
+    file_id: credentials_stub.html
 
   navigation: # Machine name of the display.
     type: string # What format to save the data in.
@@ -142,8 +156,25 @@ view:
       content: staff
       data: true # Define the field data as...
       navigation: navigation# The navigation variable will be the output from the default display on the navigation view.
-    file_id: credentials/index.html
+    file_id: credentials.html
     template: # Send the field variables through the mustache converter.
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/default.html
+      convert: mustache
+
+  pages:
+    type: string
+    field:
+      pages: true
+      data: true
+    pager:
+      iterate: pages
+      field_id: content
+      per_pg: 1
+      file_id: '{{&content._no_ext}}.html'
+    template:
       api: content
       resource: raw
       arg:
