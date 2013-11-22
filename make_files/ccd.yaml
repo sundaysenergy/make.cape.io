@@ -150,7 +150,7 @@ view:
       api: theme
       resource: raw
       arg:
-        path: templates/index.mustache
+        path: templates/default.mustache
       convert: mustache
     file_id: 'sitemap.html'
 
