@@ -20,7 +20,8 @@ api: # An API is a set of default information. Think of an API as a collection o
       resource: json # Github has a nice index of all content in a repo.
       data_field: contents
       _id: path
-      uri: 'http://www.photographybyasha.com.static.supersimple.co/photos/metadata.json'
+      arg:
+        url: 'http://www.photographybyasha.com.static.supersimple.co/photos/metadata.json'
       field:
         _source: _self
   theme:
@@ -50,13 +51,13 @@ model:
         provider: wget
         resource: raw
         arg:
-          path: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/1000x600/Photos/{{&_basename}}'
+          url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/1000x600/Photos/{{&_basename}}'
       info: # This is all we really care about. The image.
         provider: wget
         resource: raw
         arg:
-          data_field: contents
-          path: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
+          data_field: img
+          url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
 
 view:
   pages:
