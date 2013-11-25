@@ -164,7 +164,7 @@ view:
     type: string
     field: # You can add fields to a specific display. These fields are not available during filtering.
       # The most basic field definition is just a text string.
-      title: Minneapolis Psychologist - Dr. David Thompson
+      #title: Minneapolis Psychologist - Dr. David Thompson
       content: staff
       data: true # Define the field data as...
       navigation: navigation# The navigation variable will be the output from the default display on the navigation view.

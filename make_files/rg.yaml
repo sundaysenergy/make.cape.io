@@ -35,6 +35,13 @@ api: # An API is a set of default information. Think of an API as a collection o
     #   _id: itemnum
     #   arg:
     #     url: 'reference/randglist/randg_price.json'
+  # An API defined for accepting posts
+  items:
+    provider: post
+    arg:
+      id: rg
+      source: pdf_csv
+    load: false
 
 model:
   admin:
@@ -51,5 +58,30 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
+  images:
+    type: files
+    filter:
+      api: images
+    field: # original file.
+      normal:
+        file_id: 'items/{{&itemnum}}/normal.jpg'
+      normal_320:
+        file_id: 'items/{{&itemnum}}/320/normal.jpg'
+      normal_640:
+        file_id: 'items/{{&itemnum}}/640/normal.jpg'
+      normal_1024:
+        file_id: 'items/{{&itemnum}}/1024/normal.jpg'
+      normal_1536:
+        file_id: 'items/{{&itemnum}}/1536/normal.jpg'
+      far:
+        file_id: 'items/{{&itemnum}}/far.jpg'
+      far_320:
+        file_id: 'items/{{&itemnum}}/320/far.jpg'
+      far_640:
+        file_id: 'items/{{&itemnum}}/640/far.jpg'
+      far_1024:
+        file_id: 'items/{{&itemnum}}/1024/far.jpg'
+      far_1536:
+        file_id: 'items/{{&itemnum}}/1536/far.jpg'
 
 ---
