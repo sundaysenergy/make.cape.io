@@ -18,10 +18,10 @@ api: # An API is a set of default information. Think of an API as a collection o
     load: # To load previously created content from this API you need to specificy the load param.
       provider: wget
       resource: json # Github has a nice index of all content in a repo.
-      data_field: contents
       _id: path
       arg:
         url: 'http://www.photographybyasha.com.static.supersimple.co/photos/metadata.json'
+        data_field: contents
       field:
         _source: _self
   theme:
