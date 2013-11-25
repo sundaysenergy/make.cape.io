@@ -21,6 +21,8 @@ api: # An API is a set of default information. Think of an API as a collection o
       data_field: contents
       _id: path
       uri: 'http://www.photographybyasha.com.static.supersimple.co/photos/metadata.json'
+      field:
+        _source: _self
   theme:
     provider: github
     arg:
@@ -41,14 +43,20 @@ model:
       api: dropbox
       must:
         _dirname: /www.photographybyasha.com/Photos
+        _urlsafe: true # Only files that are url safe. No spaces or stuff like that.
     field:
-      _file:
+      _file: # This is all we really care about. The image.
         file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
-        api: theme
+        provider: wget
         resource: raw
-        type: any
         arg:
-          path: '{{&_id}}'
+          path: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/1000x600/Photos/{{&_basename}}'
+      info: # This is all we really care about. The image.
+        provider: wget
+        resource: raw
+        arg:
+          data_field: contents
+          path: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
 
 view:
   pages:
@@ -56,7 +64,6 @@ view:
     file_id: index.html
     field:
       photos: true
-
     template:
       api: theme
       resource: raw

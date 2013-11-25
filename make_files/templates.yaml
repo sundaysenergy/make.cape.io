@@ -17,14 +17,13 @@ api: # An API is a set of default information. Think of an API as a collection o
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
     field:
+      _source: true # Can be true or a text string to change the field id.
 
 model:
   files:
     type: files
     filter:
       api: content
-      must:
-        _ext: .mustache
     field: # The base "entity" in CAPE is the _id field. That's it.
       _file:
         file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
