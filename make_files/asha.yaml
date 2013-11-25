@@ -60,7 +60,7 @@ model:
           url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
 
 view:
-  pages:
+  photos:
     type: string
     file_id: index.html
     field:
