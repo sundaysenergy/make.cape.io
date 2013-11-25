@@ -1,0 +1,33 @@
+---
+domain: cdn.northmpls.org
+uid: 1
+
+api:
+  photos:
+    provider: instagram
+  fb:
+    provider: facebook
+  jobs:
+    provider: indeed
+
+model:
+  northmpls_photos:
+    api: photos
+  wbfm_photos:
+    api: photos
+  art_photos:
+    api: photos
+  photostream:
+    api: photos
+  jobs:
+    api: jobs
+  news:
+    api: fb
+
+view:
+  photos_front:
+    field:
+      northmpls_photos: true
+  photos_all:
+    field:
+      northmpls_photos: true
