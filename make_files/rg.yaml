@@ -44,20 +44,37 @@ api: # An API is a set of default information. Think of an API as a collection o
     load: false
 
 model:
-  admin:
+
+  files:
     type: files
     filter:
       api: gh_repo
-      must:
-        _dir1: admin
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
     field:
       _file:
-        file_id: '{{&_id}}'
         api: gh_repo
         resource: raw_api
+        file_id: '{{&_id}}'
         type: any
         arg:
           path: '{{&_id}}'
+
+  # admin:
+  #   type: files
+  #   filter:
+  #     api: gh_repo
+  #     must:
+  #       _dir1: admin
+  #   field:
+  #     _file:
+  #       file_id: '{{&_id}}'
+  #       api: gh_repo
+  #       resource: raw_api
+  #       type: any
+  #       arg:
+  #         path: '{{&_id}}'
+
   images:
     type: files
     filter:
@@ -84,4 +101,17 @@ model:
       far_1536:
         file_id: 'items/{{&itemnum}}/1536/far.jpg'
 
----
+view:
+  textile:
+    filter:
+      must:
+        _char1int: true
+  passementerie:
+    filter:
+      must:
+        _char1: P
+  leather:
+    filter:
+      must:
+        _char1: L
+
