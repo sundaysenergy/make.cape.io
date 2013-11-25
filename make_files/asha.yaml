@@ -54,7 +54,7 @@ model:
           url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/1000x600/Photos/{{&_basename}}'
       info: # This is all we really care about. The image.
         provider: wget
-        resource: raw
+        resource: json
         arg:
           data_field: img
           url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
