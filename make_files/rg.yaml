@@ -51,6 +51,8 @@ model:
       api: gh_repo
       should:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
+      must_not:
+        _dir1: reference
     field:
       _file:
         api: gh_repo
