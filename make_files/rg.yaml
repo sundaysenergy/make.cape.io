@@ -41,7 +41,14 @@ api: # An API is a set of default information. Think of an API as a collection o
     arg:
       id: rg
       source: pdf_csv
-    load: false
+    load:
+      provider: wget
+      resource: json
+      _id: itemnum
+      arg:
+        url: http://rg.cape.io/items/index_full.json
+      field:
+        _source: _self
 
 model:
 
