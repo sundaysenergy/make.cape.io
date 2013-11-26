@@ -159,7 +159,7 @@ view:
         provider: wget
         resource: json
         arg:
-          url: http://timestamp.webscript.io
+          url: https://timestamp.webscript.io/
     template:
       api: gh_repo
       resource: raw_api
