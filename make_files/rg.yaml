@@ -147,6 +147,7 @@ model:
 
 view:
   login:
+    type: string
     file_id: login/index.html
     field:
       theme:
@@ -156,7 +157,7 @@ view:
           url: http://db.cape.io/data/rg/theme
     template:
       api: gh_repo
-      resource: raw
+      resource: raw_api
       arg:
         path: login/index.html
 
