@@ -145,3 +145,18 @@ model:
       far_1536:
         file_id: 'items/{{&itemnum}}/1536/far.jpg'
 
+view:
+  login:
+    file_id: login/index.html
+    field:
+      theme:
+        provider: wget
+        resource: json
+        arg:
+          url: http://db.cape.io/data/rg/theme
+    template:
+      api: gh_repo
+      resource: raw
+      arg:
+        path: login/index.html
+
