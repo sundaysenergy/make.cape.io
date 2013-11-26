@@ -1,5 +1,5 @@
 ---
-domain: templates.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
+domain: rg.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.0.3 # Current version of cape can be found at v2.api.cape.io/version
 
@@ -68,6 +68,14 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
+  items:
+    type: list
+    filter:
+      api: items
+    field:
+      parent_id: '{{#_id}}'
+    map:
+      parent_id: last_dash_rm
 
   textile:
     type: list
