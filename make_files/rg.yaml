@@ -73,7 +73,7 @@ model:
     filter:
       api: items
     field:
-      parent_id: '{{#_id}}'
+      parent_id: '{{&_id}}'
     map:
       parent_id: last_dash_rm
 
