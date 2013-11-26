@@ -83,18 +83,26 @@ model:
       api: items
       must:
         _char1int: true
+    field:
+      collection: textile
+
   passementerie:
     type: list
     filter:
       api: items
       must:
         _char1: P
+    field:
+      collection: passementerie
+
   leather:
     type: list
     filter:
       api: items
       must:
         _char1: L
+    field:
+      collection: leather
 
   # admin:
   #   type: files
