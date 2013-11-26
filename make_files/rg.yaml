@@ -155,6 +155,11 @@ view:
         resource: json
         arg:
           url: http://db.cape.io/data/rg/theme
+      timestamp:
+        provider: wget
+        resource: json
+        arg:
+          url: http://timestamp.webscript.io
     template:
       api: gh_repo
       resource: raw_api
