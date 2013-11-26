@@ -166,3 +166,19 @@ view:
       arg:
         path: login/index.html
 
+  price_list:
+    type: list
+    output_id: trade/pricelist.json
+    field:
+      items: true
+    pager:
+      iterate: items
+      field_id: item
+    emit:
+      name: '{{item.descript_1}}'
+      color: '{{item.descript_2}}'
+      id: '{{item._id}}'
+      content: '{{item.content}}'
+      repeat: '{{item.repeat}}'
+      width: '{{item.width}}'
+      price: '{{item.price}}'
