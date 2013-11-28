@@ -108,6 +108,16 @@ model:
         resource: raw
         arg:
           url: 'http://{{img.normal.domain}}.img.cape.io/1536x1536{{&img.normal.path}}'
+
+  textile:
+    type: list
+    filter:
+      api: items
+      must:
+        _char1int: true
+    field:
+      collection: textile
+    file:
       far_320:
         file_id: 'items/{{&_id}}/far_320{{img.far.ext}}'
         provider: wget
@@ -132,15 +142,6 @@ model:
         resource: raw
         arg:
           url: 'http://{{img.far.domain}}.img.cape.io/1536x1536{{&img.far.path}}'
-
-  textile:
-    type: list
-    filter:
-      api: items
-      must:
-        _char1int: true
-    field:
-      collection: textile
 
   passementerie:
     type: list
