@@ -79,7 +79,7 @@ model:
         provider: wget
         resource: json
         arg:
-          url: 'http://api.cape.io/rg/img?itemid={{&_id}}'
+          url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
       _file_id: 'items/{{&_id}}/info.json'
     map:
       parent_id: last_dash_rm
