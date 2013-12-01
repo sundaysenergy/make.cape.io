@@ -1,6 +1,7 @@
 ---
 domain: www.bridetobeconsignment.com #AKA cache_cname
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
+cape_version: 2.0.3
 
 # Updated and new content must match an API before it checks the views.
 api: # An API is a set of default information. Think of an API as a collection of content.
@@ -15,6 +16,7 @@ api: # An API is a set of default information. Think of an API as a collection o
       _id: id
       arg:
         album: '402236339796024' # Needs to be text. Bug we need to fix.
+
   content: # Used to get content from github.
     provider: github
     arg:
@@ -32,7 +34,7 @@ api: # An API is a set of default information. Think of an API as a collection o
 
 model:
   data:
-    style: object
+    type: object
     filter:
       api: content
       must:
@@ -54,77 +56,24 @@ model:
           hours: fb_hours
           about: markdown
           general_info: markdown
-    display:
-      _contact:
-        style: page
-        type: html
-        template:
-          api: content
-          resource: raw
-          arg:
-            path: theme/layouts/contact.html
-          convert: mustache
-        field:
-          data:
-            view: data
-          title: Contact
-        destination: # What to do with the page.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: /contact.html # At this file address.
-
-      contact:
-        style: page
-        type: html
-        template:
-          api: content
-          resource: raw
-          arg:
-            path: theme/layouts/default.html
-        field:
-          data:
-            view: data
-          page:
-            view: data
-            display: _contact
-            _output: content # Instead of using just the _output this includes the output as a field on the _data.
-        destination: # What to do with the page.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: /contact/index.html # At this file address.
 
   coverphotos:
-    style: list
+    type: list
     filter:
       api: fb_coverphotos
-    # No fields will use the _source
     sort:
       field: _id
       order: descending
     map:
       images: first
-    display:
-      slider:
-        style: page
-        type: html
-        limit: 3
-        template:
-          api: content
-          resource: raw
-          arg:
-            path: theme/layouts/slider.html
-          convert: mustache
 
   pages:
-    style: list
+    type: list
     filter:
       api: content
       must:
-        _id:
-          dirname: content
-          ext: .md
+        _dirname: content
+        _ext: .md
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
@@ -133,30 +82,60 @@ model:
         type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
-    display:
-      pages:
-        style: pages
-        type: html
-        field:
-          data:
-            view: data
-            map:
-              navigation: navigation
-          slider:
-            view: coverphotos
-            display: slider
-        pager: # Style pages requires a pager.
-          per_pg: 1 # Entities per page. 1 is the default.
-          id: _filename # Default is to ID the pages with a number. This overrides that.
-        template:
-          api: content
-          resource: raw
-          arg:
-            path: theme/layouts/default.html
-          convert: mustache
-        destination: # What to do with the page.
-          api: cloudfiles
-          resource: upload # Upload it to cloud files.
-          arg:
-            file: '/{{page._filename}}/index.html' # At this file address.
 
+view:
+  _contact:
+    type: string
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/contact.html
+      convert: mustache
+    field:
+      data: true
+      title: Contact
+    file_id: contact.html
+
+  contact:
+    type: string
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/default.html
+    field:
+      data: true
+      content: _contact
+    file_id: contact/index.html
+
+  slider:
+    style: string
+    field:
+      coverphotos:
+        model: coverphotos
+        limit: 3
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/slider.html
+      convert: mustache
+
+  pages:
+    type: string
+    field:
+      data: true
+      slider: slider
+      pages: true
+    pager: # Style pages requires a pager.
+      per_pg: 1 # Entities per page. 1 is the default.
+      iterate: pages
+      field_id: page
+      file_id: '{{^page._isindex}}{{page._filename}}/{{/page._isindex}}index.html'
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: theme/layouts/default.html
+      convert: mustache
