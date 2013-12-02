@@ -204,6 +204,21 @@ view:
       arg:
         path: login/index.html
 
+  pricelist:
+    type: string
+    file_id: trade/pricelist.html
+    field:
+      theme:
+        provider: wget
+        resource: json
+        arg:
+          url: http://db.cape.io/data/rg/theme
+    template:
+      api: gh_repo
+      resource: raw_api
+      arg:
+        path: trade/pricelist.html
+
   price_list:
     type: list
     output_id: trade/pricelist.json
