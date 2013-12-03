@@ -1,7 +1,7 @@
 ---
 domain: rg.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.0.4 # Current version of cape can be found at v2.api.cape.io/version
+cape_version: 2.0.5 # Current version of cape can be found at v2.api.cape.io/version
 
 api: # An API is a set of default information. Think of an API as a collection of content.
   old_demo: # Used to get content from github.
@@ -60,8 +60,8 @@ model:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
       must_not:
         _dir1: reference
-    field:
-      _file:
+    file:
+      source_file:
         api: gh_repo
         resource: raw_api
         file_id: '{{&_id}}'
@@ -80,6 +80,9 @@ model:
         resource: json
         arg:
           url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
+      # Special field will save FULL object to a file.
+      # Added to the entity to make it always clear where all the fields are stored.
+      # This prevents saving the object to other places in other models.
       _file_id: 'items/{{&_id}}/info.json'
     map:
       parent_id: last_dash_rm
@@ -218,6 +221,37 @@ view:
       resource: raw_api
       arg:
         path: trade/pricelist.html
+
+  upload:
+    type: string
+    file_id: admin/index.html
+    field:
+      theme:
+        provider: wget
+        resource: json
+        arg:
+          url: http://db.cape.io/data/rg/theme
+    template:
+      api: gh_repo
+      resource: raw_api
+      arg:
+        path: admin/index.html
+
+  plist_pre:
+    type: string
+    file_id: trade/pricelist_compiled.html
+    field:
+      items: price_list
+      theme:
+        provider: wget
+        resource: json
+        arg:
+          url: http://db.cape.io/data/rg/theme
+    template:
+      api: gh_repo
+      resource: raw_api
+      arg:
+        path: trade/pricelist_compiled.html
 
   price_list:
     type: list
