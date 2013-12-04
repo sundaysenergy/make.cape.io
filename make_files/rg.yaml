@@ -182,7 +182,7 @@ model:
         _dirname: content
 
 view:
-  items:
+  #items:
 
   login:
     type: string
