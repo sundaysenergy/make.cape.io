@@ -3,6 +3,13 @@ domain: make.cape.io # This is the cache CNAME used for the virtual server on th
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.0.2
 
+load:
+  - "http://v2.cape.io/make/_api/content/_load.json"
+  - "http://v2.cape.io/make/_api/content/_update.json"
+  - "http://v2.cape.io/make/_model/data/model_fields_reload.json"
+  - "http://v2.cape.io/make/_model/make_files/model_fields_reload.json"
+  - "http://v2.cape.io/make/_view/_all/process.json"
+
 api: # An API is a set of default information. Think of an API as a collection of content.
   content: # Used to get content from github.
     provider: github
@@ -49,7 +56,8 @@ model:
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
-      _file: # fetch the file without processing it.
+    file:
+      yaml: # fetch the file without processing it.
         file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
@@ -74,15 +82,17 @@ model:
         type: yaml # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
-      _file: # _self is a special meta-field that will place its own fields within the base context.
+      link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
+      edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
+
+    file:
+      yaml: # Safe a copy of the raw yaml file.
         file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: any # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
-      link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
-      edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
 
 view:
   index_html:

@@ -3,8 +3,13 @@ domain: rg.cape.io # This is the cache CNAME used for the virtual server on the 
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.0.5 # Current version of cape can be found at v2.api.cape.io/version
 
-api: # An API is a set of default information. Think of an API as a collection of content.
-  old_demo: # Used to get content from github.
+load:
+  - "http://v2.cape.io/rg/_api/items/_load.json"
+  - "http://v2.cape.io/rg/_api/items/_update.json"
+
+api: # An API as a collection of content.
+
+  old_demo: # Used to get content from old github repo.
     provider: github
     arg:
       owner: ookb
@@ -16,7 +21,8 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
-  gh_repo: # Used to get content from github.
+
+  gh_repo: # Used to get content from the big heavy github repo.
     provider: github
     arg:
       owner: bjornmeansbear
@@ -28,15 +34,9 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true
         sha: master
-    # load: # To load previously created content from this API you need to specificy the load param.
-    #   api: wget
-    #   resource: raw # Github has a nice index of all content in a repo.
-    #   type: json
-    #   _id: itemnum
-    #   arg:
-    #     url: 'reference/randglist/randg_price.json'
-  # An API defined for accepting posts
-  items:
+
+  # An API defined for accepting posts.
+  items: # Get item content from a json file.
     provider: post
     arg:
       id: rg
