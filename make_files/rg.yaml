@@ -269,7 +269,7 @@ view:
 
   collection:
     type: list
-    output_id: trade/pricelist.json
+    output_id: items/items.json
     field:
       items: true
     pager:
