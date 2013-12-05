@@ -90,9 +90,6 @@ model:
         resource: json
         arg:
           url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
-      # Special field will save FULL object to a file.
-      # Added to the entity to make it always clear where all the fields are stored.
-      # This prevents saving the object to other places in other models.
       _file_id: 'items/{{&_id}}/info.json'
     map:
       parent_id: last_dash_rm
