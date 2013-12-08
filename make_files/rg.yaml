@@ -214,6 +214,11 @@ view:
     type: string
     field:
       pages: true
+      theme:
+        provider: wget
+        resource: json
+        arg:
+          url: http://db.cape.io/data/rg/theme
     pager:
       iterate: pages # for each item in the list from the model pages
       field_id: page # field name for the item
@@ -227,15 +232,45 @@ view:
       model: template
       _id: default.html
 
+  price_list: # Saved to trade/pricelist.json
+    type: list
+    output_id: trade/pricelist.json
+    field:
+      items: true
+    pager:
+      iterate: items
+      field_id: item
+    emit:
+      name: '{{&item.descript_1}}'
+      color: '{{&item.descript_2}}'
+      id: '{{&item._id}}'
+      content: '{{&item.content}}'
+      repeat: '{{&item.repeat}}'
+      width: '{{&item.width}}'
+      price: '{{&item.price}}' # This price field should be removed when we go live.
+
+  collection: # Saved to items/items.json
+    type: list
+    output_id: items/items.json
+    field:
+      items: true
+    pager:
+      iterate: items
+      field_id: item
+    emit:
+      name: '{{&item.descript_1}}'
+      color: '{{&item.descript_2}}'
+      id: '{{&item._id}}'
+      content: '{{&item.content}}'
+      repeat: '{{&item.repeat}}'
+      width: '{{&item.width}}'
+      img: 'http://img.rg.ookb.co/items/{{&item._id}}/640.jpg'
+
   # login:
   #   type: string
   #   file_id: login/index.html
   #   field:
-  #     theme:
-  #       provider: wget
-  #       resource: json
-  #       arg:
-  #         url: http://db.cape.io/data/rg/theme
+
   #     timestamp:
   #       provider: wget
   #       resource: json
@@ -292,38 +327,4 @@ view:
   #     resource: raw_api
   #     arg:
   #       path: trade/pricelist_compiled.html
-
-  price_list: # Saved to trade/pricelist.json
-    type: list
-    output_id: trade/pricelist.json
-    field:
-      items: true
-    pager:
-      iterate: items
-      field_id: item
-    emit:
-      name: '{{&item.descript_1}}'
-      color: '{{&item.descript_2}}'
-      id: '{{&item._id}}'
-      content: '{{&item.content}}'
-      repeat: '{{&item.repeat}}'
-      width: '{{&item.width}}'
-      price: '{{&item.price}}' # This price field should be removed when we go live.
-
-  collection: # Saved to items/items.json
-    type: list
-    output_id: items/items.json
-    field:
-      items: true
-    pager:
-      iterate: items
-      field_id: item
-    emit:
-      name: '{{&item.descript_1}}'
-      color: '{{&item.descript_2}}'
-      id: '{{&item._id}}'
-      content: '{{&item.content}}'
-      repeat: '{{&item.repeat}}'
-      width: '{{&item.width}}'
-      img: 'http://img.rg.ookb.co/items/{{&item._id}}/640.jpg'
 
