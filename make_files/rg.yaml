@@ -110,39 +110,34 @@ model:
       api: items
     field:
       parent_id: '{{&_id}}'
-      img:
-        provider: wget
-        resource: json
-        arg:
-          url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
       _file_id: 'items/{{&_id}}/info.json'
     map:
       parent_id: last_dash_rm
-    file:
-      normal_320:
-        file_id: 'items/{{&_id}}/normal_320{{img.normal.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.normal.domain}}.img.cape.io/320x320{{&img.normal.path}}'
-      normal_640:
-        file_id: 'items/{{&_id}}/normal_640{{img.normal.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.normal.domain}}.img.cape.io/640x640{{&img.normal.path}}'
-      normal_1024:
-        file_id: 'items/{{&_id}}/normal_1024{{img.normal.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.normal.domain}}.img.cape.io/1024x1024{{&img.normal.path}}'
-      normal_1536:
-        file_id: 'items/{{&_id}}/normal_1536{{img.normal.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.normal.domain}}.img.cape.io/1536x1536{{&img.normal.path}}'
+    # file:
+    #   normal_320:
+    #     file_id: 'items/{{&_id}}/normal_320{{img.normal.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.normal.domain}}.img.cape.io/320x320{{&img.normal.path}}'
+    #   normal_640:
+    #     file_id: 'items/{{&_id}}/normal_640{{img.normal.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.normal.domain}}.img.cape.io/640x640{{&img.normal.path}}'
+    #   normal_1024:
+    #     file_id: 'items/{{&_id}}/normal_1024{{img.normal.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.normal.domain}}.img.cape.io/1024x1024{{&img.normal.path}}'
+    #   normal_1536:
+    #     file_id: 'items/{{&_id}}/normal_1536{{img.normal.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.normal.domain}}.img.cape.io/1536x1536{{&img.normal.path}}'
 
   textile:
     type: list
@@ -152,31 +147,37 @@ model:
         _char1int: true
     field:
       collection: textile
-    file:
-      far_320:
-        file_id: 'items/{{&_id}}/far_320{{img.far.ext}}'
+      img:
         provider: wget
-        resource: raw
+        resource: json
         arg:
-          url: 'http://{{img.far.domain}}.img.cape.io/320x320{{&img.far.path}}'
-      far_640:
-        file_id: 'items/{{&_id}}/far_640{{img.far.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.far.domain}}.img.cape.io/640x640{{&img.far.path}}'
-      far_1024:
-        file_id: 'items/{{&_id}}/far_1024{{img.far.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.far.domain}}.img.cape.io/1024x1024{{&img.far.path}}'
-      far_1536:
-        file_id: 'items/{{&_id}}/far_1536{{img.far.ext}}'
-        provider: wget
-        resource: raw
-        arg:
-          url: 'http://{{img.far.domain}}.img.cape.io/1536x1536{{&img.far.path}}'
+          url: 'http://v2.cape.io/rg/img?itemid={{&_id}}&far=1'
+
+    # file:
+    #   far_320:
+    #     file_id: 'items/{{&_id}}/far_320{{img.far.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.far.domain}}.img.cape.io/320x320{{&img.far.path}}'
+    #   far_640:
+    #     file_id: 'items/{{&_id}}/far_640{{img.far.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.far.domain}}.img.cape.io/640x640{{&img.far.path}}'
+    #   far_1024:
+    #     file_id: 'items/{{&_id}}/far_1024{{img.far.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.far.domain}}.img.cape.io/1024x1024{{&img.far.path}}'
+    #   far_1536:
+    #     file_id: 'items/{{&_id}}/far_1536{{img.far.ext}}'
+    #     provider: wget
+    #     resource: raw
+    #     arg:
+    #       url: 'http://{{img.far.domain}}.img.cape.io/1536x1536{{&img.far.path}}'
 
   passementerie:
     type: list
@@ -186,6 +187,11 @@ model:
         _char1: P
     field:
       collection: passementerie
+      img:
+        provider: wget
+        resource: json
+        arg:
+          url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
 
   leather:
     type: list
@@ -195,20 +201,25 @@ model:
         _char1: L
     field:
       collection: leather
+      img:
+        provider: wget
+        resource: json
+        arg:
+          url: 'http://v2.cape.io/rg/img?itemid={{&_id}}'
 
 view:
 
-  items: # This is compiling stub html.
-    type: string
-    field:
-      items: true
-    pager:
-      iterate: items
-      field_id: item
-      file_id: 'items/{{item._id}}/info.html'
-    template:
-      model: template
-      _id: item.html
+  # items: # This is compiling stub html.
+  #   type: string
+  #   field:
+  #     items: true
+  #   pager:
+  #     iterate: items
+  #     field_id: item
+  #     file_id: 'items/{{item._id}}/info.html'
+  #   template:
+  #     model: template
+  #     _id: item.html
 
   pages: # These are the pages besides items.
     type: string
@@ -219,6 +230,7 @@ view:
         resource: json
         arg:
           url: http://db.cape.io/data/rg/theme
+
     pager:
       iterate: pages # for each item in the list from the model pages
       field_id: page # field name for the item
@@ -264,7 +276,7 @@ view:
       content: '{{&item.content}}'
       repeat: '{{&item.repeat}}'
       width: '{{&item.width}}'
-      img: 'http://img.rg.ookb.co/items/{{&item._id}}/640.jpg'
+      img: '{{&item.img.normal.640}}'
       collection: '{{item.collection}}'
 
   # login:
