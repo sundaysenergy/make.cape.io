@@ -265,6 +265,7 @@ view:
       repeat: '{{&item.repeat}}'
       width: '{{&item.width}}'
       img: 'http://img.rg.ookb.co/items/{{&item._id}}/640.jpg'
+      collection: '{{item.collection}}'
 
   # login:
   #   type: string
