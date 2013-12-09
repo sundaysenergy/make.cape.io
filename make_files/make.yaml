@@ -65,6 +65,20 @@ model:
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
+  readme: # process the readme into html. Probably change to a list of pages soon?
+    type: object
+    filter:
+      api: content
+      must:
+        _id: README.md
+    field:
+      _self:
+        api: content
+        resource: raw
+        type: md
+        arg:
+          path: '{{&_id}}'
+
   make_files:
     data_id: /make_files/_all.json # The big bloated json file with all the entities loaded into one file.
     type: list
@@ -95,10 +109,28 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
 view:
+  documentation:
+    type: string
+    file_id: 'index.html'
+    field:
+      data: true
+      readme: true
+    template:
+      api: theme
+      resource: raw
+      arg:
+        path: cape/default.mustache
+    partial:
+      page_html:
+        api: theme
+        resource: raw
+        arg:
+          path: cape/readme.mustache
+
   index_html:
     type: string
     pager: false
-    file_id: 'index.html'
+    file_id: 'make_files/index.html'
     field:
       data: true # when value is true use key as the model_id and just get its data.
       make_files: true
@@ -117,6 +149,6 @@ view:
       iterate: make_files
       field_id: make
     emit: '{{make._filename}}' # similar to processing a template.
-    output_id: index.json
+    output_id: index.json # This should move to /make_files/
 
 ---
