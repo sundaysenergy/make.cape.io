@@ -116,32 +116,6 @@ model:
       parent_id: last_dash_rm # remove everything and including the last dash
       color: last_dash # only return everything and excluding the last dash
 
-    # file:
-    #   normal_320:
-    #     file_id: 'items/{{&_id}}/normal_320{{img.normal.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.normal.domain}}.img.cape.io/320x320{{&img.normal.path}}'
-    #   normal_640:
-    #     file_id: 'items/{{&_id}}/normal_640{{img.normal.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.normal.domain}}.img.cape.io/640x640{{&img.normal.path}}'
-    #   normal_1024:
-    #     file_id: 'items/{{&_id}}/normal_1024{{img.normal.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.normal.domain}}.img.cape.io/1024x1024{{&img.normal.path}}'
-    #   normal_1536:
-    #     file_id: 'items/{{&_id}}/normal_1536{{img.normal.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.normal.domain}}.img.cape.io/1536x1536{{&img.normal.path}}'
-
   textile:
     type: list
     filter:
@@ -155,32 +129,6 @@ model:
         resource: json
         arg:
           url: 'http://v2.cape.io/rg/img?itemid={{&_id}}&far=1'
-
-    # file:
-    #   far_320:
-    #     file_id: 'items/{{&_id}}/far_320{{img.far.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.far.domain}}.img.cape.io/320x320{{&img.far.path}}'
-    #   far_640:
-    #     file_id: 'items/{{&_id}}/far_640{{img.far.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.far.domain}}.img.cape.io/640x640{{&img.far.path}}'
-    #   far_1024:
-    #     file_id: 'items/{{&_id}}/far_1024{{img.far.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.far.domain}}.img.cape.io/1024x1024{{&img.far.path}}'
-    #   far_1536:
-    #     file_id: 'items/{{&_id}}/far_1536{{img.far.ext}}'
-    #     provider: wget
-    #     resource: raw
-    #     arg:
-    #       url: 'http://{{img.far.domain}}.img.cape.io/1536x1536{{&img.far.path}}'
 
   passementerie:
     type: list
