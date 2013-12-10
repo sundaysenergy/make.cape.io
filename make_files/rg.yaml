@@ -110,9 +110,12 @@ model:
       api: items
     field:
       parent_id: '{{&_id}}'
+      color: '{{&_id}}'
       _file_id: 'items/{{&_id}}/info.json'
     map:
-      parent_id: last_dash_rm
+      parent_id: last_dash_rm # remove everything and including the last dash
+      color: last_dash # only return everything and excluding the last dash
+
     # file:
     #   normal_320:
     #     file_id: 'items/{{&_id}}/normal_320{{img.normal.ext}}'
@@ -209,18 +212,6 @@ model:
 
 view:
 
-  # items: # This is compiling stub html.
-  #   type: string
-  #   field:
-  #     items: true
-  #   pager:
-  #     iterate: items
-  #     field_id: item
-  #     file_id: 'items/{{item._id}}/info.html'
-  #   template:
-  #     model: template
-  #     _id: item.html
-
   pages: # These are the pages besides items.
     type: string
     field:
@@ -279,65 +270,14 @@ view:
       img: '{{&item.img.normal.640}}'
       collection: '{{item.collection}}'
 
-  # login:
-  #   type: string
-  #   file_id: login/index.html
-  #   field:
-
-  #     timestamp:
-  #       provider: wget
-  #       resource: json
-  #       arg:
-  #         url: https://timestamp.webscript.io/
-  #   template:
-  #     api: gh_repo
-  #     resource: raw_api
-  #     arg:
-  #       path: login/index.html
-
-  # pricelist:
-  #   type: string
-  #   file_id: trade/pricelist.html
-  #   field:
-  #     theme:
-  #       provider: wget
-  #       resource: json
-  #       arg:
-  #         url: http://db.cape.io/data/rg/theme
-  #   template:
-  #     api: gh_repo
-  #     resource: raw_api
-  #     arg:
-  #       path: trade/pricelist.html
-
-  # upload:
-  #   type: string
-  #   file_id: admin/index.html
-  #   field:
-  #     theme:
-  #       provider: wget
-  #       resource: json
-  #       arg:
-  #         url: http://db.cape.io/data/rg/theme
-  #   template:
-  #     api: gh_repo
-  #     resource: raw_api
-  #     arg:
-  #       path: admin/index.html
-
-  # plist_pre:
-  #   type: string
-  #   file_id: trade/pricelist_compiled.html
-  #   field:
-  #     items: price_list
-  #     theme:
-  #       provider: wget
-  #       resource: json
-  #       arg:
-  #         url: http://db.cape.io/data/rg/theme
-  #   template:
-  #     api: gh_repo
-  #     resource: raw_api
-  #     arg:
-  #       path: trade/pricelist_compiled.html
+  colors:
+    type: set
+    output_id: items/colors.json
+    field:
+      items: true
+    pager:
+      iterate: items
+      field_id: item
+      group_by: parent_id
+    emit: '{{item.color}}'
 
