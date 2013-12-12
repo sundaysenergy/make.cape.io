@@ -111,10 +111,12 @@ model:
     field:
       parent_id: '{{&_id}}'
       color: '{{&_id}}'
+      contents: '{{&_self.content}}'
       _file_id: 'items/{{&_id}}/info.json'
     map:
       parent_id: last_dash_rm # remove everything and including the last dash
       color: last_dash # only return everything and excluding the last dash
+      contents: split_percentval
 
   textile:
     type: list
@@ -228,4 +230,23 @@ view:
       field_id: item
       group_by: parent_id
     emit: '{{item.color}}'
+
+  content_ops:
+    type: list
+    output_id: items/content_ops.json
+    field:
+      textile: true
+    pager:
+      iterate: textile
+      set_field: contents
+
+  color_ops:
+    type: list
+    output_id: items/color_ops.json
+    field:
+      textile: true
+    pager:
+      iterate: textile
+      set_field: descript_2
+
 

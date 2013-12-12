@@ -1,7 +1,9 @@
 ---
 domain: www.bridetobeconsignment.com #AKA cache_cname
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.0.3
+cape_version: 2.0.5
+load:
+  - 'http://v2.cape.io.ld/bridetobe/_api/fb_coverphotos/_load.json'
 
 # Updated and new content must match an API before it checks the views.
 api: # An API is a set of default information. Think of an API as a collection of content.

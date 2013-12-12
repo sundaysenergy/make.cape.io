@@ -1,14 +1,10 @@
 ---
 domain: www.genuinerepresentation.org # This is the domain used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.0.2
+cape_version: 2.0.7
 
 # Updated and new content must match an API before it checks the views.
 api: # An API is a set of default information. Think of an API as a collection of content.
-  cloudfiles: # Used for uploads to the CDN used for the website.
-    provider: cloudfiles
-    arg:
-      container: www.genuinerepresentation.org
   content: # Used to get content from github.
     provider: github
     arg:
@@ -39,49 +35,18 @@ api: # An API is a set of default information. Think of an API as a collection o
         # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
 
 model:
-  theme:  # theme - all the files...#
+  files:
     type: files
-    data_id: '/_model/theme/data.json' # When files, the data is a list of file_id's. This is the default.
-    filter:
-      api: theme
-      must:
-        _dirname: css
-    field:
-      _file:
-        file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
-        api: theme
-        resource: raw
-        type: any
-        arg:
-          path: '{{&_id}}'
-  media:
-    type: files
-    filter:
-      api: theme
-      must:
-        _dirname: media
-    field:
-      _file:
-        file_id: '{{&_id}}' # A file_id on a field like this will save the result to disk.
-        api: theme
-        resource: raw
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  files: # site files within content repo#
-    type: files
-    data_id: '/files/index.json'
     filter:
       api: content
-      must:
-        _dirname: files
-    field:
-      _file:
-        file_id: '{{&_id}}'
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
+    file:
+      source_file:
         api: content
         resource: raw
-        type: any # don't do anything, just save the file.
+        file_id: '{{&_id}}'
+        type: any
         arg:
           path: '{{&_id}}'
 
@@ -113,8 +78,7 @@ model:
     filter:
       api: content
       must:
-        _id:
-          ext: .md
+        _ext: .md
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
