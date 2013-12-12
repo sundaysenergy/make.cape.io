@@ -249,4 +249,11 @@ view:
       iterate: textile
       set_field: descript_2
 
-
+  items_color:
+    type: object
+    output_id: items/items-color.json
+    field:
+      textile_content_filters: content_ops
+      textile_color_filters: color_ops
+      colors: colors
+      items: collection

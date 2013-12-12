@@ -24,6 +24,7 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: master # Try using master branch.
+
   theme: # Used to get content from github.
     provider: github
     arg:
@@ -38,6 +39,11 @@ api: # An API is a set of default information. Think of an API as a collection o
         sha: gh-pages
     field:
 
+  update_hook:
+    provider: post
+    arg:
+      make_id: make
+      name: update_hook
 
 model:
   data:
