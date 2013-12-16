@@ -87,21 +87,21 @@ Special field IDs:
 * _file: This saves the value as a file. Useful for attaching images to an entity.
 
 
-## List Names
+## List Types
 
 ### Making Lists
-View entities filtered based on the field (status?) that has been applied to an entity.
+Model entities filtered based on the list status. Simple lists use a status field on the entity itself.
 
 ### Added
-This returns view entities that HAVE value `added`.
+Model entities that HAVE value `added`.
 
 ### Removed
-This returns view entities that HAVE value `removed`.
+Model entities that HAVE value `removed`.
 
 ### Pending
-This returns view entities that have value `pending`.
+Model entities that are NOT in the list. DO NOT have value `added` or `removed`.
 
 ### Stream
-This returns items do NOT the value `removed`.
+Model entitites that do NOT have value `removed`.
 
 
