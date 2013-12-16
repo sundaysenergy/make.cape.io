@@ -133,7 +133,7 @@ model:
       color: last_dash # only return everything and excluding the last dash
       contents: split_percentval
     sort:
-      field: _id
+      field: sort
 
   textile:
     type: list
