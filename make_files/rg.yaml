@@ -88,6 +88,21 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
+  data:
+    type: object
+    filter:
+      api: gh_repo
+      must:
+        _id: content/data.yaml
+    field: # The base "entity" in CAPE is the _id field. That's it.
+      # To get the contents of the file we need to add a "meta-field"
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: 'data.json' # When the _file field has a value it saves that field as a file.
+        api: gh_repo # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
 
   pages:
     type: list
@@ -165,14 +180,15 @@ view:
   pages: # These are the pages besides items.
     type: string
     field:
+      data: true
       pages: true
+      items: true
       textile_content_filters: content_ops
       theme:
         provider: wget
         resource: json
         arg:
           url: http://db.cape.io/data/rg/theme
-
     pager:
       iterate: pages # for each item in the list from the model pages
       field_id: page # field name for the item
