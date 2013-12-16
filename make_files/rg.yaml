@@ -132,6 +132,8 @@ model:
       parent_id: last_dash_rm # remove everything and including the last dash
       color: last_dash # only return everything and excluding the last dash
       contents: split_percentval
+    sort:
+      field: _id
 
   textile:
     type: list
