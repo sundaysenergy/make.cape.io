@@ -251,6 +251,9 @@ view:
   pages: # These are the pages besides items.
     type: string
     field:
+      date:
+        app: map
+        func: date_obj
       data: true
       pages: true
       items: true
