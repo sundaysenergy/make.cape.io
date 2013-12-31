@@ -343,7 +343,7 @@ view:
         compact: true
 
   # Big huge thing used clientside for everything
-  items_client_data:
+  client_data:
     type: object
     output_id: items/client_data.json
     field:
