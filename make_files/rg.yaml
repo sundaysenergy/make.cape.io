@@ -240,10 +240,8 @@ view:
       items: true
       textile_content_filters: content_ops
       theme:
-        provider: wget
-        resource: json
-        arg:
-          url: http://db.cape.io/data/rg/theme
+        model: db
+        _id: theme
     pager:
       iterate: pages # for each item in the list from the model pages
       field_id: page # field name for the item
