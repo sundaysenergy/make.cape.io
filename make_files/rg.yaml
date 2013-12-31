@@ -61,6 +61,10 @@ api: # An API as a collection of content.
         _source: _self
 
 model:
+  db:
+    filter:
+      api: db
+
   template:
     filter:
       api: gh_repo
