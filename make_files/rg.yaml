@@ -40,6 +40,11 @@ api: # An API as a collection of content.
         recursive: true
         sha: master
 
+  db: # Accept any post with make_id rg...
+    provider: post
+    arg:
+      make_id: rg
+
   # An API defined for accepting posts.
   items: # Get item content from a json file.
     provider: post
