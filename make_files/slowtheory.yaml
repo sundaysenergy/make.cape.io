@@ -1,0 +1,88 @@
+---
+domain: www.slowtheory.com
+uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
+cape_version: 2.0.7
+load:
+  - "http://v2.cape.io/tlupfer/_api/content/_load.json"
+  - "http://v2.cape.io/tlupfer/_api/content/_update.json"
+  - "http://v2.cape.io/tlupfer/_model/files/model_fields_add.json"
+  - "http://v2.cape.io/tlupfer/_model/pages/model_fields_add.json"
+  - "http://v2.cape.io/tlupfer/_model/template/model_fields_add.json"
+  - "http://v2.cape.io/tlupfer/_view/_all/process.json"
+
+api:
+  content:
+    provider: github
+    arg:
+      repo: www.slowtheory.com
+      owner: tlupfer
+      branch: master
+    load:
+      resource: tree
+      _id: path
+      arg:
+        recursive: true
+        sha: master
+
+model:
+  files:
+    type: files
+    filter:
+      api: content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
+    file:
+      source_file:
+        api: content
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          path: '{{&_id}}'
+
+  pages:
+    type: list
+    filter:
+      api: content
+      must:
+        _ext: .md
+    field: # The base "entity" in CAPE is the _id field. That's it.
+      # To get the contents of the file we need to add a "meta-field"
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        api: content # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
+
+  template:
+    type: list
+    filter:
+      api: content
+      must:
+        _dir1: templates
+    field:
+      _self:
+        api: gh_repo
+        resource: raw_api
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
+view:
+  pages:
+    type: string
+    field:
+      data: true
+      pages: true
+    pager: # Style pages requires a pager.
+      iterate: pages
+      field_id: page # The field name for the iteration.
+      per_pg: 1 # Entities per page. 1 is the default.
+      file_id: '{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
+    template:
+      model: template
+      _id: post.html
+      convert: mustache
+
