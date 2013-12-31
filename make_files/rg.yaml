@@ -159,6 +159,7 @@ model:
           path: '{{&_id}}'
 
   items:
+    limit: 3000
     type: list
     filter:
       api: items
@@ -198,6 +199,7 @@ model:
       field: sort
 
   textile:
+    limit: 3000
     type: list
     filter:
       api: items
