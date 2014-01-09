@@ -260,6 +260,7 @@ view:
       pages: true
       items: true
       textile_content_filters: content_ops
+      textile_color_filters: color_ops
       theme:
         model: db
         _id: theme
@@ -354,8 +355,6 @@ view:
     type: object
     output_id: items/client_data.json
     field:
-      textile_content_filters: content_ops
-      textile_color_filters: color_ops
       colors: colors
       items: collection
       templates: mini_templates
