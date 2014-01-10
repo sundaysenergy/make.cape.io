@@ -260,7 +260,9 @@ view:
       pages: true
       items: true
       textile_content_filters: content_ops
-      textile_color_filters: color_ops
+      color_ops_textile: color_ops_textile
+      color_ops_passementerie: color_ops_passementerie
+      color_ops_leather: color_ops_leather
       theme:
         model: db
         _id: theme
@@ -340,12 +342,32 @@ view:
         unique: true
         compact: true
 
-  color_ops:
+  color_ops_textile:
     type: list
     field:
       _data:
         model: textile
         pluck: colors
+        flatten: true
+        unique: true
+        compact: true
+
+  color_ops_passementerie:
+    type: list
+    field:
+      _data:
+        model: passementerie
+        pluck: descript_2
+        flatten: true
+        unique: true
+        compact: true
+
+  color_ops_leather:
+    type: list
+    field:
+      _data:
+        model: leather
+        pluck: descript_2
         flatten: true
         unique: true
         compact: true
