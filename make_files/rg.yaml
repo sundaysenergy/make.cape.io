@@ -377,6 +377,7 @@ view:
     type: object
     output_id: items/client_data.json
     field:
+      color_words: color_ops_textile
       colors: colors
       items: collection
       templates: mini_templates
