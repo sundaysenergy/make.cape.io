@@ -317,6 +317,15 @@ view:
       img: '{{&item.img.normal.640}}'
       collection: '{{item.collection}}'
 
+  price:
+    type: set
+    field:
+      _data:
+        model: items
+        pluck: price
+        index_by: _id
+    output_id: items/price.json
+
   colors:
     type: set
     field:
