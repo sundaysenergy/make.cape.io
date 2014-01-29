@@ -263,6 +263,7 @@ view:
       color_ops_textile: color_ops_textile
       color_ops_passementerie: color_ops_passementerie
       color_ops_leather: color_ops_leather
+      design_descriptions: design_descriptions
       theme:
         model: db
         _id: theme
