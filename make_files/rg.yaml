@@ -213,6 +213,14 @@ model:
         arg:
           itemid: '{{&_id}}'
           include_far: true
+      uses:
+        app: map
+        func: split
+        arg:
+          split_on: ','
+          unique: true
+          compact: true
+          trim: true
     sort:
       field: sort
 
@@ -317,6 +325,7 @@ view:
       width: '{{&item.width}}'
       img: '{{&item.img.normal.640}}'
       collection: '{{item.collection}}'
+      design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
 
   price:
     type: set
