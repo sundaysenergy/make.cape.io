@@ -381,6 +381,16 @@ view:
         unique: true
         compact: true
 
+  design_descriptions:
+    type: list
+    field:
+      _data:
+        model: textile
+        pluck: design_descriptions
+        flatten: true
+        unique: true
+        compact: true
+
   # Big huge thing used client side for database.
   client_data:
     type: object
