@@ -1,9 +1,11 @@
 ---
 domain: www.bridetobeconsignment.com #AKA cache_cname
-uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.0.5
+uid: 71d55c76-2975-428b-ab35-f73bba2abe6d # The CAPE user ID to use for authenticating against the providers when requesting API resources.
+cape_version: 2.1.2
 load:
-  - 'http://v2.cape.io.ld/bridetobe/_api/fb_coverphotos/_load.json'
+  - 'http://bridetobe.cape.io/_api/fb_coverphotos/_load.json'
+  - 'http://bridetobe.cape.io/_api/content/_load.json'
+  - 'http://bridetobe.cape.io/_view/_all/_output'
 
 # Updated and new content must match an API before it checks the views.
 api: # An API is a set of default information. Think of an API as a collection of content.
@@ -11,6 +13,7 @@ api: # An API is a set of default information. Think of an API as a collection o
     provider: cloudfiles
     arg:
       container: www.bridetobeconsignment.com
+
   fb_coverphotos:
     provider: facebook
     load:
@@ -32,9 +35,22 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: master # Only problem is having to update the sha. Try using master branch as sha.
-        # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
 
 model:
+  template:
+    filter:
+      api: content
+      must:
+        _dirname: theme/layouts
+    field:
+      _self:
+        api: content
+        resource: raw_api
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
   data:
     type: object
     filter:
@@ -66,8 +82,11 @@ model:
     sort:
       field: _id
       order: descending
-    map:
-      images: first
+    field:
+      image:
+        app: map
+        func: first
+        arg: images
 
   pages:
     type: list
@@ -89,10 +108,8 @@ view:
   _contact:
     type: string
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/contact.html
+      model: template
+      _id: contact.html
       convert: mustache
     field:
       data: true
@@ -102,10 +119,9 @@ view:
   contact:
     type: string
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/default.html
+      model: template
+      _id: default.html
+      convert: mustache
     field:
       data: true
       content: _contact
@@ -118,11 +134,10 @@ view:
         model: coverphotos
         limit: 3
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/slider.html
+      model: template
+      _id: slider.html
       convert: mustache
+    file_id: 'slider.html'
 
   pages:
     type: string
@@ -136,8 +151,6 @@ view:
       field_id: page
       file_id: '{{^page._isindex}}{{page._filename}}/{{/page._isindex}}index.html'
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/default.html
+      model: template
+      _id: default.html
       convert: mustache

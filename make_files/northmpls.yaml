@@ -1,33 +1,170 @@
 ---
 domain: cdn.northmpls.org
 uid: 1
+cape_version: 2.1.2
+load:
+  - "http://northmpls.cape.io.ld/_api/jobs_wufoo/_load.json"
+  - "http://northmpls.cape.io.ld/_api/jobs_indeed/_load.json"
+  - "http://northmpls.cape.io.ld/_api/theme/_load.json"
+  - "http://northmpls.cape.io.ld/_view/jobs_index/_output"
 
 api:
   photos:
     provider: instagram
+
   fb:
     provider: facebook
-  jobs:
-    provider: indeed
+
+  jobs_indeed:
+    provider: wget
+    load:
+      _id: jobkey
+      resource: json
+      args: # Plural is a set of commands that gets sent.
+        -
+          url: 'http://indeed.herokuapp.com/indeed/55411'
+        -
+          url: 'http://indeed.herokuapp.com/indeed/55412'
+
+  jobs_wufoo:
+    provider: wufoo
+    arg:
+      subdomain: sundaysenergy
+    load:
+      _id: EntryId
+      resource: entries
+      arg:
+        formIdentifier: z7p6z1
+      field_name_map:
+        address1: Field9
+        address2: Field10
+        city: Field11
+        state: Field12
+        zipcode: Field13
+        country: Field14
+        company: Field1
+        date: DateCreated
+        jobtitle: Field5
+        company_url: Field2
+        jobtype: Field6
+        fulltext: Field7
+        name_first: Field17
+        name_last: Field18
+        contact_email: Field20
+        contact_phone: Field19
+        compensation: Field8
+
+  content:
+    provider: github
+    arg:
+      repo: northmpls_content
+      owner: westbroadway
+      branch: master
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: tree # Github has a nice index of all content in a repo.
+      _id: path
+      arg:
+        recursive: true # Thankfully they have an option to get results recursively.
+        sha: master # Only problem is having to update the sha. Try using master branch as sha.
+
+  theme:
+    provider: github
+    arg:
+      repo: northmpls_theme
+      owner: westbroadway
+      branch: master
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: tree # Github has a nice index of all content in a repo.
+      _id: path
+      arg:
+        recursive: true # Thankfully they have an option to get results recursively.
+        sha: master # Only problem is having to update the sha. Try using master branch as sha.
 
 model:
-  northmpls_photos:
-    api: photos
-  wbfm_photos:
-    api: photos
-  art_photos:
-    api: photos
-  photostream:
-    api: photos
-  jobs:
-    api: jobs
-  news:
-    api: fb
+  # northmpls_photos:
+  #   api: photos
+  # wbfm_photos:
+  #   api: photos
+  # art_photos:
+  #   api: photos
+  # photostream:
+  #   api: photos
+  jobs_indeed:
+    filter:
+      api: jobs_indeed
+  jobs_wufoo:
+    filter:
+      api: jobs_wufoo
+    field:
+      jobkey: "northmpls-{{_id}}"
+      source: "NorthMPLS.org"
+      snippet:
+        app: map
+        func: prune
+        arg:
+          string: '{{fulltext}}'
+          length: 160
+          pruneString: '...'
+      teaser:
+        app: map
+        func: markdown
+        arg: fulltext
+  template:
+    filter:
+      api: theme
+      must:
+        _dirname: templates
+    field:
+      _self:
+        api: theme
+        resource: raw
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
+  # news:
+  #   api: fb
 
 view:
-  photos_front:
+  jobs_index:
+    type: string
     field:
-      northmpls_photos: true
-  photos_all:
+      jobs_indeed: true
+      jobs_wufoo: true
+    template:
+      model: template
+      _id: default.mustache
+      partial:
+        page_html:
+          model: template
+          _id: job-list.html
+        'job-list-detail':
+          model: template
+          _id: 'job-list-detail.html'
+    file_id: 'jobs/index.html'
+
+  jobs:
+    type: string
     field:
-      northmpls_photos: true
+      jobs_wufoo: true
+      jobs_indeed: true
+    pager:
+      iterate: [jobs_wufoo, jobs_indeed]
+      field_id: job
+      file_id: 'jobs/{{job.jobkey}}.html'
+      template:
+        partial:
+          page_html:
+            model: template
+            _id: job-details.html
+    template:
+      model: template
+      _id: default.mustache
+
+  # photos_front:
+  #   field:
+  #     northmpls_photos: true
+  # photos_all:
+  #   field:
+  #     northmpls_photos: true
