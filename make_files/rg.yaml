@@ -195,6 +195,17 @@ model:
           split_on_sub: ' '
           unique: true
           compact: true
+      use:
+        app: map
+        func: string_replace
+        arg:
+          string: '{{&miscdesc}}'
+          find_replace:
+            A: Accessories
+            D: Draperies
+            U: Upholstery
+            WC: Wall Covering
+            SC: Slip Covers
     sort:
       field: sort
 
@@ -407,6 +418,16 @@ view:
       _data:
         model: textile
         pluck: miscdesc
+        flatten: true
+        unique: true
+        compact: true
+
+  use:
+    type: list
+    field:
+      _data:
+        model: textile
+        pluck: uses
         flatten: true
         unique: true
         compact: true
