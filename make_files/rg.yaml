@@ -200,6 +200,7 @@ model:
         func: string_replace
         arg:
           string: '{{&miscdesc}}'
+          split_on: ', '
           find_replace:
             A: Accessories
             D: Draperies
@@ -427,7 +428,7 @@ view:
     field:
       _data:
         model: textile
-        pluck: uses
+        pluck: use
         flatten: true
         unique: true
         compact: true
