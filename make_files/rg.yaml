@@ -127,6 +127,20 @@ model:
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
+  showrooms:
+    type: object
+    filter:
+      api: gh_repo
+      must:
+        _id: content/contact/showrooms.yaml
+    field:
+      _self:
+        file_id: 'contact/showrooms.json'
+        api: gh_repo
+        resource: raw_api
+        type: yaml
+        arg:
+          path: '{{&_id}}'
   beautyshots:
     type: object
     filter:
@@ -225,14 +239,14 @@ model:
         arg:
           itemid: '{{&_id}}'
           include_far: true
-      uses:
-        app: map
-        func: split
-        arg:
-          split_on: ','
-          unique: true
-          compact: true
-          trim: true
+      # uses:
+      #   app: map
+      #   func: split
+      #   arg:
+      #     split_on: ','
+      #     unique: true
+      #     compact: true
+      #     trim: true
     sort:
       field: sort
 
@@ -279,6 +293,7 @@ view:
       data: true
       pages: true
       items: true
+      showrooms: true
       textile_content_filters: content_ops
       color_ops_textile: color_ops_textile
       color_ops_passementerie: color_ops_passementerie
