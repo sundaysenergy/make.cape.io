@@ -29,10 +29,6 @@ api: # An API as a collection of content.
 
   gh_repo: # Used to get content from the big heavy github repo.
     provider: github
-    arg:
-      owner: bjornmeansbear
-      repo: rogers-and-goffigon
-      branch: master
     load:
       resource: tree
       _id: path
