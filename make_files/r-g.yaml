@@ -220,6 +220,15 @@ model:
             U: Upholstery
             WC: Wall Covering
             SC: Slip Covers
+      color:
+        app: map
+        func: second
+        arg: descriptions
+      name:
+        app: map
+        func: first
+        arg: descriptions
+
     sort:
       field: sort
 
@@ -341,10 +350,10 @@ view:
       iterate: items
       field_id: item
     emit:
-      name: '{{&item.descript_1}}'
-      color: '{{&item.descript_2}}'
-      primarycolor: '{{item.primarycolor}}'
-      secondarycolor: '{{item.secondarycolor}}'
+      name: '{{&item.name}}'
+      color: '{{&item.color}}'
+      primarycolor: '{{item.primaryColor}}'
+      secondarycolor: '{{item.secondaryColor}}'
       id: '{{item._id}}'
       content: '{{&item.content}}'
       repeat: '{{&item.repeat}}'

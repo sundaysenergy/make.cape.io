@@ -289,6 +289,7 @@ view:
       pages: true
       items: true
       showrooms: true
+      use: use
       textile_content_filters: content_ops
       color_ops_textile: color_ops_textile
       color_ops_passementerie: color_ops_passementerie
@@ -339,8 +340,8 @@ view:
     emit:
       name: '{{&item.descript_1}}'
       color: '{{&item.descript_2}}'
-      primarycolor: '{{item.primarycolor}}'
-      secondarycolor: '{{item.secondarycolor}}'
+      primarycolor: '{{item.primaryColor}}'
+      secondarycolor: '{{item.secondaryColor}}'
       id: '{{item._id}}'
       content: '{{&item.content}}'
       repeat: '{{&item.repeat}}'
