@@ -17,7 +17,7 @@ api: # An API as a collection of content.
     provider: github
     arg:
       owner: bjornmeansbear
-      repo: MFAthesis2014
+      repo: mfathesis2014
       branch: master
     load:
       resource: tree
