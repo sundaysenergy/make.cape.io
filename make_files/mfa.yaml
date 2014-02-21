@@ -5,6 +5,11 @@ cape_version: 2.1.5 # Current version of cape can be found in Kai's head. Future
 
 load:
   - "/_api/gh_repo/_load.json"
+  - "/_api/student/_load.json"
+  - "/_api/student_gallery/_load.json"
+  - "/_api/gallery/_load.json"
+  - "/_api/show/_load.json"
+
 
 api: # An API as a collection of content.
 
@@ -108,6 +113,7 @@ model:
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
+
   student:
     filter:
       api: student
