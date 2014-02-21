@@ -76,7 +76,7 @@ model:
     field:
       _self:
         api: gh_repo
-        resource: raw_api
+        resource: raw
         type: yaml_front
         default: default.html
         arg:
@@ -92,7 +92,7 @@ model:
     field:
       _self:
         api: gh_repo
-        resource: raw_api
+        resource: raw
         type: any
         arg:
           path: '{{&_id}}'
