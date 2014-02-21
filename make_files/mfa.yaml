@@ -68,6 +68,35 @@ api: # An API as a collection of content.
 
 model:
 
+  template:
+    filter:
+      api: gh_repo
+      must:
+        _dirname: templates
+    field:
+      _self:
+        api: gh_repo
+        resource: raw_api
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
+  mini_templates:
+    type: set
+    set_key: _filename
+    filter:
+      api: gh_repo
+      must:
+        _dirname: templates/mini
+    field:
+      _self:
+        api: gh_repo
+        resource: raw_api
+        type: any
+        arg:
+          path: '{{&_id}}'
+
   files:
     type: files
     filter:
@@ -87,6 +116,7 @@ model:
 
   content:
     type: set
+    set_key: _filename
     filter:
       api: gh_repo
       must:
@@ -101,6 +131,7 @@ model:
 
   data:
     type: set
+    set_key: _filename
     filter:
       api: gh_repo
       must:
@@ -134,4 +165,18 @@ model:
     filter:
       api: photos
 
+view:
 
+  mini_templates:
+    type: set
+    field:
+      _data:
+        model: mini_templates
+        pluck: content
+
+  client_data:
+    type: object
+    output_id: items/client_data.json
+    field:
+      student: true
+      templates: mini_templates
