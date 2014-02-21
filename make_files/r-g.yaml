@@ -307,6 +307,7 @@ view:
       color_ops_passementerie: color_ops_passementerie
       color_ops_leather: color_ops_leather
       design_descriptions: design_descriptions
+      use: use
       theme:
         model: db
         _id: theme
@@ -432,16 +433,6 @@ view:
       _data:
         model: textile
         pluck: design_descriptions
-        flatten: true
-        unique: true
-        compact: true
-
-  miscdesc:
-    type: list
-    field:
-      _data:
-        model: textile
-        pluck: miscdesc
         flatten: true
         unique: true
         compact: true

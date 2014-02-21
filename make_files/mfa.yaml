@@ -1,0 +1,131 @@
+---
+domain: mfa.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
+uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
+cape_version: 2.1.5 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
+
+load:
+  - "/_api/gh_repo/_load.json"
+
+api: # An API as a collection of content.
+
+  gh_repo: # Used to get content from the big heavy github repo.
+    provider: github
+    arg:
+      owner: bjornmeansbear
+      repo: MFAthesis2014
+      branch: master
+    load:
+      resource: tree
+      _id: path
+      arg:
+        recursive: true
+        sha: master
+
+  student: # Get item content from a json file.
+    provider: gsheet
+    arg:
+      id: 0Al-kEdVYvxtGdG1wOEFNUUNEWW1CaDBlbXBHYlhQN0E
+    load:
+      resource: rows
+      _id: studentid
+
+  student_gallery: # Get item content from a json file.
+    provider: gsheet
+    arg:
+      id: 0AvPe_NdeKbxjdFFWU0lpSmJYV3NUSlIzcGU1cWRWTnc
+    load:
+      resource: rows
+      _id: studentid
+
+  gallery:
+    provider: gsheet
+    arg:
+      id: 0Al-kEdVYvxtGdDNBZHFWZjB1YnVFX19CSWpHLWczb1E
+    load:
+      resource: rows
+      _id: id
+
+  show:
+    provider: gsheet
+    arg:
+      id: 0Al-kEdVYvxtGdHZiZ2lQQjA1bkl0cGpGb0ZSZHJVRkE
+    load:
+      resource: rows
+      _id: id
+
+  photos:
+    provider: dropbox
+    load:
+      resource: dir
+      arg:
+        user: 1234
+        dir: mica_mfa
+
+model:
+
+  files:
+    type: files
+    filter:
+      api: gh_repo
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
+      must_not:
+        _dir1: reference
+    file:
+      source_file:
+        api: gh_repo
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          path: '{{&_id}}'
+
+  content:
+    type: set
+    filter:
+      api: gh_repo
+      must:
+        _ext: ['.md', '.markdown']
+    field:
+      _self:
+        api: gh_repo
+        resource: raw
+        type: md
+        arg:
+          path: '{{&_id}}'
+
+  data:
+    type: set
+    filter:
+      api: gh_repo
+      must:
+        _ext: ['.yaml', '.yml']
+    field: # The base "entity" in CAPE is the _id field. That's it.
+      # To get the contents of the file we need to add a "meta-field"
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        api: gh_repo # The _self field is processed first.
+        resource: raw # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          path: '{{&_id}}' # The raw github API call requires a path param.
+  student:
+    filter:
+      api: student
+
+  student_gallery: # Get item content from a json file.
+    filter:
+      api: student_gallery
+
+  gallery:
+    filter:
+      api: gallery
+
+  show:
+    filter:
+      api: show
+
+  photos:
+    filter:
+      api: photos
+
+
