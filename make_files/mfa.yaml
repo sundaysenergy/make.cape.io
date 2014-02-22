@@ -167,6 +167,13 @@ model:
 
 view:
 
+  student_info:
+    type: list
+    field:
+      student: true
+      student_gallery: true
+    merge: _id
+
   mini_templates:
     type: set
     field:
@@ -178,5 +185,5 @@ view:
     type: object
     output_id: items/client_data.json
     field:
-      student: true
+      students: student_info
       templates: mini_templates
