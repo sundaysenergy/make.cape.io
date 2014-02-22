@@ -186,6 +186,6 @@ view:
     output_id: items/client_data.json
     field:
       students: student_info
-      templates: mini_templates
+      template: mini_templates
       gallery: true
       show: true
