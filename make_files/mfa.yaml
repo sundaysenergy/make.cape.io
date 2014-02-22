@@ -102,7 +102,7 @@ model:
     filter:
       api: gh_repo
       should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf']
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
       must_not:
         _dir1: reference
     file:
@@ -186,6 +186,6 @@ view:
     output_id: items/client_data.json
     field:
       students: student_info
-      template: mini_templates
+      templates: mini_templates
       gallery: true
       show: true
