@@ -9,7 +9,7 @@ load:
   - "/_api/student_gallery/_load.json"
   - "/_api/gallery/_load.json"
   - "/_api/show/_load.json"
-
+  - "/_api/dropbox/_load.json"
 
 api: # An API as a collection of content.
 
@@ -61,10 +61,12 @@ api: # An API as a collection of content.
   photos:
     provider: dropbox
     load:
-      resource: dir
+      resource: delta
+      _id: path
       arg:
-        user: 1234
-        dir: mica_mfa
+        cursor: AAEJPObauoYaiLrm4srbR1pacMEOJ9W3TA3aviK24OA0SQj2tCmy2pcdAUE94xGZQ4WOApe41EaAnJhyeAoKmODpzhZ9CX37EOwxqU9REn21HyaH5N55itwhzYouYU5pNZKpYjYB59cVbCCr8Kj86a7mFbglojCo2Ab7IaSzIdLqgg
+        root: dropbox
+        path_prefix: /GradShow2014GPAs
 
 model:
 
@@ -161,9 +163,53 @@ model:
     filter:
       api: show
 
+  # photo_groups:
+  #   filter:
+  #     api: photos
+  #     must:
+  #       is_dir: true
+  #   field:
+  #     _self:
+  #       api: dropbox
+  #       resource: meta
+  #       arg:
+  #         root: dropbox
+  #         path: '{{&path}}'
+
   photos:
     filter:
       api: photos
+      should:
+        mime_type: ["image/jpeg", "image/png"]
+    field:
+      program: "{{_dir2}}"
+      studentid:
+        app: map
+        func: substring
+        arg:
+          string: "{{_dir3}}"
+          substring: -6
+      sort:
+        app: map
+        func: substring
+        arg:
+          string: "{{_filename}}"
+          substring: -2
+          tonumber: true
+
+  photo_info:
+    filter:
+      api: photos
+      must:
+        mime_type: text/plain
+    field:
+      program: "{{_dir2}}"
+      studentid:
+        app: map
+        func: substring
+        arg:
+          string: "{{_dir3}}"
+          substring: -6
 
 view:
 
