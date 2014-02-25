@@ -182,6 +182,7 @@ model:
       should:
         mime_type: ["image/jpeg", "image/png"]
     field:
+      slide_path: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
       program: "{{_dir2}}"
       studentid:
         app: map
@@ -234,6 +235,7 @@ view:
       _data:
         model: photos
         group_by: studentid
+        pluck: slide_path
 
   student_info:
     type: list
