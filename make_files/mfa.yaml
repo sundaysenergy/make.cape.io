@@ -195,7 +195,16 @@ model:
         arg:
           string: "{{_filename}}"
           substring: -2
-          tonumber: true
+          tonumber: false
+    file:
+      source_file:
+        api: photos
+        resource: files
+        file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
 
   photo_info:
     filter:
@@ -210,8 +219,21 @@ model:
         arg:
           string: "{{_dir3}}"
           substring: -6
+      text:
+        api: photos
+        resource: files
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
 
 view:
+  photos:
+    type: set
+    field:
+      _data:
+        model: photos
+        group_by: studentid
 
   student_info:
     type: list
