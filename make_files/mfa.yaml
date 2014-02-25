@@ -259,3 +259,4 @@ view:
       templates: mini_templates
       gallery: true
       show: true
+      slideshow: photos
