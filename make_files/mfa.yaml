@@ -227,8 +227,24 @@ model:
         arg:
           root: dropbox
           path: "{{path}}"
+img:
+  slideshow:
+    views: [photo_list]
 
 view:
+  photo_list:
+    type: list
+    field:
+      photos: true
+    pager:
+      iterate: photos
+      field_id: item
+    emit:
+      source: '/img/originals/{{item.studentid}}/{{item.sort}}{{item._ext}}'
+      destination: '/img/slides/{{item.studentid}}/{{item.sort}}{{item._ext}}'
+      width: '850'
+      height: null
+
   photos:
     type: set
     field:
