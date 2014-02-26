@@ -220,6 +220,7 @@ model:
             U: Upholstery
             WC: Wall Covering
             SC: Slip Covers
+            S: Sheer
       color:
         app: map
         func: second
@@ -300,7 +301,7 @@ view:
         func: date_obj
       data: true
       pages: true
-      items: true
+      # items: true
       showrooms: true
       textile_content_filters: content_ops
       color_ops_textile: color_ops_textile
