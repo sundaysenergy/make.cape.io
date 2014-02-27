@@ -362,7 +362,7 @@ view:
       primarycolor: '{{item.primaryColor}}'
       secondarycolor: '{{item.secondaryColor}}'
       id: '{{item._id}}'
-      content: '{{&item.content}}'
+      content: '{{#item.contents_arr}}{{.}} {{/item.contents_arr}}'
       repeat: '{{&item.repeat}}'
       width: '{{&item.width}}'
       img: '{{&item.img.normal.640}}'
