@@ -394,7 +394,7 @@ view:
     field:
       _data:
         model: textile
-        pluck: contents
+        pluck: content
         flatten: true
         unique: true
         compact: true
