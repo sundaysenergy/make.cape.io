@@ -363,6 +363,7 @@ view:
       img: '{{&item.img.normal.640}}'
       collection: '{{item.collection}}'
       design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
+      use: '{{item.use}}'
 
   price:
     type: set
