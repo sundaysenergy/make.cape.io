@@ -183,7 +183,7 @@ model:
         app: map
         func: last_dash
         arg: '{{&_id}}'
-      contents:
+      content_arr:
         app: map
         func: split
         arg:
@@ -191,6 +191,11 @@ model:
           split_on: ', '
           split_on_sub: ' '
           compact: true
+      contents_arr:
+        app: rg
+        func: parse_content
+        arg:
+          content: '{{&contents}}'
       colors:
         app: map
         func: split
@@ -394,7 +399,7 @@ view:
     field:
       _data:
         model: textile
-        pluck: content
+        pluck: contents_arr
         flatten: true
         unique: true
         compact: true
