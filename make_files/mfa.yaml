@@ -32,7 +32,7 @@ api: # An API as a collection of content.
       id: 0Al-kEdVYvxtGdG1wOEFNUUNEWW1CaDBlbXBHYlhQN0E
     load:
       resource: rows
-      _id: studentid
+      _id: id
 
   student_gallery: # Get item content from a json file.
     provider: gsheet
