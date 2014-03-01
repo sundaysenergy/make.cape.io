@@ -150,6 +150,8 @@ model:
   student:
     filter:
       api: student
+      must_not:
+        disable: x
 
   student_gallery: # Get item content from a json file.
     filter:
