@@ -43,6 +43,20 @@ api: # An API is a set of default information. Think of an API as a collection o
       name: update_hook
 
 model:
+  template:
+    filter:
+      api: gh_theme
+      must:
+        _dirname: cape
+    field:
+      _self:
+        api: gh_theme
+        resource: raw
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
   data:
     type: object
     filter:
@@ -100,30 +114,26 @@ view:
       data: true
       readme: true
     template:
-      api: theme
-      resource: raw
-      arg:
-        path: cape/default.mustache
-    partial:
-      page_html:
-        api: theme
-        resource: raw
-        arg:
-          path: cape/readme.mustache
+      model: template
+      _id: default.mustache
+      partial:
+        page_html:
+          model: template # Load same way as you load a template.
+          _id: readme.html
 
   index_html:
     type: string
-    pager: false
     file_id: 'make_files/index.html'
     field:
       data: true # when value is true use key as the model_id and just get its data.
       make_files: true
     template:
-      api: theme
-      resource: raw
-      arg:
-        path: cape/default.mustache
-      convert: mustache
+      model: template
+      _id: default.mustache
+      partial:
+        page_html:
+          model: template # Load same way as you load a template.
+          _id: make_index.html
 
   index_json:
     type: list
