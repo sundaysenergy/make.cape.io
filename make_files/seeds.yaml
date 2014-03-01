@@ -6,6 +6,7 @@ cape_version: 2.1.6 # Current version of cape can be found in Kai's head. Future
 load:
   - "/_api/gh_content/_load.json"
   - "/_api/gh_theme/_load.json"
+  - "/_view/onepage/_output"
 
 api: # An API as a collection of content.
 
