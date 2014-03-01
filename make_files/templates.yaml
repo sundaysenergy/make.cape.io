@@ -33,4 +33,3 @@ model:
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
----
