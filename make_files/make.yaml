@@ -1,17 +1,15 @@
 ---
 domain: make.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.0.5
+cape_version: 2.1.6
 
 load:
-  - "http://v2.cape.io/make/_api/content/_load.json"
-  - "http://v2.cape.io/make/_api/content/_update.json"
-  - "http://v2.cape.io/make/_model/data/model_fields_reload.json"
-  - "http://v2.cape.io/make/_model/make_files/model_fields_reload.json"
-  - "http://v2.cape.io/make/_view/_all/process.json"
+  - "/_api/gh_content/_load.json"
+  - "/_api/gh_theme/_load.json"
+  - "/_view/_all/_output"
 
 api: # An API is a set of default information. Think of an API as a collection of content.
-  content: # Used to get content from github.
+  gh_content: # Used to get content from github.
     provider: github
     arg:
       owner: sundaysenergy
@@ -25,7 +23,7 @@ api: # An API is a set of default information. Think of an API as a collection o
         recursive: true # Thankfully they have an option to get results recursively.
         sha: master # Try using master branch.
 
-  theme: # Used to get content from github.
+  gh_theme: # Used to get content from github.
     provider: github
     arg:
       owner: sundaysenergy
@@ -37,7 +35,6 @@ api: # An API is a set of default information. Think of an API as a collection o
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
-    field:
 
   update_hook:
     provider: post
@@ -49,47 +46,37 @@ model:
   data:
     type: object
     filter:
-      api: content
+      api: gh_content
       must:
         _id: data.yaml
-    data_id: /data.json # This must be a text string. Always single file.
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: 'data.json' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
+        file_id: data.json # When the _file field has a value it saves that field as a file.
+        api: gh_content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
-    file:
-      yaml: # fetch the file without processing it.
-        file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: any # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
   readme: # process the readme into html. Probably change to a list of pages soon?
     type: object
     filter:
-      api: content
+      api: gh_content
       must:
         _id: README.md
     field:
       _self:
-        api: content
+        api: gh_content
         resource: raw
         type: md
         arg:
           path: '{{&_id}}'
 
   make_files:
-    data_id: /make_files/_all.json # The big bloated json file with all the entities loaded into one file.
     type: list
     filter:
-      api: content
+      api: gh_content
       must:
         _ext: .yaml
         _dirname: make_files
@@ -97,22 +84,13 @@ model:
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
         file_id: '{{&_no_ext}}.json'
-        api: content # The _self field is processed first.
+        api: gh_content # The _self field is processed first.
         resource: raw # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets.
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
       link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
       edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
-
-    file:
-      yaml: # Safe a copy of the raw yaml file.
-        file_id: '{{&_id}}' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: any # This tells CAPE what to do with the file that it gets.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
 
 view:
   documentation:
@@ -157,4 +135,3 @@ view:
     emit: '{{make._filename}}' # similar to processing a template.
     output_id: index.json # This should move to /make_files/
 
----
