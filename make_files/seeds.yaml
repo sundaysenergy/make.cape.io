@@ -13,7 +13,7 @@ api: # An API as a collection of content.
     provider: github
     arg:
       owner: sundaysenergy
-      repo: seedsages.theme
+      repo: seedsages.content
       branch: master
     load:
       resource: tree
@@ -88,7 +88,7 @@ model:
     set_key: _filename
     filter:
       api: gh_content
-      must:
+      should:
         _ext: ['.md', '.markdown']
     field:
       _self:
@@ -103,7 +103,7 @@ model:
     set_key: _filename
     filter:
       api: gh_content
-      must:
+      should:
         _ext: ['.yaml', '.yml']
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
