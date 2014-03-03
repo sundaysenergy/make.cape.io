@@ -230,7 +230,6 @@ model:
       should:
         mime_type: ["image/jpeg", "image/png"]
     field:
-      slide_path: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
       program: "{{_dir2}}"
       studentid:
         app: map
@@ -281,12 +280,14 @@ img:
 
 view:
   photo_info:
-    type: list
+    type: set
     field:
-      photo_info:
+      _data:
         model: photo_info
-        group_by: studentid
+        index_by: studentid
         pluck: text
+        values: true
+    data_id: items/photo_info.json
 
   photo_list:
     type: list
@@ -307,7 +308,7 @@ view:
       _data:
         model: photos
         group_by: studentid
-        pluck: slide_path
+        emit: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
 
   student_info:
     type: list
