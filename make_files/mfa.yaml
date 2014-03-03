@@ -156,7 +156,43 @@ model:
   student_gallery: # Get item content from a json file.
     filter:
       api: student_gallery
-
+      must_not:
+        studentid:
+          - 443278
+          - 437771
+          - 443564
+          - 459986
+          - 440087
+          - 445165
+          - 464062
+          - 464187
+          - 453166
+          - 448744
+          - 453220
+          - 401805
+          - 415768
+          - 524679
+          - 443123
+          - 420845
+          - 361711
+          - 524263
+          - 109518
+          - 524174
+          - 510825
+          - 354221
+          - 538833
+          - 542280
+          - 542281
+          - 155088
+          - 541960
+          - 333264
+          - 500817
+          - 317278
+          - 498556
+          - 481509
+          - 499451
+          - 480908
+          - 463878
   gallery:
     filter:
       api: gallery
@@ -260,6 +296,10 @@ view:
     field:
       student: true
       student_gallery: true
+    omit:
+      - pleaseselectyourdesiredtemplatelayoutforthecatalogue
+      - shortstatementupto75words
+      - cataloglongstatementupto500words
     merge: _id
 
   mini_templates:
