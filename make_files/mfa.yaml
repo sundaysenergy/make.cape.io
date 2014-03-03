@@ -287,7 +287,7 @@ view:
         index_by: studentid
         pluck: text
         values: true
-    data_id: items/photo_info.json
+    output_id: items/photo_info.json
 
   photo_list:
     type: list
@@ -337,3 +337,4 @@ view:
       gallery: true
       show: true
       slideshow: photos
+      photo_info: photo_info
