@@ -245,21 +245,21 @@ model:
           string: "{{_filename}}"
           substring: -2
           tonumber: false
-    file:
-      source_file:
-        api: photos
-        resource: files
-        file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
-        type: any
-        arg:
-          root: dropbox
-          path: "{{path}}"
+    # file:
+    #   source_file:
+    #     api: photos
+    #     resource: files
+    #     file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
+    #     type: any
+    #     arg:
+    #       root: dropbox
+    #       path: "{{path}}"
 
   photo_info:
     filter:
       api: photos
-      must:
-        mime_type: text/plain
+      should:
+        _ext: ['.txt', '.yml', '.yaml']
     field:
       program: "{{_dir2}}"
       studentid:
@@ -271,7 +271,7 @@ model:
       text:
         api: photos
         resource: files
-        type: any
+        type: yaml
         arg:
           root: dropbox
           path: "{{path}}"
@@ -280,6 +280,14 @@ img:
     views: [photo_list]
 
 view:
+  photo_info:
+    type: list
+    field:
+      photo_info:
+        model: photo_info
+        group_by: studentid
+        pluck: text
+
   photo_list:
     type: list
     field:
