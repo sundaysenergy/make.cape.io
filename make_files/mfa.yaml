@@ -377,7 +377,6 @@ view:
     field:
       students: student_info
       templates: mini_templates
-      gallery: gallery
       show: show
       slideshow: photos
       photo_info: photo_info
