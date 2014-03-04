@@ -258,7 +258,7 @@ model:
     filter:
       api: photos
       should:
-        _ext: ['.yml', '.yaml']
+        _ext: ['.txt', '.yml', '.yaml']
     field:
       program: "{{_dir2}}"
       studentid:
