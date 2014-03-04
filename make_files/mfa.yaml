@@ -284,14 +284,14 @@ view:
     field:
       _data:
         model: gallery
-        pluck: [gallery, title, building, address, show]
+        pluck: [gallery, building, address, show]
 
   show:
     type: list
     field:
       _data:
         model: show
-        pluck: [title, program, showopeningpartytime, showopeningpartydate, startdate, enddate]
+        pluck: [program, showopeningpartytime, showopeningpartydate, startdate, enddate]
 
   photo_info:
     type: set
@@ -345,6 +345,7 @@ view:
           - _links
           - _cape
           - _models
+          - _source
           - _last
       student_gallery:
         model: student_gallery
@@ -359,6 +360,7 @@ view:
           - _links
           - _cape
           - _models
+          - _source
           - _last
     merge: _id
 
