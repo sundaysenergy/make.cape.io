@@ -279,6 +279,20 @@ img:
     views: [photo_list]
 
 view:
+  gallery:
+    type: list
+    field:
+      _data:
+        model: gallery
+        pluck: [gallery, title, building, address, show]
+
+  show:
+    type: list
+    field:
+      _data:
+        model: show
+        pluck: [title, program, showopeningpartytime, showopeningpartydate, startdate, enddate]
+
   photo_info:
     type: set
     field:
@@ -313,12 +327,39 @@ view:
   student_info:
     type: list
     field:
-      student: true
-      student_gallery: true
-    omit:
-      - pleaseselectyourdesiredtemplatelayoutforthecatalogue
-      - shortstatementupto75words
-      - cataloglongstatementupto500words
+      student:
+        model: student
+        omit:
+          - id
+          - _d415a
+          - pleaseselectyourdesiredtemplatelayoutforthecatalogue
+          - shortstatementupto75words
+          - cataloglongstatementupto500words
+          - disable
+          - title
+          - content
+          - _char1
+          - _char1int
+          - _ext
+          - _first
+          - _links
+          - _cape
+          - _models
+          - _last
+      student_gallery:
+        model: student_gallery
+        omit:
+          - id
+          - name
+          - content
+          - _char1
+          - _char1int
+          - _ext
+          - _first
+          - _links
+          - _cape
+          - _models
+          - _last
     merge: _id
 
   mini_templates:
@@ -334,7 +375,7 @@ view:
     field:
       students: student_info
       templates: mini_templates
-      gallery: true
-      show: true
+      gallery: gallery
+      show: show
       slideshow: photos
       photo_info: photo_info
