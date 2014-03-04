@@ -376,7 +376,6 @@ view:
     output_id: items/client_data.json
     field:
       students: student_info
-      templates: mini_templates
       show: show
       slideshow: photos
       photo_info: photo_info
