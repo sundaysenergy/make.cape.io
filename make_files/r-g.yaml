@@ -351,6 +351,7 @@ view:
 
   collection: # Saved to items/items.json
     type: list
+    output_id: items/collection.json
     field:
       items: true
     pager:
@@ -372,12 +373,12 @@ view:
 
   price:
     type: set
+    output_id: items/price.json
     field:
       _data:
         model: items
         pluck: price
         index_by: _id
-    output_id: items/price.json
 
   colors:
     type: set
@@ -396,6 +397,7 @@ view:
 
   content_ops:
     type: list
+    output_id: items/content_ops.json
     field:
       _data:
         model: textile
@@ -406,6 +408,7 @@ view:
 
   color_ops_textile:
     type: list
+    output_id: items/color_ops_textile.json
     field:
       _data:
         model: textile
@@ -416,6 +419,7 @@ view:
 
   color_ops_passementerie:
     type: list
+    output_id: items/color_ops_passementerie.json
     field:
       _data:
         model: passementerie
@@ -426,6 +430,7 @@ view:
 
   color_ops_leather:
     type: list
+    output_id: items/color_ops_leather.json
     field:
       _data:
         model: leather
@@ -436,6 +441,7 @@ view:
 
   design_descriptions:
     type: list
+    output_id: items/design_descriptions.json
     field:
       _data:
         model: textile
@@ -446,6 +452,7 @@ view:
 
   use:
     type: list
+    output_id: items/use.json
     field:
       _data:
         model: textile
