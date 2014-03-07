@@ -353,7 +353,12 @@ view:
     type: list
     output_id: items/collection.json
     field:
-      items: true
+      items:
+        model: items
+        filter:
+          should:
+            img.normal.status: true
+            img.far.status: true
     pager:
       iterate: items
       field_id: item
