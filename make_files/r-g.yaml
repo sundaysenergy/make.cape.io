@@ -348,32 +348,32 @@ view:
   #     repeat: '{{&item.repeat}}'
   #     width: '{{&item.width}}'
   #     price: '{{&item.price}}' # This price field should be removed when we go live.
-  missing_img:
-    type: list
-    #output_id: items/missing_img.json
-    file_id: admin/missing_img.html
-    template:
-      model: template
-      _id: default.html
-      partial: # Add it to the view template as a partial.
-        page_template: # If this template is an object the key is field name.
-          model: template # Load same way as you load a template.
-          _id: missing-img.html
-    field:
-      theme:
-        model: db
-        _id: theme
-      items:
-        model: items
-        pluck: [name, color, _id]
-        filter:
-          must:
-            img.normal.status: false
-            img.far.status: false
+  # missing_img:
+  #   type: list
+  #   #output_id: items/missing_img.json
+  #   file_id: admin/missing_img.html
+  #   template:
+  #     model: template
+  #     _id: default.html
+  #     partial: # Add it to the view template as a partial.
+  #       page_template: # If this template is an object the key is field name.
+  #         model: template # Load same way as you load a template.
+  #         _id: missing-img.html
+  #   field:
+  #     theme:
+  #       model: db
+  #       _id: theme
+  #     items:
+  #       model: items
+  #       pluck: [name, color, _id]
+  #       filter:
+  #         must:
+  #           img.normal.status: false
+  #           img.far.status: false
 
   collection: # Saved to items/items.json
     type: list
-    output_id: items/collection.json
+    # output_id: items/collection.json
     field:
       items:
         model: items
@@ -400,7 +400,7 @@ view:
 
   price:
     type: set
-    output_id: items/price.json
+    # output_id: items/price.json
     field:
       _data:
         model: items
@@ -424,7 +424,7 @@ view:
 
   content_ops:
     type: list
-    output_id: items/content_ops.json
+    # output_id: items/content_ops.json
     field:
       _data:
         model: textile
@@ -435,7 +435,7 @@ view:
 
   color_ops_textile:
     type: list
-    output_id: items/color_ops_textile.json
+    # output_id: items/color_ops_textile.json
     field:
       _data:
         model: textile
@@ -446,7 +446,7 @@ view:
 
   color_ops_passementerie:
     type: list
-    output_id: items/color_ops_passementerie.json
+    # output_id: items/color_ops_passementerie.json
     field:
       _data:
         model: passementerie
@@ -457,7 +457,7 @@ view:
 
   color_ops_leather:
     type: list
-    output_id: items/color_ops_leather.json
+    # output_id: items/color_ops_leather.json
     field:
       _data:
         model: leather
@@ -468,7 +468,7 @@ view:
 
   design_descriptions:
     type: list
-    output_id: items/design_descriptions.json
+    # output_id: items/design_descriptions.json
     field:
       _data:
         model: textile
@@ -479,7 +479,7 @@ view:
 
   use:
     type: list
-    output_id: items/use.json
+    # output_id: items/use.json
     field:
       _data:
         model: textile
