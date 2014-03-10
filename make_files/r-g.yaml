@@ -360,6 +360,9 @@ view:
           model: template # Load same way as you load a template.
           _id: missing-img.html'
     field:
+      theme:
+        model: db
+        _id: theme
       items:
         model: items
         pluck: [name, color, _id]
