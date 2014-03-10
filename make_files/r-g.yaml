@@ -358,7 +358,7 @@ view:
       partial: # Add it to the view template as a partial.
         page_template: # If this template is an object the key is field name.
           model: template # Load same way as you load a template.
-          _id: missing-img.html'
+          _id: missing-img.html
     field:
       theme:
         model: db
