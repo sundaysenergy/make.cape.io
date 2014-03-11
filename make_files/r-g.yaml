@@ -219,6 +219,8 @@ model:
         arg:
           string: '{{&miscellaneous}}'
           split_on: ', '
+          toUpperCase: true
+          trim: true
           find_replace:
             A: Accessories
             D: Draperies
