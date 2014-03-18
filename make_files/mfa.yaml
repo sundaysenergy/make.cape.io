@@ -7,8 +7,6 @@ load:
   - "/_api/gh_repo/_load.json"
   - "/_api/student/_load.json"
   - "/_api/student_gallery/_load.json"
-  - "/_api/gallery/_load.json"
-  - "/_api/show/_load.json"
   - "/_api/dropbox/_load.json"
 
 api: # An API as a collection of content.
@@ -42,21 +40,21 @@ api: # An API as a collection of content.
       resource: rows
       _id: studentid
 
-  gallery:
-    provider: gsheet
-    arg:
-      id: 0Al-kEdVYvxtGdDNBZHFWZjB1YnVFX19CSWpHLWczb1E
-    load:
-      resource: rows
-      _id: id
+  # gallery:
+  #   provider: gsheet
+  #   arg:
+  #     id: 0Al-kEdVYvxtGdDNBZHFWZjB1YnVFX19CSWpHLWczb1E
+  #   load:
+  #     resource: rows
+  #     _id: id
 
-  show:
-    provider: gsheet
-    arg:
-      id: 0Al-kEdVYvxtGdHZiZ2lQQjA1bkl0cGpGb0ZSZHJVRkE
-    load:
-      resource: rows
-      _id: id
+  # show:
+  #   provider: gsheet
+  #   arg:
+  #     id: 0Al-kEdVYvxtGdHZiZ2lQQjA1bkl0cGpGb0ZSZHJVRkE
+  #   load:
+  #     resource: rows
+  #     _id: id
 
   photos:
     provider: dropbox
@@ -245,15 +243,15 @@ model:
           string: "{{_filename}}"
           substring: -2
           tonumber: false
-    # file:
-    #   source_file:
-    #     api: photos
-    #     resource: files
-    #     file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
-    #     type: any
-    #     arg:
-    #       root: dropbox
-    #       path: "{{path}}"
+    file:
+      source_file:
+        api: photos
+        resource: files
+        file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
 
   photo_info:
     filter:
