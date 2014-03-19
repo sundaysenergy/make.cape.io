@@ -67,6 +67,21 @@ model:
         arg:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
+  files:
+    type: files
+    filter:
+      api: content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache']
+    file:
+      source_file:
+        api: content
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          path: '{{&_id}}'
+
   readme: # process the readme into html. Probably change to a list of pages soon?
     type: object
     filter:
