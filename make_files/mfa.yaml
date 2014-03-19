@@ -150,6 +150,11 @@ model:
       api: student
       must_not:
         disable: x
+    field:
+      statement:
+        app: map
+        func: markdown
+        arg: websitelongstatementupto500words
 
   student_gallery: # Get item content from a json file.
     filter:
@@ -340,6 +345,7 @@ view:
           - pleaseselectyourdesiredtemplatelayoutforthecatalogue
           - shortstatementupto75words
           - cataloglongstatementupto500words
+          - websitelongstatementupto500words
           - disable
           - title
           - content
@@ -367,6 +373,7 @@ view:
           - _models
           - _source
           - _last
+          - _i
     merge: _id
 
   mini_templates:
