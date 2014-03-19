@@ -252,6 +252,11 @@ model:
         arg:
           root: dropbox
           path: "{{path}}"
+        img_size:
+          -
+            destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
+            width: '850'
+            height: null
 
   photo_info:
     filter:
