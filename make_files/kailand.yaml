@@ -70,12 +70,12 @@ model:
   files:
     type: files
     filter:
-      api: content
+      api: gh_content
       should:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache']
     file:
       source_file:
-        api: content
+        api: gh_content
         resource: raw
         file_id: '{{&_id}}'
         type: any
