@@ -218,7 +218,7 @@ model:
         func: string_replace
         arg:
           string: '{{&miscellaneous}}'
-          split_on: ', '
+          split_on: ','
           toUpperCase: true
           trim: true
           find_replace:
