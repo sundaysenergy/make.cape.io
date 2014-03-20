@@ -96,6 +96,21 @@ model:
         arg:
           path: '{{&_id}}'
 
+  pages:
+    type: list
+    filter:
+      api: gh_content
+      must:
+        _dir1: pages
+        _ext: .md
+    field:
+      _self:
+        api: gh_content
+        resource: raw
+        type: md
+        arg:
+          path: '{{&_id}}'
+
 view:
   index_html:
     type: string
@@ -110,4 +125,25 @@ view:
         page_html:
           model: template # Load same way as you load a template.
           _id: readme.html
+
+  pages: # These are the pages besides items.
+    type: string
+    field:
+      date:
+        app: map
+        func: date_obj
+      data: true
+      pages: true
+    pager:
+      iterate: pages # for each item in the list from the model pages
+      field_id: page # field name for the item
+      template: # This field will be accessible using this field name in mustache.
+        partial: # Add it to the view template as a partial.
+          page_html: # If this template is an object the key is field name.
+            model: template # Load same way as you load a template.
+            _id: page.html
+      file_id: '{{#page._dir2}}{{&page._dir2}}/{{/page._dir2}}{{&page._filename}}.html'
+    template:
+      model: template
+      _id: default.html
 
