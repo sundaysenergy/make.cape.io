@@ -59,16 +59,16 @@ model:
           data_field: img
           url: 'http://www.photographybyasha.com.static.supersimple.co.img.cape.io/info/1000x600/Photos/{{&_basename}}'
 
-view:
-  photos:
-    type: string
-    file_id: index.html
-    field:
-      photos: true
-    template:
-      api: theme
-      resource: raw
-      arg:
-        path: photographybyasha/photos.mustache
-      convert: mustache
+# view:
+#   photos:
+#     type: string
+#     file_id: index.html
+#     field:
+#       photos: true
+#     template:
+#       api: theme
+#       resource: raw
+#       arg:
+#         path: photographybyasha/photos.mustache
+#       convert: mustache
 
