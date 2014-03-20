@@ -145,5 +145,5 @@ view:
       file_id: '{{#page._dir2}}{{&page._dir2}}/{{/page._dir2}}{{&page._filename}}.html'
     template:
       model: template
-      _id: default.html
+      _id: default.mustache
 
