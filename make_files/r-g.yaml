@@ -1,6 +1,6 @@
 ---
 domain: r-g.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
-uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
+uid: kb # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.1.4 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
 
 load:
@@ -13,6 +13,16 @@ load:
   - "http://r-g.cape.io/_view/_all/_output"
 
 api: # An API as a collection of content.
+
+  photos:
+    provider: dropbox
+    load:
+      resource: delta
+      _id: path
+      arg:
+        cursor: ''
+        root: sandbox
+        path_prefix: /rg
 
   old_demo: # Used to get content from old github repo.
     provider: github
@@ -109,6 +119,114 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
+
+  photos_passementerie:
+    filter:
+      api: photos
+      must:
+        mime_type: "image/jpeg"
+        _dir2: Passementrie
+    field:
+      itemNumber: '{{_filename}}'
+    file:
+      source_file:
+        api: photos
+        resource: files
+        file_id: 'items/{{itemNumber}}/original.jpg'
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
+        img_size:
+          delete_source: true
+          cdn: true
+          sizes:
+            -
+              destination: 'items/{{itemNumber}}/1170.jpg'
+              width: '1170'
+              height: null
+
+  photos_leather:
+    filter:
+      api: photos
+      must:
+        mime_type: "image/jpeg"
+        _dir2: leather
+    field:
+      itemNumber:
+        app: map
+        func: string_replace
+        arg:
+          string: '{{path}}'
+          regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+          replace: '$1'
+      distance: '{{_dir2}}'
+    file:
+      source_file:
+        api: photos
+        resource: files
+        file_id: 'items/{{itemNumber}}/original.jpg'
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
+        img_size:
+          delete_source: true
+          cdn: true
+          sizes:
+            -
+              destination: 'items/{{itemNumber}}/640.jpg'
+              width: '640'
+              height: null
+            -
+              destination: 'items/{{itemNumber}}/1536.jpg'
+              width: '1536'
+              height: null
+
+  photos_textiles:
+    filter:
+      api: photos
+      must:
+        mime_type: "image/jpeg"
+      should:
+        _dir2: [normal, far]
+    field:
+      itemNumber:
+        app: map
+        func: string_replace
+        arg:
+          string: '{{path}}'
+          regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+          replace: '$1'
+      distance: '{{_dir2}}'
+      far:
+        app: map
+        func: compare
+        arg:
+          this: '{{_dir2}}'
+          that: far
+    file:
+      source_file:
+        api: photos
+        resource: files
+        file_id: 'items/{{itemNumber}}/original.jpg'
+        type: any
+        arg:
+          root: dropbox
+          path: "{{path}}"
+        img_size:
+          delete_source: true
+          cdn: true
+          overwrite: true
+          sizes:
+            -
+              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
+              width: '640'
+              height: null
+            -
+              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}1536.jpg'
+              width: '1536'
+              height: null
 
   data:
     type: object

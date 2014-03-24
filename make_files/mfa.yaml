@@ -258,11 +258,12 @@ model:
           root: dropbox
           path: "{{path}}"
         img_size:
-          -
-            delete_source: true
-            destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
-            width: '850'
-            height: null
+          delete_source: true
+          sizes:
+            -
+              destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
+              width: '850'
+              height: null
 
   photo_info:
     filter:
