@@ -1,7 +1,8 @@
 ---
 domain: r-g.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
+cdn: img.rg.ookb.co
 uid: kb # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.1.4 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
+cape_version: 2.1.7 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
 
 load:
   - "http://r-g.cape.io/_api/items/_load.json"
@@ -134,10 +135,12 @@ model:
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
         type: any
+        cdn: true
         arg:
-          root: dropbox
+          root: sandbox
           path: "{{path}}"
         img_size:
+          overwrite: false
           delete_source: true
           cdn: true
           sizes:
@@ -145,6 +148,8 @@ model:
               destination: 'items/{{itemNumber}}/1170.jpg'
               width: '1170'
               height: null
+              name: large
+              save_size: true
 
   photos_leather:
     filter:
@@ -167,10 +172,12 @@ model:
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
         type: any
+        cdn: true
         arg:
-          root: dropbox
+          root: sandbox
           path: "{{path}}"
         img_size:
+          overwrite: false
           delete_source: true
           cdn: true
           sizes:
@@ -178,10 +185,12 @@ model:
               destination: 'items/{{itemNumber}}/640.jpg'
               width: '640'
               height: null
+              name: small
             -
               destination: 'items/{{itemNumber}}/1536.jpg'
               width: '1536'
               height: null
+              name: large
 
   photos_textiles:
     filter:
@@ -211,10 +220,12 @@ model:
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
         type: any
+        cdn: true
         arg:
-          root: dropbox
+          root: sandbox
           path: "{{path}}"
         img_size:
+          overwrite: false
           delete_source: true
           cdn: true
           overwrite: true
@@ -223,10 +234,12 @@ model:
               destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
               width: '640'
               height: null
+              name: small
             -
               destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}1536.jpg'
               width: '1536'
               height: null
+              name: large
 
   data:
     type: object

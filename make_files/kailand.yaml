@@ -1,6 +1,7 @@
 ---
 domain: kai.land # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
-uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
+cdn: dem.kaicurry.com
+uid: kc # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.1.6
 
 load:
@@ -9,6 +10,17 @@ load:
   - "/_view/_all/_output"
 
 api: # An API is a set of default information. Think of an API as a collection of content.
+
+  files:
+    provider: dropbox
+    load:
+      resource: delta
+      _id: path
+      arg:
+        cursor: ''
+        root: sandbox
+        path_prefix: /dem.kaicurry.com
+
   gh_content: # Used to get content from github.
     provider: github
     arg:
@@ -81,6 +93,33 @@ model:
         type: any
         arg:
           path: '{{&_id}}'
+        cdn: true
+        delete_source: true
+
+  files_db:
+    type: files
+    filter:
+      api: files
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache', '.zip', '.doc', '.mp3', '.mp4', '.mov', '.md']
+    field:
+      path_local:
+        app: map
+        func: string_replace
+        arg:
+          string: '{{path}}'
+          find: 'dem.kaicurry.com/'
+          replace: ''
+    file:
+      source_file:
+        api: files
+        resource: files
+        file_id: '{{path_local}}'
+        type: any
+        cdn: true
+        arg:
+          root: sandbox
+          path: "{{path}}"
 
   readme: # process the readme into html. Probably change to a list of pages soon?
     type: object
