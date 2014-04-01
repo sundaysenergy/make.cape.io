@@ -380,12 +380,12 @@ model:
         _char1int: true
     field:
       collection: textile
-      img:
-        app: rg
-        func: img_checker
-        arg:
-          itemid: '{{&_id}}'
-          include_far: true
+      # img:
+      #   app: rg
+      #   func: img_checker
+      #   arg:
+      #     itemid: '{{&_id}}'
+      #     include_far: true
       # uses:
       #   app: map
       #   func: split
@@ -405,11 +405,11 @@ model:
         _char1: P
     field:
       collection: passementerie
-      img:
-        app: rg
-        func: img_checker
-        arg:
-          itemid: '{{&_id}}'
+      # img:
+      #   app: rg
+      #   func: img_checker
+      #   arg:
+      #     itemid: '{{&_id}}'
     sort:
       field: sort
 
@@ -421,11 +421,11 @@ model:
         _char1: L
     field:
       collection: leather
-      img:
-        app: rg
-        func: img_checker
-        arg:
-          itemid: '{{&_id}}'
+      # img:
+      #   app: rg
+      #   func: img_checker
+      #   arg:
+      #     itemid: '{{&_id}}'
     sort:
       field: sort
 
@@ -510,10 +510,13 @@ view:
     field:
       items:
         model: items
-        filter:
-          should:
-            img.normal.status: true
-            img.far.status: true
+        # filter:
+        #   should:
+        #     img.normal.status: true
+        #     img.far.status: true
+      photos_passementerie: true
+      photos_leather: true
+      photos_textiles: true
     pager:
       iterate: items
       field_id: item
@@ -522,7 +525,7 @@ view:
       color: '{{&item.color}}'
       primarycolor: '{{item.primaryColor}}'
       secondarycolor: '{{item.secondaryColor}}'
-      id: '{{item._id}}'
+      id: '{{item.itemNumber}}'
       content: '{{#item.contents_arr}}{{.}} {{/item.contents_arr}}'
       repeat: '{{&item.repeat}}'
       width: '{{&item.width}}'
@@ -530,6 +533,15 @@ view:
       collection: '{{item.collection}}'
       design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
       use: '{{item.use}}'
+      img_width: '{{photos_passementerie.large.width}}'
+      img_height: '{{photos_passementerie.height.height}}'
+    # merge: itemNumber
+  # photos:
+  #   type: set
+  #   field:
+  #     photos_passementerie: true
+  #     photos_leather: true
+  #     photos_textiles: true
 
   price:
     type: set

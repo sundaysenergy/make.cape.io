@@ -7,7 +7,7 @@ load:
   - "/_api/gh_repo/_load.json"
   - "/_api/student/_load.json"
   - "/_api/student_gallery/_load.json"
-  - "/_api/dropbox/_load.json"
+  - "/_api/photos/_load.json"
 
 api: # An API as a collection of content.
 
