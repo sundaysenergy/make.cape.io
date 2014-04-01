@@ -533,8 +533,8 @@ view:
       collection: '{{item.collection}}'
       design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
       use: '{{item.use}}'
-      img_width: '{{photos_passementerie.large.width}}'
-      img_height: '{{photos_passementerie.height.height}}'
+      img_width: '{{photos_passementerie._file.large.width}}'
+      img_height: '{{photos_passementerie._file.height.height}}'
     # merge: itemNumber
   # photos:
   #   type: set
