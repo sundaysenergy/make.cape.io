@@ -509,14 +509,10 @@ view:
     # output_id: items/collection.json
     field:
       items:
-        model: items
-        # filter:
-        #   should:
-        #     img.normal.status: true
-        #     img.far.status: true
-      photos_passementerie: true
-      photos_leather: true
-      photos_textiles: true
+        view: items
+        filter:
+          must:
+            thumb_exists: true
     pager:
       iterate: items
       field_id: item
@@ -529,19 +525,29 @@ view:
       content: '{{#item.contents_arr}}{{.}} {{/item.contents_arr}}'
       repeat: '{{&item.repeat}}'
       width: '{{&item.width}}'
-      img: '{{&item.img.normal.640}}'
+      img: '{{&item._file.small.path}}'
       collection: '{{item.collection}}'
       design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
       use: '{{item.use}}'
-      img_width: '{{photos_passementerie._file.large.width}}'
-      img_height: '{{photos_passementerie._file.height.height}}'
-    # merge: itemNumber
-  # photos:
-  #   type: set
-  #   field:
-  #     photos_passementerie: true
-  #     photos_leather: true
-  #     photos_textiles: true
+      img_width: '{{item._file.large.width}}'
+      img_height: '{{item._file.large.height}}'
+
+  items:
+    type: list
+    field:
+      items:
+        model: items
+        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, repeat, width, collection, design_descriptions, use]
+      photos_passementerie:
+        model: photos_passementerie
+        pluck: [itemNumber, _file, thumb_exists]
+      photos_leather:
+        model: photos_leather
+        pluck: [itemNumber, _file, thumb_exists]
+      photos_textiles:
+        model: photos_textiles
+        pluck: [itemNumber, _file, thumb_exists]
+    merge: itemNumber
 
   price:
     type: set
