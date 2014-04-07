@@ -1,26 +1,35 @@
 ---
 domain: www.rwdfoundation.org # This is not used for anything yet.
+cdn: www.rwdfoundation.org
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
+cape_version: 2.1.7
 
 api: # An API is just a set of default information.
   cloudfiles: # Used for uploads to the CDN used for the website.
     provider: cloudfiles
     arg:
       container: www.rwdfoundation.org
-  content: # Used to get content from github.
+  gh_theme: # Used to get theme from github.
     provider: github
     arg:
-      repo: rwdfruhoh.ookb.co
+      repo: rwdf-site-theme
       owner: bjornmeansbear
       branch: master
-    # CAPE only listens for new or changed content.
     load: # To load previously created content from this API you need to specificy the load param.
       resource: tree # Github has a nice index of all content in a repo.
       _id: path
       arg:
-        recursive: true # Thankfully they have an option to get results recursively.
-        sha: 819478b5bdf41a8733ee3915bfefdf23373476b5 # Only problem is having to update the sha.
-        # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
+        recursive: true
+        sha: master
+  photos:
+    provider: dropbox
+    load:
+      resource: delta
+      _id: path
+      arg:
+        cursor: ''
+        root: sandbox
+        path_prefix: /rg
 model:
   homepage: # (dek, hed, legacy, tellus)
     style: set # We want to be able to do stuff like {{homepage.dek}} so we save it as a set instead of an array.

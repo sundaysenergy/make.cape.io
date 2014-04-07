@@ -82,6 +82,19 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
 view:
+  marked:
+    type: string
+    file_id: 'marked.html'
+    field:
+      data: true
+    template:
+      model: template
+      _id: default.mustache
+      partial:
+        page_html:
+          model: template
+          _id: marked.html
+
   upload:
     type: string
     file_id: 'upload.html'
