@@ -9,6 +9,7 @@ api: # An API is just a set of default information.
     provider: cloudfiles
     arg:
       container: www.rwdfoundation.org
+
   gh_theme: # Used to get theme from github.
     provider: github
     arg:
@@ -21,6 +22,7 @@ api: # An API is just a set of default information.
       arg:
         recursive: true
         sha: master
+
   content:
     provider: dropbox
     arg:
@@ -103,17 +105,16 @@ model:
     filter:
       api: content
       must:
-        _id: # We only want content in the homepage directory.
-          dirname: homepage
-          ext: .md # With the .md extension.
+        _dirname: homepage
+        _ext: .md # With the .md extension.
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
       _self: # _self is a special meta-field that will place its own fields within the base context.
         api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
+        resource: files # This just defines what API at github to use.
+        type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
+          path: '{{path}}' # The raw github API call requires a path param.
 
   frontpage: # Used to generate the middle area of the homepage.
     type: list
