@@ -49,6 +49,39 @@ model:
           root: dropbox
           path: '{{path}}'
 
+  files2:
+    type: files
+    filter:
+      api: gh_theme
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
+    file:
+      source_file:
+        api: gh_theme
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          root: dropbox
+          path: '{{path}}'
+
+  data:
+    type: object
+    filter:
+      api: content
+      must:
+        _id: data.yaml
+    field: # The base "entity" in CAPE is the _id field. That's it.
+      # To get the contents of the file we need to add a "meta-field"
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: 'data.json' # When the _file field has a value it saves that field as a file.
+        api: content # The _self field is processed first.
+        resource: files # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          root: dropbox
+          path: '{{path}}' # The raw github API call requires a path param.
+
   template:
     filter:
       api: gh_theme
@@ -64,7 +97,7 @@ model:
           path: '{{&_id}}'
 
   homepage: # (dek, hed, legacy, tellus)
-    style: set # We want to be able to do stuff like {{homepage.dek}} so we save it as a set instead of an array.
+    type: set # We want to be able to do stuff like {{homepage.dek}} so we save it as a set instead of an array.
     # A set has key/value pairs. What field should we use for the key?
     set_key: _filename # _filename is an autocreated field based on the _id field.
     filter:
@@ -83,7 +116,7 @@ model:
           path: '{{&_id}}' # The raw github API call requires a path param.
 
   frontpage: # Used to generate the middle area of the homepage.
-    style: list
+    type: list
     filter: # What entities belong in this view?
       api: content # Entities in this view must come from the github repo.
       must: # Should can contain many requirements. Min match is 1.
@@ -104,55 +137,70 @@ model:
       order: ascending
       default: 1 # Set default value.
 
-    display: # The fun part. A Display defines what to do with the data.
+view:
+  index:
+    type: list
+    field:
+      homepage: true
+      data: true
+    file_id: index.html
+    template:
+      model: template
+      _id: default.html
+      partial:
+        page_html:
+          model: template
+          _id: homepage.html
 
-      feature: # Create a display that contains only published entities.
-        style: object # Single result.
-        limit: 1 # Only want one result.
-        offset: 0 # No offset. Get the first one.
+display: # The fun part. A Display defines what to do with the data.
 
-      other:
-        style: object # Single entity.
-        limit: 1 # Only want one entity.
-        offset: 1 # Skip 1 entity.
+  feature: # Create a display that contains only published entities.
+    style: object # Single result.
+    limit: 1 # Only want one result.
+    offset: 0 # No offset. Get the first one.
 
-      triptych:
-        style: list # An array of entities.
-        limit: 3 # Limit to three.
-        offset: 2 # Skip the first 2 in the results from the view.
+  other:
+    style: object # Single entity.
+    limit: 1 # Only want one entity.
+    offset: 1 # Skip 1 entity.
 
-      _index: # Time to put it all together.
-        field: # Define what is available to the template.
-          feature: true # True says that the field is the name of a display in this view.
-          other: true # The display in this view called other.
-          triptych: true # The display called triptych in this view.
-          homepage: # (dek, hed, legacy, tellus)
-            view: homepage # Get all the entities from the homepage view.
-        style: page # Save this as a page.
-        type: html # The page has the html format.
-        template: # We want to pass the fields of this display to a template.
-          api: content # Where to get the template from?
-          resource: raw # Use the github raw to load a file.
-          arg: # What args to pass the API
-            path: _cape/homepage.mustache # Define the file path.
-          convert: mustache # What conversion process do we use.
-        destination: # What do we do with the generated file?
-          api: cloudfiles # Send it off somewhere using the API definition above.
-          resource: upload # Upload the file.
-          arg: # Override the API arg values above with those below.
-            file: /_index.html # Tells the API what filename to give this file.
+  triptych:
+    style: list # An array of entities.
+    limit: 3 # Limit to three.
+    offset: 2 # Skip the first 2 in the results from the view.
 
-      admin:
-        style: page
-        type: html
-        template:
-          api: content
-          resource: raw
-          arg:
-            path: _cape/projects.mustache
-          convert: mustache
-        destination:
-          api: cloudfiles
-          resource: upload
-          arg:
-            file: /frontpage/admin.html
+  _index: # Time to put it all together.
+    field: # Define what is available to the template.
+      feature: true # True says that the field is the name of a display in this view.
+      other: true # The display in this view called other.
+      triptych: true # The display called triptych in this view.
+      homepage: # (dek, hed, legacy, tellus)
+        view: homepage # Get all the entities from the homepage view.
+    style: page # Save this as a page.
+    type: html # The page has the html format.
+    template: # We want to pass the fields of this display to a template.
+      api: content # Where to get the template from?
+      resource: raw # Use the github raw to load a file.
+      arg: # What args to pass the API
+        path: _cape/homepage.mustache # Define the file path.
+      convert: mustache # What conversion process do we use.
+    destination: # What do we do with the generated file?
+      api: cloudfiles # Send it off somewhere using the API definition above.
+      resource: upload # Upload the file.
+      arg: # Override the API arg values above with those below.
+        file: /_index.html # Tells the API what filename to give this file.
+
+  admin:
+    style: page
+    type: html
+    template:
+      api: content
+      resource: raw
+      arg:
+        path: _cape/projects.mustache
+      convert: mustache
+    destination:
+      api: cloudfiles
+      resource: upload
+      arg:
+        file: /frontpage/admin.html
