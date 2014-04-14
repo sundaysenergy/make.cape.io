@@ -1,6 +1,7 @@
 ---
 domain: www.integral-therapy.com # This is not used for anything yet.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
+cape_version: 2.1.6
 
 api: # An API is just a set of default information.
   cloudfiles: # Machine name of the API
@@ -54,14 +55,28 @@ model: # This is the most important part.
         arg:
           path: '{{&_id}}'
 
+  template:
+    filter:
+      api: content
+      must:
+        _dirname: theme/layouts
+    field:
+      _self:
+        api: content
+        resource: raw
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
   files:
     type: files
     filter:
       api: content
       should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif']
-    field:
-      _file:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
+    file:
+      source_file:
         api: content
         resource: raw
         file_id: '{{&_id}}'
@@ -129,10 +144,8 @@ view:
       must: # Only publish nodes that are in the 'added' list.
         _list: true
     template: # The page style requires the template attribute.
-      api: content # Where do we get the layout file from?
-      resource: raw
-      arg:
-        path: theme/layouts/staff.html # Works the same way that fields do. Loads the external resource.
+      model: template # Where do we get the layout file from?
+      _id: staff.html
       convert: mustache # What type of conversion should we do?
     file_id: credentials_stub.html
 
@@ -141,20 +154,16 @@ view:
     field:
       data: true
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/wufoo.html
+      model: template
+      _id: wufoo.html
       convert: mustache
     file_id: contact_stub.html
 
   navigation: # Machine name of the display.
     type: string # What format to save the data in.
     template: # The page style requires the template attribute.
-      api: content # Where do we get the layout file from?
-      resource: raw
-      arg:
-        path: theme/layouts/navigation.html # What ID does the layout file have?
+      model: template # Where do we get the layout file from?
+      _id: navigation.html # What ID does the layout file have?
       convert: mustache # What type of conversion should we do?
     field:
       navigation: true
@@ -170,10 +179,8 @@ view:
       navigation: navigation# The navigation variable will be the output from the default display on the navigation view.
     file_id: credentials.html
     template: # Send the field variables through the mustache converter.
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/default.html
+      model: template
+      _id: default.html
       convert: mustache
 
   pages:
@@ -188,9 +195,7 @@ view:
       per_pg: 1
       file_id: '{{&page._no_ext}}.html'
     template:
-      api: content
-      resource: raw
-      arg:
-        path: theme/layouts/default.html
+      model: template
+      _id: default.html
       convert: mustache
 
