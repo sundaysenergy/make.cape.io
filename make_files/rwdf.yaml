@@ -68,18 +68,35 @@ model:
           path: '{{path}}'
 
   data:
-    type: object
+    type: set
+    set_key: _no_ext
     filter:
       api: content
-      must:
-        _id: data.yaml
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
+      should:
+        _ext: ['.yaml', '.yml']
+    field:
       _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: 'data.json' # When the _file field has a value it saves that field as a file.
+        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
         api: content # The _self field is processed first.
         resource: files # This just defines what API at github to use.
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          root: dropbox
+          path: '{{path}}' # The raw github API call requires a path param.
+
+
+  content:
+    type: ezle
+    filter:
+      api: content
+      must:
+        _ext: .md
+    field: # The base "entity" in CAPE is the _id field. That's it.
+      # To get the contents of the file we need to add a "meta-field"
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        api: content # The _self field is processed first.
+        resource: files # This just defines what API at github to use.
+        type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           root: dropbox
           path: '{{path}}' # The raw github API call requires a path param.
@@ -98,51 +115,17 @@ model:
         arg:
           path: '{{&_id}}'
 
-  homepage: # (dek, hed, legacy, tellus)
-    type: set # We want to be able to do stuff like {{homepage.dek}} so we save it as a set instead of an array.
-    # A set has key/value pairs. What field should we use for the key?
-    set_key: _filename # _filename is an autocreated field based on the _id field.
-    filter:
-      api: content
-      must:
-        _dirname: homepage
-        _ext: .md # With the .md extension.
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          path: '{{path}}' # The raw github API call requires a path param.
-
-  frontpage: # Used to generate the middle area of the homepage.
-    type: list
-    filter: # What entities belong in this view?
-      api: content # Entities in this view must come from the github repo.
-      must: # Should can contain many requirements. Min match is 1.
-        _id: # The value for the _id field is set in the API above.
-          dirname: [whatwedo, spruceups] # An array is like an OR within should.
-          ext: .md # Just to be safe. Don't want to process images or anything else random.
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a _special_ field that will place its fields within the base context.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
-      _list: false # Adding a default value to the _list field. '_list' should be a special field somehow. Maybe it should be _published
-    sort:
-      field: sort # Sort field
-      order: ascending
-      default: 1 # Set default value.
-
 view:
+  content:
+    type: set
+    field:
+      content:
+        model: content
+
   index:
     type: list
     field:
-      homepage: true
+      content: true
       data: true
     file_id: index.html
     template:

@@ -100,6 +100,7 @@ view:
     file_id: 'upload.html'
     field:
       data: true
+      make_id: files
     template:
       model: template
       _id: default.mustache
