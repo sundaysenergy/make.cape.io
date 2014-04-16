@@ -185,12 +185,13 @@ view:
     pager:
       iterate: pages
       field_id: page
+      ezle: true
       template:
         partial:
           page_html:
             model: template
-            _id: "{{page}}.html"
-      file_id: "{{page}}/index.html"
+            _id: "{{page._id}}.html"
+      file_id: "{{page._id}}/index.html"
     template:
       model: template
       _id: default.html
