@@ -1,7 +1,7 @@
 ---
 domain: www.integral-therapy.com # This is not used for anything yet.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
-cape_version: 2.1.6
+cape_version: 2.1.7
 
 api: # An API is just a set of default information.
   cloudfiles: # Machine name of the API
@@ -99,21 +99,27 @@ model: # This is the most important part.
         type: md # What to do with the result. Markdown with YAML frontmatter processor.
         arg:
           path: '{{&_id}}'
-      # img_info is used for defining height and width attributes on the img tag.
-      img_info: # Yaml contains an imagefield. Expand it into more info. I want the dimensions.
-        file_id: 'staff/{{_self.photo}}.json'
-        provider: wget # Generic provider that just calls a specific url.
-        resource: json # The json resource expects json and converts it programming language native table/hash/object.
-        arg: # Only need to pass it the url argument. This uses our img.labori.us service.
-          url: 'http://raw.github.com.img.labori.us/info/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
-      img_url: '/staff/{{_self.photo}}'
-      _file:
-        file_id: 'staff/{{_self.photo}}'
-        provider: wget
+      img_url: '/staff/{{photo}}'
+    file:
+      source_file:
+        api: content
+        file_id: 'staff/original/{{photo}}'
         resource: raw
+        type: any
         arg:
-          url: 'http://raw.github.com.img.labori.us/115x155/sundaysenergy/integral-therapy/master/staff/{{_self.photo}}?https=true'
-      _list: true # Default value can be overwritten. This value is only used when one isn't found already in the cache.
+          path: 'staff/{{photo}}'
+        img_size:
+          overwrite: true
+          delete_source: true
+          cdn: false
+          sizes:
+            -
+              destination: 'staff/{{photo}}'
+              width: '115'
+              height: '155'
+              name: normal
+              save_size: true
+
     sort: # Define how to sort the view entities.
       field: sort # Look for the order field.
       default: 1 # Default sort value.
@@ -125,7 +131,7 @@ model: # This is the most important part.
       api: content
       must:
         _ext: .md
-        _dirname: false
+        _dirname: .
     field:
       _self:
         api: content

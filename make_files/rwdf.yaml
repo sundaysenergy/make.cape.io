@@ -72,6 +72,8 @@ model:
     set_key: _no_ext
     filter:
       api: content
+      must:
+        _filename: data
       should:
         _ext: ['.yaml', '.yml']
     field:
@@ -82,8 +84,42 @@ model:
         type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           root: dropbox
-          path: '{{path}}' # The raw github API call requires a path param.
+          path: '{{path}}'
 
+  pages:
+    type: object
+    filter:
+      api: content
+      must:
+        _id: pages.yaml
+    field:
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
+        api: content # The _self field is processed first.
+        resource: files # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          root: dropbox
+          path: '{{path}}'
+
+  page_info:
+    type: set
+    set_key: _dirname
+    filter:
+      api: content
+      should:
+        _ext: ['.yaml', '.yml']
+      must:
+        _filename: page_info
+    field:
+      _self: # _self is a special meta-field that will place its own fields within the base context.
+        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
+        api: content # The _self field is processed first.
+        resource: files # This just defines what API at github to use.
+        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
+        arg:
+          root: dropbox
+          path: '{{path}}'
 
   content:
     type: ezle
@@ -99,7 +135,7 @@ model:
         type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
         arg:
           root: dropbox
-          path: '{{path}}' # The raw github API call requires a path param.
+          path: '{{path}}'
 
   template:
     filter:
@@ -123,10 +159,11 @@ view:
         model: content
 
   index:
-    type: list
+    type: string
     field:
       content: true
       data: true
+      page_info: true
     file_id: index.html
     template:
       model: template
@@ -135,6 +172,28 @@ view:
         page_html:
           model: template
           _id: homepage.html
+
+  pages:
+    type: string
+    field:
+      content: true
+      data: true
+      page_info: true
+      pages:
+        model: data
+        emit: data.pages
+    pager:
+      iterate: pages
+      field_id: page
+      template:
+        partial:
+          page_html:
+            model: template
+            _id: "{{page}}.html"
+      file_id: "{{page}}/index.html"
+    template:
+      model: template
+      _id: default.html
 
 display: # The fun part. A Display defines what to do with the data.
 
