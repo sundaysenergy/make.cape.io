@@ -197,6 +197,25 @@ view:
       model: template
       _id: default.html
 
+  projects:
+    type: string
+    field:
+      data: true
+      projects:
+        model: content
+        emit: whatwedo.projects._all
+    pager:
+      iterate: projects
+      field_id: page
+      file_id: "whatwedo/{{page._filename}}/index.html"
+    template:
+      model: template
+      _id: default.html
+      partial:
+        page_html:
+          model: template
+          _id: project.html
+
 display: # The fun part. A Display defines what to do with the data.
 
   feature: # Create a display that contains only published entities.
