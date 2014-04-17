@@ -151,6 +151,22 @@ model:
         arg:
           path: '{{&_id}}'
 
+  news:
+    filter:
+      api: content
+      must:
+        _dir2: articles
+        _ext: .md
+    field:
+      date:
+        app: map
+        func: date_from_string
+        arg:
+          string: '{{_file_slug}}'
+          start: 0
+          end: 10
+          display: 'MMM DD, YYYY'
+
 view:
   content:
     type: set
