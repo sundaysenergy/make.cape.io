@@ -204,10 +204,14 @@ view:
       projects:
         model: content
         emit: whatwedo.projects._all
+      spruceups:
+        model: content
+        emit: whatwedo.projects.spruceups._all
     pager:
       iterate: projects
       field_id: page
       file_id: "whatwedo/{{page._filename}}/index.html"
+      bool_field_id: _filename
     template:
       model: template
       _id: default.html
