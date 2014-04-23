@@ -236,6 +236,14 @@ view:
           model: template
           _id: project.html
 
+  client_data:
+    type: object
+    field:
+      projects:
+        model: content
+        emit: whatwedo.projects._all
+    output_id: whatwedo/projects.json
+
 display: # The fun part. A Display defines what to do with the data.
 
   feature: # Create a display that contains only published entities.
