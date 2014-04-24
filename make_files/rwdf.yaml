@@ -64,8 +64,7 @@ model:
         file_id: '{{&_id}}'
         type: any
         arg:
-          root: dropbox
-          path: '{{path}}'
+          path: '{{&path}}'
 
   data:
     type: set
@@ -180,6 +179,11 @@ view:
       content: true
       data: true
       page_info: true
+      front:
+        api_id: content
+        index_type: list
+        index_id: homepage
+        index_by: _i
     file_id: index.html
     template:
       model: template
@@ -237,11 +241,12 @@ view:
           _id: project.html
 
   client_data:
-    type: object
+    type: list
     field:
       projects:
         model: content
         emit: whatwedo.projects._all
+        pluck: [image, featureimg, featuretitle, title, featureblurb, _filename, _id, date, summary]
     output_id: whatwedo/projects.json
 
 display: # The fun part. A Display defines what to do with the data.
