@@ -601,7 +601,7 @@ view:
     field:
       _data:
         model: passementerie
-        pluck: [color, primarycolor, secondarycolor]
+        pluck: color
         flatten: true
         unique: true
         compact: true
