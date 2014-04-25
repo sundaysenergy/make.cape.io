@@ -199,7 +199,6 @@ view:
       content: true
       data: true
       page_info: true
-      jumbotron: 1
       pages:
         model: data
         emit: data.pages
