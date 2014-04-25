@@ -612,7 +612,7 @@ view:
     field:
       _data:
         model: leather
-        pluck: descript_2
+        pluck: color
         flatten: true
         unique: true
         compact: true
