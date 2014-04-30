@@ -5,13 +5,13 @@ uid: kb # The CAPE user ID to use for authenticating against the providers when 
 cape_version: 2.1.7 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
 
 load:
-  - "http://r-g.cape.io/_api/items/_load.json"
-  - "http://r-g.cape.io/_api/gh_repo/_load.json"
-  - "http://r-g.cape.io/_model/items/model_fields_add.json"
-  - "http://r-g.cape.io/_model/files/model_fields_reload.json"
-  - "http://r-g.cape.io/_model/template/model_fields_reload.json"
-  - "http://r-g.cape.io/_model/pages/model_fields_reload.json"
-  - "http://r-g.cape.io/_view/_all/_output"
+  - "/_api/items/_load.json"
+  - "/_api/gh_repo/_load.json"
+  - "/_model/items/model_fields_add.json"
+  - "/_model/files/model_fields_reload.json"
+  - "/_model/template/model_fields_reload.json"
+  - "/_model/pages/model_fields_reload.json"
+  - "/_view/_all/_output"
 
 api: # An API as a collection of content.
 

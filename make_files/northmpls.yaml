@@ -3,10 +3,10 @@ domain: cdn.northmpls.org
 uid: 1
 cape_version: 2.1.2
 load:
-  - "http://northmpls.cape.io.ld/_api/jobs_wufoo/_load.json"
-  - "http://northmpls.cape.io.ld/_api/jobs_indeed/_load.json"
-  - "http://northmpls.cape.io.ld/_api/theme/_load.json"
-  - "http://northmpls.cape.io.ld/_view/jobs_index/_output"
+  - "/_api/jobs_wufoo/_load.json"
+  - "/_api/jobs_indeed/_load.json"
+  - "/_api/theme/_load.json"
+  - "/_view/jobs_index/_output"
 
 api:
   photos:
