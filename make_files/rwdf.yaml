@@ -135,6 +135,13 @@ model:
         arg:
           root: dropbox
           path: '{{path}}'
+      teaser:
+        app: map
+        func: prune
+        arg:
+          string: '{{&content}}'
+          stripTags: true
+          length: 110
 
   template:
     filter:
