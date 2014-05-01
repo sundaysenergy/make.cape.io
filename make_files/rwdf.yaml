@@ -178,16 +178,16 @@ view:
     field:
       data: true
       projects:
-        model: content
-        emit: whatwedo.projects._all
+        model: everything
+        emit: whatwedo.projects._dirs
       spruceups:
-        model: content
+        model: everything
         emit: whatwedo.projects.spruceups._all
     pager:
       iterate: projects
       field_id: page
-      file_id: "whatwedo/{{page._filename}}/index.html"
-      bool_field_id: _filename
+      file_id: "{{page._dirname}}/index.html"
+      bool_field_id: _dir3
     template:
       model: template
       _id: default.html
