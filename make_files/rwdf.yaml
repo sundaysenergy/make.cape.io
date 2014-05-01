@@ -2,7 +2,7 @@
 domain: www.rwdfoundation.org # This is not used for anything yet.
 cdn: www.rwdfoundation.org
 uid: kc2 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.1.7
+cape_version: 2.1.9
 
 api: # An API is just a set of default information.
   cloudfiles: # Used for uploads to the CDN used for the website.
@@ -41,15 +41,6 @@ model:
       api: content
       should:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
-    file:
-      source_file:
-        api: content
-        resource: files
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          root: dropbox
-          path: '{{path}}'
 
   files2:
     type: files
@@ -66,75 +57,13 @@ model:
         arg:
           path: '{{&_id}}'
 
-  data:
-    type: set
-    set_key: _no_ext
-    filter:
-      api: content
-      must:
-        _filename: data
-      should:
-        _ext: ['.yaml', '.yml']
-    field:
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          root: dropbox
-          path: '{{path}}'
-
-  pages:
-    type: object
-    filter:
-      api: content
-      must:
-        _id: pages.yaml
-    field:
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          root: dropbox
-          path: '{{path}}'
-
-  page_info:
-    type: set
-    set_key: _dirname
-    filter:
-      api: content
-      should:
-        _ext: ['.yaml', '.yml']
-      must:
-        _filename: page_info
-    field:
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '{{_no_ext}}.json' # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          root: dropbox
-          path: '{{path}}'
-
   content:
-    type: ezle
+    type: list
     filter:
       api: content
       must:
-        _ext: .md
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          root: dropbox
-          path: '{{path}}'
+        _ext: '.md'
+    field:
       teaser:
         app: map
         func: prune
@@ -142,6 +71,17 @@ model:
           string: '{{&content}}'
           stripTags: true
           length: 110
+
+  # EVERYTHING!
+  everything:
+    type: ezle
+    filter:
+      api: content
+      must_not:
+        _ext: false
+        _dir1: '.git'
+    field:
+      _self: true # MAGIC!
 
   template:
     filter:
@@ -180,12 +120,20 @@ view:
       content:
         model: content
 
+  everything:
+    type: set
+    field:
+      content:
+        model: everything
+
   index:
     type: string
     field:
-      content: true
-      data: true
-      page_info: true
+      content:
+        model: everything
+      data:
+        model: everything
+        emit: data_yaml
       front:
         api_id: content
         index_type: list
@@ -203,12 +151,14 @@ view:
   pages:
     type: string
     field:
-      content: true
-      data: true
-      page_info: true
+      content:
+        model: everything
+      data:
+        model: everything
+        emit: data_yaml
       pages:
-        model: data
-        emit: data.pages
+        model: everything
+        emit: data_yaml.pages
     pager:
       iterate: pages
       field_id: page
