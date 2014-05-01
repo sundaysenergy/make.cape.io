@@ -2,7 +2,7 @@
 domain: www.test.org # This is not used for anything yet.
 cdn: www.test.org
 uid: kc2 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.1.7
+cape_version: 2.1.9
 
 api: # An API is just a set of default information.
 
@@ -19,35 +19,24 @@ api: # An API is just a set of default information.
 
 model:
   files:
-    type: files
+    type: list
     filter:
       api: content
       should:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
-    file:
-      source_file:
-        api: content
-        resource: files
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          root: dropbox
-          path: '{{path}}'
 
   content:
     type: ezle
     filter:
       api: content
-      must:
-        _ext: .md
+      must_not:
+        _ext: false
     field: # The base "entity" in CAPE is the _id field. That's it.
       # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        api: content # The _self field is processed first.
-        resource: files # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          root: dropbox
-          path: '{{path}}'
+      _self: true
 
 view:
+  content:
+    type: set
+    field:
+      content: true
