@@ -200,8 +200,8 @@ view:
     type: list
     field:
       all_projects:
-        model: content
-        emit: whatwedo.projects._all
+        model: everything
+        emit: whatwedo.projects._dirs
         pluck: [image, featureimg, featuretitle, title, featureblurb, _filename, _id, date, summary]
         index_by: _id
       featured_projects:
