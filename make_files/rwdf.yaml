@@ -176,7 +176,9 @@ view:
   projects:
     type: string
     field:
-      data: true
+      data:
+        model: everything
+        emit: data_yaml
       projects:
         model: everything
         emit: whatwedo.projects._dirs
