@@ -184,7 +184,7 @@ view:
         emit: whatwedo.projects._dirs
       spruceups:
         model: everything
-        emit: whatwedo.projects.spruceups._all
+        emit: whatwedo.projects.spruceup-grants.spruceups._all
     pager:
       iterate: projects
       field_id: page
