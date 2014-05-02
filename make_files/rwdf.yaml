@@ -2,7 +2,7 @@
 domain: www.rwdfoundation.org # This is not used for anything yet.
 cdn: www.rwdfoundation.org
 uid: kc2 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.1.9
+cape_version: 2.1.11
 
 api: # An API is just a set of default information.
   cloudfiles: # Used for uploads to the CDN used for the website.
@@ -135,10 +135,10 @@ view:
         model: everything
         emit: data_yaml
       front:
-        api_id: content
-        index_type: list
-        index_id: homepage
-        index_by: _i
+        view: client_data
+        emit: projects
+        field: output
+
     file_id: index.html
     template:
       model: template
@@ -206,6 +206,7 @@ view:
         emit: whatwedo.projects._dirs
         pluck: [_image, featureimg, featuretitle, title, featureblurb, _dirname, _dir_id, _id, date, summary, teaser, _images]
         index_by: _id
+        map: feature_img
       featured_projects:
         api_id: content
         index_type: list
