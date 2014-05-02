@@ -138,7 +138,7 @@ view:
         view: client_data
         emit: projects
         field: output
-
+        index_by: score
     file_id: index.html
     template:
       model: template
