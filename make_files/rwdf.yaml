@@ -185,6 +185,7 @@ view:
       spruceups:
         model: everything
         emit: whatwedo.projects.spruceup-grants.spruceups._all
+        map: spruceup_img
     pager:
       iterate: projects
       field_id: page
