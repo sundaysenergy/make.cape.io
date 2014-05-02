@@ -204,7 +204,7 @@ view:
       all_projects:
         model: everything
         emit: whatwedo.projects._dirs
-        pluck: [image, featureimg, featuretitle, title, featureblurb, _filename, _id, date, summary]
+        pluck: [_image, featureimg, featuretitle, title, featureblurb, _filename, _id, date, summary, teaser]
         index_by: _id
       featured_projects:
         api_id: content
