@@ -1,0 +1,70 @@
+---
+domain: www.mortenson.com # This is not used for anything yet.
+cdn: www.mortenson.com
+uid: kc
+cape_version: 2.1.11
+
+api: # An API is just a set of default information.
+
+  content:
+    provider: dropbox
+    arg:
+      root: sandbox
+      path_prefix: /mortenson
+    load:
+      resource: delta
+      _id: path
+      arg:
+        cursor: ''
+
+model:
+  files:
+    type: files
+    filter:
+      api: content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
+
+  images:
+    type: list
+    filter:
+      api: content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.gif']
+
+  content:
+    type: list
+    filter:
+      api: content
+      must:
+        _ext: '.md'
+    field:
+      teaser:
+        app: map
+        func: prune
+        arg:
+          string: '{{&content}}'
+          stripTags: true
+          length: 110
+
+  # EVERYTHING!
+  everything:
+    type: ezle
+    filter:
+      api: content
+      must_not:
+        _ext: false
+        _dir1: '.git'
+    field:
+      _self: true # MAGIC!
+
+view:
+
+  client_data:
+    type: list
+    field:
+      images:
+        model: images
+        pluck: _file.source_file
+    output_id: images.json
+
