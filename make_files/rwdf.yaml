@@ -167,8 +167,8 @@ view:
         partial:
           page_html:
             model: template
-            _id: "{{page._id}}.html"
-      file_id: "{{page._id}}/index.html"
+            _id: "{{page._dir_id}}.html"
+      file_id: "{{page._dir_id}}/index.html"
     template:
       model: template
       _id: default.html
