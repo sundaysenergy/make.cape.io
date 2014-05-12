@@ -1,5 +1,5 @@
 ---
-domain: www.mortenson.com # This is not used for anything yet.
+domain: www.mortenson.com
 cdn: www.mortenson.com
 uid: kc
 cape_version: 2.1.11
@@ -23,7 +23,7 @@ model:
     filter:
       api: content
       should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.json']
 
   images:
     type: list

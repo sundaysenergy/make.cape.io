@@ -1,0 +1,103 @@
+---
+domain: www.building-harmony.co
+cdn: www.building-harmony.co
+uid: kc
+cape_version: 2.1.11
+
+api:
+  gh_content: # Used to get content from github.
+    provider: github
+    arg:
+      owner: sundaysenergy
+      repo: building-harmony.co.content
+      branch: master
+    # CAPE only listens for new or changed content.
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: tree # Github has a nice index of all content in a repo.
+      _id: path
+      arg:
+        recursive: true # Thankfully they have an option to get results recursively.
+        sha: master # Try using master branch.
+
+  gh_theme: # Used to get content from github.
+    provider: github
+    arg:
+      owner: sundaysenergy
+      repo: templates.cape.io
+      branch: gh-pages
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: tree # Github has a nice index of all content in a repo.
+      _id: path
+      arg:
+        recursive: true # Thankfully they have an option to get results recursively.
+        sha: gh-pages
+
+model:
+  template:
+    filter:
+      api: gh_theme
+      must:
+        _dirname: cape
+    field:
+      _self:
+        api: gh_theme
+        resource: raw
+        type: yaml_front
+        default: default.html
+        arg:
+          path: '{{&_id}}'
+
+  files:
+    type: files
+    filter:
+      api: gh_content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.json']
+
+  images:
+    type: list
+    filter:
+      api: gh_content
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.gif']
+
+  readme: # process the readme into html. Probably change to a list of pages soon?
+    type: object
+    filter:
+      api: gh_content
+      must:
+        _id: README.md
+
+  content:
+    type: list
+    filter:
+      api: gh_content
+      must:
+        _ext: '.md'
+
+  # EVERYTHING!
+  everything:
+    type: ezle
+    filter:
+      api: gh_content
+      must_not:
+        _ext: false
+        _dir1: '.git'
+    field:
+      _self: true # MAGIC!
+
+view:
+  index_html:
+    type: string
+    file_id: 'index.html'
+    field:
+      data: true
+      readme: true
+    template:
+      model: template
+      _id: default.mustache
+      partial:
+        page_html:
+          model: template # Load same way as you load a template.
+          _id: readme.html
+
