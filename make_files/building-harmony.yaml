@@ -4,6 +4,11 @@ cdn: www.building-harmony.co
 uid: 1
 cape_version: 2.1.11
 
+load:
+  - "/_api/gh_content/_load.json"
+  - "/_api/gh_theme/_load.json"
+  - "/_view/_all/_output"
+
 api:
   gh_content: # Used to get content from github.
     provider: github
