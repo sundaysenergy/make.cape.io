@@ -28,7 +28,7 @@ api: # An API is just a set of default information.
       _id: path
       arg:
         recursive: true # Thankfully they have an option to get results recursively.
-        sha: gh-pages
+        sha: master
 
 model:
   files:
