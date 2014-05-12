@@ -17,6 +17,19 @@ api: # An API is just a set of default information.
       arg:
         cursor: ''
 
+  gh_theme: # Used to get content from github.
+    provider: github
+    arg:
+      owner: sundaysenergy
+      repo: mortenson.theme
+      branch: master
+    load: # To load previously created content from this API you need to specificy the load param.
+      resource: tree # Github has a nice index of all content in a repo.
+      _id: path
+      arg:
+        recursive: true # Thankfully they have an option to get results recursively.
+        sha: gh-pages
+
 model:
   files:
     type: files
@@ -24,6 +37,21 @@ model:
       api: content
       should:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.json']
+
+  files2:
+    type: files
+    filter:
+      api: gh_theme
+      should:
+        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
+    file:
+      source_file:
+        api: gh_theme
+        resource: raw
+        file_id: '{{&_id}}'
+        type: any
+        arg:
+          path: '{{&_id}}'
 
   images:
     type: list
