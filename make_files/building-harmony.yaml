@@ -75,6 +75,13 @@ model:
       must:
         _ext: '.md'
 
+  data:
+    type: object
+    filter:
+      api: gh_content
+      must:
+        _id: data.yaml
+
   # EVERYTHING!
   everything:
     type: ezle
@@ -87,11 +94,15 @@ model:
       _self: true # MAGIC!
 
 view:
+  readme:
+    type: set
+    field:
+      readme: true
+
   index_html:
     type: string
     file_id: 'index.html'
     field:
-      data: true
       readme: true
     template:
       model: template
