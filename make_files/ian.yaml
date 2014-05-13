@@ -33,7 +33,7 @@ model:
         _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache']
     file:
       source_file:
-        api: gh_content
+        api: gh_theme
         resource: raw
         file_id: '{{&_id}}'
         type: any
