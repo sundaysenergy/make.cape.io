@@ -70,7 +70,7 @@ model:
         arg:
           string: '{{&content}}'
           stripTags: true
-          length: 110
+          length: 222
 
   # EVERYTHING!
   everything:
