@@ -14,6 +14,15 @@ load:
   - "/_view/_all/_output"
 
 api: # An API as a collection of content.
+  cdn:
+    provider: cloudfiles
+    arg:
+      container: img.rg.ookb.co
+    load:
+      resource: getFiles
+      _id: path
+      arg:
+        marker: null
 
   photos:
     provider: dropbox
@@ -61,6 +70,9 @@ model:
   db:
     filter:
       api: db
+  cdn:
+    filter:
+      api: cdn
 
   template:
     filter:
@@ -481,23 +493,6 @@ view:
       img_width: '{{item._file.large.width}}'
       img_height: '{{item._file.large.height}}'
 
-  items:
-    type: list
-    field:
-      items:
-        model: items
-        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, repeat, width, collection, design_descriptions, use]
-      photos_passementerie:
-        model: photos_passementerie
-        pluck: [itemNumber, _file, thumb_exists]
-      photos_leather:
-        model: photos_leather
-        pluck: [itemNumber, _file, thumb_exists]
-      photos_textiles:
-        model: photos_textiles
-        pluck: [itemNumber, _file, thumb_exists]
-    merge: itemNumber
-
   price:
     type: set
     # output_id: items/price.json
@@ -597,3 +592,71 @@ view:
       colors: colors
       items: collection
       templates: mini_templates
+
+  cdn_files:
+    type: set
+    field:
+      _data:
+        model: cdn
+        limit: 5000
+        filter:
+          must_not:
+            _dir2: ['rg', 'undefined']
+        pluck: _basename
+        group_by: _dir2
+        group_by_field: cdn_files
+
+  dropbox_files:
+    type: set
+    field:
+      leather:
+        model: photos_leather
+        pluck:
+          _file: _file
+          dropbox_img: thumb_exists
+        index_by: itemNumber
+      textile:
+        model: photos_textiles
+        limit: 5000
+        pluck:
+          _file: _file
+          dropbox_img: thumb_exists
+        index_by: itemNumber
+      passem:
+        model: photos_passementerie
+        pluck:
+          _file: _file
+          dropbox_img: thumb_exists
+        index_by: itemNumber
+    merge: true
+
+  items:
+    type: list
+    field:
+      cdn_files: cdn_files
+      dropbox_files: dropbox_files
+      items:
+        model: items
+        limit: 5000
+        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, repeat, width, collection, design_descriptions, use]
+        index_by: itemNumber
+    merge: true
+
+  items_no_dropbox:
+    type: list
+    field:
+      _data:
+        view: items
+        filter:
+          must_not:
+            dropbox_img: true
+
+  items_no_cdn:
+    type: list
+    field:
+      _data:
+        view: items
+        filter:
+          must_not:
+            cdn_files: '*'
+
