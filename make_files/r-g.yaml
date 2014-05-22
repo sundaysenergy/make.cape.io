@@ -648,6 +648,7 @@ view:
 
   items_no_dropbox:
     type: list
+    output_id: items/no_dropbox.json
     field:
       _data:
         view: items
@@ -659,6 +660,7 @@ view:
 
   items_no_cdn:
     type: list
+    output_id: items/no_cdn.json
     field:
       _data:
         view: items
