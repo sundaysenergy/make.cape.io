@@ -590,7 +590,11 @@ view:
     field:
       color_words: color_ops_textile
       colors: colors
-      items: collection
+      items:
+        view: items
+        filter:
+          must:
+            name: '*'
       templates: mini_templates
 
   cdn_files:
@@ -648,6 +652,8 @@ view:
       _data:
         view: items
         filter:
+          must:
+            name: '*'
           must_not:
             dropbox_img: true
 
@@ -657,6 +663,8 @@ view:
       _data:
         view: items
         filter:
+          must:
+            name: '*'
           must_not:
             cdn_files: '*'
 
