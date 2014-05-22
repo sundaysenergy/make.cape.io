@@ -128,27 +128,27 @@ model:
         _dir2: Passementrie
     field:
       itemNumber: '{{_filename}}'
-    file:
-      source_file:
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          overwrite: false
-          delete_source: true
-          cdn: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/1170.jpg'
-              width: '1170'
-              height: null
-              name: large
-              save_size: true
+    # file:
+    #   source_file:
+    #     api: photos
+    #     resource: files
+    #     file_id: 'items/{{itemNumber}}/original.jpg'
+    #     type: any
+    #     cdn: true
+    #     arg:
+    #       root: sandbox
+    #       path: "{{path}}"
+    #     img_size:
+    #       overwrite: false
+    #       delete_source: true
+    #       cdn: true
+    #       sizes:
+    #         -
+    #           destination: 'items/{{itemNumber}}/1170.jpg'
+    #           width: '1170'
+    #           height: null
+    #           name: large
+    #           save_size: true
 
   photos_leather:
     filter:
@@ -165,31 +165,31 @@ model:
           regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
           replace: '$1'
       distance: '{{_dir2}}'
-    file:
-      source_file:
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          overwrite: false
-          delete_source: true
-          cdn: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/640.jpg'
-              width: '640'
-              height: null
-              name: small
-            -
-              destination: 'items/{{itemNumber}}/1536.jpg'
-              width: '1536'
-              height: null
-              name: large
+    # file:
+    #   source_file:
+    #     api: photos
+    #     resource: files
+    #     file_id: 'items/{{itemNumber}}/original.jpg'
+    #     type: any
+    #     cdn: true
+    #     arg:
+    #       root: sandbox
+    #       path: "{{path}}"
+    #     img_size:
+    #       overwrite: false
+    #       delete_source: true
+    #       cdn: true
+    #       sizes:
+    #         -
+    #           destination: 'items/{{itemNumber}}/640.jpg'
+    #           width: '640'
+    #           height: null
+    #           name: small
+    #         -
+    #           destination: 'items/{{itemNumber}}/1536.jpg'
+    #           width: '1536'
+    #           height: null
+    #           name: large
 
   photos_textiles:
     filter:
@@ -213,32 +213,32 @@ model:
         arg:
           this: '{{_dir2}}'
           that: far
-    file:
-      source_file:
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          overwrite: false
-          delete_source: true
-          cdn: true
-          overwrite: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
-              width: '640'
-              height: null
-              name: small
-            -
-              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}1536.jpg'
-              width: '1536'
-              height: null
-              name: large
+    # file:
+    #   source_file:
+    #     api: photos
+    #     resource: files
+    #     file_id: 'items/{{itemNumber}}/original.jpg'
+    #     type: any
+    #     cdn: true
+    #     arg:
+    #       root: sandbox
+    #       path: "{{path}}"
+    #     img_size:
+    #       overwrite: false
+    #       delete_source: true
+    #       cdn: true
+    #       overwrite: true
+    #       sizes:
+    #         -
+    #           destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
+    #           width: '640'
+    #           height: null
+    #           name: small
+    #         -
+    #           destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}1536.jpg'
+    #           width: '1536'
+    #           height: null
+    #           name: large
 
   data:
     type: object
