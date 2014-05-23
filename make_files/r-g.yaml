@@ -595,7 +595,7 @@ view:
         filter:
           must:
             name: '*'
-        omit: dropbox_img
+        omit: [dropbox_img, cdn_files]
         rename:
           itemNumber: id
         emit:
