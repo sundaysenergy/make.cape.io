@@ -598,6 +598,8 @@ view:
         omit: dropbox_img
         rename:
           itemNumber: id
+        emit:
+          img: 'http://img.rg.cape.io/items/{{itemNumber}}/640.jpg'
       templates: mini_templates
 
   cdn_files:
