@@ -595,6 +595,7 @@ view:
         filter:
           must:
             name: '*'
+        omit: dropbox_img
       templates: mini_templates
 
   cdn_files:
@@ -667,6 +668,7 @@ view:
         filter:
           must:
             name: '*'
+            dropbox_img: true
           must_not:
             cdn_files: '*'
 
