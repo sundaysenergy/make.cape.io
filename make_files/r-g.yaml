@@ -582,8 +582,8 @@ view:
         omit: [dropbox_img, cdn_files]
         rename:
           itemNumber: id
-          primarycolor: primaryColor
-          secondarycolor: secondaryColor
+          primaryColor: primarycolor
+          secondaryColor: secondarycolor
         emit:
           design_descriptions: '{{#design_descriptions}}{{.}} {{/design_descriptions}}'
           use: '{{#use}}{{.}} {{/use}}'
