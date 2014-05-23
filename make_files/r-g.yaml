@@ -596,6 +596,8 @@ view:
           must:
             name: '*'
         omit: dropbox_img
+        rename:
+          itemNumber: id
       templates: mini_templates
 
   cdn_files:
