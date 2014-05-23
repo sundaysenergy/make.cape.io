@@ -672,3 +672,12 @@ view:
           must_not:
             cdn_files: '*'
 
+  # beautyshots:
+  #   type: set
+  #   field:
+  #     _data:
+  #       model: beautyshots
+  #       map:
+  #         app: rg
+  #         func: beautyshots
+
