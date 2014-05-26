@@ -578,7 +578,7 @@ view:
         filter:
           must:
             name: '*'
-        omit: [dropbox_img, cdn_files]
+        omit: [dropbox_img, cdn_files, dropbox_id]
         rename:
           itemNumber: id
           primaryColor: primarycolor
@@ -610,8 +610,7 @@ view:
         pluck:
           _file: _file
           dropbox_img: thumb_exists
-        emit:
-          entity_id: '/_api/photos/_entity/{{_id}}'
+          dropbox_id: _id
         index_by: itemNumber
       textile:
         model: photos_textiles
@@ -619,16 +618,14 @@ view:
         pluck:
           _file: _file
           dropbox_img: thumb_exists
-        emit:
-          entity_id: '/_api/photos/_entity/{{_id}}'
+          dropbox_id: _id
         index_by: itemNumber
       passem:
         model: photos_passementerie
         pluck:
           _file: _file
           dropbox_img: thumb_exists
-        emit:
-          entity_id: '/_api/photos/_entity/{{_id}}'
+          dropbox_id: _id
         index_by: itemNumber
     merge: true
 
@@ -638,7 +635,6 @@ view:
       cdn_files: cdn_files
       dropbox_files:
         view: dropbox_files
-        omit: entity_id
       items:
         model: items
         limit: 5000
@@ -664,7 +660,7 @@ view:
     field:
       _data:
         view: items
-        # pluck: itemNumber
+        pluck: dropbox_id
         filter:
           must:
             name: '*'
