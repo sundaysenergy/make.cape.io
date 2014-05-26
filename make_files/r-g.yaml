@@ -478,7 +478,7 @@ view:
 
   price:
     type: set
-    # output_id: items/price.json
+    output_id: items/price.json
     field:
       _data:
         model: items
