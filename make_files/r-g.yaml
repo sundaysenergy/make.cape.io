@@ -130,6 +130,7 @@ model:
       itemNumber: '{{_filename}}'
     file:
       source_file:
+        overwrite: false
         api: photos
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
@@ -139,7 +140,6 @@ model:
           root: sandbox
           path: "{{path}}"
         img_size:
-          overwrite: false
           delete_source: true
           cdn: true
           sizes:
@@ -167,6 +167,7 @@ model:
       distance: '{{_dir2}}'
     file:
       source_file:
+        overwrite: false
         api: photos
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
@@ -176,7 +177,6 @@ model:
           root: sandbox
           path: "{{path}}"
         img_size:
-          overwrite: false
           delete_source: true
           cdn: true
           sizes:
@@ -215,6 +215,7 @@ model:
           that: far
     file:
       source_file:
+        overwrite: false
         api: photos
         resource: files
         file_id: 'items/{{itemNumber}}/original.jpg'
@@ -224,10 +225,8 @@ model:
           root: sandbox
           path: "{{path}}"
         img_size:
-          overwrite: false
           delete_source: true
           cdn: true
-          overwrite: true
           sizes:
             -
               destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
@@ -449,33 +448,33 @@ view:
       model: template
       _id: default.html
 
-  collection: # Saved to items/items.json
-    type: list
-    # output_id: items/collection.json
-    field:
-      items:
-        view: items
-        # filter:
-        #   must:
-        #     thumb_exists: true
-    pager:
-      iterate: items
-      field_id: item
-    emit:
-      name: '{{&item.name}}'
-      color: '{{&item.color}}'
-      primarycolor: '{{item.primaryColor}}'
-      secondarycolor: '{{item.secondaryColor}}'
-      id: '{{item.itemNumber}}'
-      content: '{{#item.contents_arr}}{{.}} {{/item.contents_arr}}'
-      repeat: '{{&item.repeat}}'
-      width: '{{&item.width}}'
-      img: '{{&item._file.small.path}}'
-      collection: '{{item.collection}}'
-      design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
-      use: '{{item.use}}'
-      img_width: '{{item._file.large.width}}'
-      img_height: '{{item._file.large.height}}'
+  # collection: # Saved to items/items.json
+  #   type: list
+  #   # output_id: items/collection.json
+  #   field:
+  #     items:
+  #       view: items
+  #       # filter:
+  #       #   must:
+  #       #     thumb_exists: true
+  #   pager:
+  #     iterate: items
+  #     field_id: item
+  #   emit:
+  #     name: '{{&item.name}}'
+  #     color: '{{&item.color}}'
+  #     primarycolor: '{{item.primaryColor}}'
+  #     secondarycolor: '{{item.secondaryColor}}'
+  #     id: '{{item.itemNumber}}'
+  #     content: '{{#item.contents_arr}}{{.}} {{/item.contents_arr}}'
+  #     repeat: '{{&item.repeat}}'
+  #     width: '{{&item.width}}'
+  #     img: '{{&item._file.small.path}}'
+  #     collection: '{{item.collection}}'
+  #     design_descriptions: '{{#item.design_descriptions}}{{.}} {{/item.design_descriptions}}'
+  #     use: '{{item.use}}'
+  #     img_width: '{{item._file.large.width}}'
+  #     img_height: '{{item._file.large.height}}'
 
   price:
     type: set
@@ -611,6 +610,8 @@ view:
         pluck:
           _file: _file
           dropbox_img: thumb_exists
+        emit:
+          entity_id: '/_api/photos/_entity/{{_id}}'
         index_by: itemNumber
       textile:
         model: photos_textiles
@@ -618,12 +619,16 @@ view:
         pluck:
           _file: _file
           dropbox_img: thumb_exists
+        emit:
+          entity_id: '/_api/photos/_entity/{{_id}}'
         index_by: itemNumber
       passem:
         model: photos_passementerie
         pluck:
           _file: _file
           dropbox_img: thumb_exists
+        emit:
+          entity_id: '/_api/photos/_entity/{{_id}}'
         index_by: itemNumber
     merge: true
 
@@ -631,11 +636,13 @@ view:
     type: list
     field:
       cdn_files: cdn_files
-      dropbox_files: dropbox_files
+      dropbox_files:
+        view: dropbox_files
+        omit: entity_id
       items:
         model: items
         limit: 5000
-        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, repeat, width, collection, design_descriptions, use]
+        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, width, collection, design_descriptions, use]
         index_by: itemNumber
     merge: true
 
