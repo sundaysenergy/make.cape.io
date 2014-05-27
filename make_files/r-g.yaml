@@ -590,6 +590,7 @@ view:
         filter:
           must:
             name: '*'
+            dropbox_img: true
         omit: [dropbox_img, cdn_files, dropbox_id]
         rename:
           itemNumber: id
@@ -670,6 +671,7 @@ view:
     field:
       _data:
         view: items
+        pluck: [name, color, itemNumber, _file]
         filter:
           must:
             name: '*'
