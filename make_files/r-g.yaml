@@ -379,14 +379,15 @@ model:
         _char1int: true
     field:
       collection: textile
-      # uses:
-      #   app: map
-      #   func: split
-      #   arg:
-      #     split_on: ','
-      #     unique: true
-      #     compact: true
-      #     trim: true
+      approx_width:
+        app: map
+        func: string_replace
+        arg:
+          string: '{{&width}}'
+          regex: ' ?APPR?OX\.? ?'
+          toUpperCase: true
+          trim: true
+          replace: ''
     sort:
       field: sort
 
@@ -604,6 +605,7 @@ view:
           itemNumber: id
           primaryColor: primarycolor
           secondaryColor: secondarycolor
+          approx_width: width
         emit:
           design_descriptions: '{{#design_descriptions}}{{.}} {{/design_descriptions}}'
           use: '{{#use}}{{.}} {{/use}}'
@@ -650,15 +652,15 @@ view:
         index_by: itemNumber
     merge: true
 
-  files_no_file:
-    type: list
-    field:
-      _data:
-        view: dropbox_files
-        pluck: dropbox_id
-        filter:
-          must_not:
-            _file: '*'
+  # files_no_file:
+  #   type: list
+  #   field:
+  #     _data:
+  #       view: dropbox_files
+  #       pluck: dropbox_id
+  #       filter:
+  #         must_not:
+  #           _file: '*'
 
   items:
     type: list
@@ -669,7 +671,7 @@ view:
       items:
         model: items
         limit: 5000
-        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, width, collection, design_descriptions, use, sort]
+        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, collection, design_descriptions, use, sort, approx_width]
         index_by: itemNumber
     merge:
       field_id: _data
@@ -688,19 +690,26 @@ view:
           must_not:
             dropbox_img: true
 
-  items_no_cdn:
-    type: list
-    output_id: items/no_cdn.json
-    field:
-      _data:
-        view: items
-        pluck: dropbox_id
-        filter:
-          must:
-            name: '*'
-            dropbox_img: true
-          must_not:
-            cdn_files: '*'
+  # items_no_cdn:
+  #   type: list
+  #   output_id: items/no_cdn.json
+  #   field:
+  #     _data:
+  #       view: items
+  #       pluck: dropbox_id
+  #       filter:
+  #         must:
+  #           name: '*'
+  #           dropbox_img: true
+  #         must_not:
+  #           cdn_files: '*'
+  # width:
+  #   type: list
+  #   field:
+  #     _data:
+  #       view: items
+  #       pluck: approx_width
+  #       unique: true
 
   # beautyshots:
   #   type: set
