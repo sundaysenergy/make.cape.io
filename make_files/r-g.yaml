@@ -629,6 +629,16 @@ view:
         index_by: itemNumber
     merge: true
 
+  files_no_file:
+    type: list
+    field:
+      _data:
+        view: dropbox_files
+        pluck: dropbox_id
+        filter:
+          must_not:
+            _file: '*'
+
   items:
     type: list
     field:
