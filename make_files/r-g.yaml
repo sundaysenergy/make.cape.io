@@ -384,7 +384,7 @@ model:
         func: string_replace
         arg:
           string: '{{&width}}'
-          regex: ' ?APPR?R?OX\.? ?'
+          regex: ' ?APP?R?R?OX\.? ?'
           toUpperCase: true
           trim: true
           replace: ''
@@ -703,13 +703,14 @@ view:
   #           dropbox_img: true
   #         must_not:
   #           cdn_files: '*'
-  # width:
-  #   type: list
-  #   field:
-  #     _data:
-  #       view: items
-  #       pluck: approx_width
-  #       unique: true
+  width:
+    type: list
+    field:
+      _data:
+        view: items
+        pluck: itemNumber
+        # unique: true
+        group_by: approx_width
 
   # beautyshots:
   #   type: set
