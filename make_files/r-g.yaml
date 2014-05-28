@@ -533,7 +533,7 @@ view:
     field:
       _data:
         model: passementerie
-        pluck: color
+        pluck: colors
         flatten: true
         unique: true
         compact: true
@@ -545,7 +545,7 @@ view:
     field:
       _data:
         model: leather
-        pluck: color
+        pluck: colors
         flatten: true
         unique: true
         compact: true
