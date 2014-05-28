@@ -384,7 +384,7 @@ model:
         func: string_replace
         arg:
           string: '{{&width}}'
-          regex: ' ?APP?R?R?OX\.? ?'
+          regex: ' ?APP?R?R?O?X\.? ?'
           toUpperCase: true
           trim: true
           replace: ''
