@@ -609,7 +609,7 @@ view:
         emit:
           design_descriptions: '{{#design_descriptions}}{{.}} {{/design_descriptions}}'
           use: '{{#use}}{{.}} {{/use}}'
-          img: 'http://img.rg.cape.io/{{_file.small.path}}'
+          img: 'http://img.rg.cape.io/{{_file.small.path}}{{^_file.small.path}}{{_file.large.path}}{{/_file.small.path}}'
       templates: mini_templates
 
   cdn_files:
