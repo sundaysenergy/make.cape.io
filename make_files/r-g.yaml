@@ -672,7 +672,7 @@ view:
       items:
         model: items
         limit: 5000
-        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, collection, design_descriptions, use, sort, approx_width, far]
+        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, collection, design_descriptions, use, sort, approx_width, far, design]
         index_by: itemNumber
     merge:
       field_id: _data
