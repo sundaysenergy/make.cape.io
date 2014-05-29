@@ -129,6 +129,9 @@ view:
   index:
     type: string
     field:
+      date:
+        app: map
+        func: date_obj
       content:
         model: everything
       data:
@@ -208,9 +211,6 @@ view:
   client_data:
     type: list
     field:
-      date:
-        app: map
-        func: date_obj
       all_projects:
         model: everything
         emit: whatwedo.projects._dirs
