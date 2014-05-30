@@ -507,13 +507,51 @@ view:
     # output_id: items/content_ops.json
     field:
       _data:
-        model: textile
-        pluck: contents_arr
+        view: items
+        filter:
+          must:
+            collection: textile
+            name: '*'
+            dropbox_img: true
+        pluck: content_arr
         flatten: true
         unique: true
         compact: true
         sort: true
         remove: "%"
+
+  contents:
+    type: list
+    # output_id: items/content_ops.json
+    field:
+      _data:
+        view: items
+        filter:
+          must:
+            collection: textile
+            name: '*'
+            dropbox_img: true
+        pluck: itemNumber
+        group_by: content
+        # flatten: true
+        # unique: true
+        # compact: true
+        # sort: true
+        # remove: "%"
+
+  no_content:
+    type: list
+    field:
+      _data:
+        view: items
+        filter:
+          must:
+            collection: textile
+            name: '*'
+            dropbox_img: true
+          must_not:
+            content: '*'
+        pluck: itemNumber
 
   color_ops_textile:
     type: list
@@ -600,7 +638,7 @@ view:
           must:
             name: '*'
             dropbox_img: true
-        omit: [dropbox_img, cdn_files, dropbox_id, _file, far]
+        omit: [dropbox_img, cdn_files, dropbox_id, _file, far, contents_arr]
         rename:
           itemNumber: id
           primaryColor: primarycolor
@@ -672,7 +710,11 @@ view:
       items:
         model: items
         limit: 5000
-        pluck: [name, color, primaryColor, secondaryColor, itemNumber, content, contents, repeat, collection, design_descriptions, use, sort, approx_width, far, design]
+        pluck: [
+          name, color, primaryColor, secondaryColor,
+          itemNumber, content, contents, repeat, collection,
+          design_descriptions, use, sort, approx_width, far,
+          design, contents_arr, content_arr]
         index_by: itemNumber
     merge:
       field_id: _data
