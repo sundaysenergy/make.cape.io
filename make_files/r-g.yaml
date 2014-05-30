@@ -638,15 +638,17 @@ view:
           must:
             name: '*'
             dropbox_img: true
-        omit: [dropbox_img, cdn_files, dropbox_id, _file, far, contents_arr]
+        omit: [dropbox_img, cdn_files, dropbox_id, _file, far, contents_arr, content_arr]
         rename:
           itemNumber: id
           primaryColor: primarycolor
           secondaryColor: secondarycolor
           approx_width: width
         emit:
-          design_descriptions: '{{#design_descriptions}}{{.}} {{/design_descriptions}}'
-          use: '{{#use}}{{.}} {{/use}}'
+          content: '{{content_arr}}'
+          contents: '{{contents.0}}'
+          design_descriptions: '{{design_descriptions}}'
+          use: '{{use}}'
           img: 'http://img.rg.cape.io/{{_file.small.path}}{{^_file.small.path}}{{_file.large.path}}{{/_file.small.path}}'
       templates: mini_templates
 
