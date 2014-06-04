@@ -600,6 +600,18 @@ view:
         unique: true
         compact: true
         sort: true
+        remove:
+          - BASKET
+          - CHI
+          - FLAM
+          - FLOR
+          - FLOWER
+          - JACQUAR
+          - SATI
+          - SO
+          - STRIE
+          - TATTERSAL
+          - WEAVE
 
   design_descriptions_passementerie:
     type: list
