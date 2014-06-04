@@ -567,6 +567,7 @@ view:
         remove:
           - MINT
           - BRASS
+
   color_ops_passementerie:
     type: list
     # output_id: items/color_ops_passementerie.json
@@ -578,6 +579,9 @@ view:
         unique: true
         compact: true
         sort: true
+        remove:
+          - SKY
+          - BRASS
 
   color_ops_leather:
     type: list
@@ -590,7 +594,9 @@ view:
         unique: true
         compact: true
         sort: true
-
+        remove:
+          - OFF-WHITE
+          - "ROBIN'S EGG"
   design_descriptions:
     type: list
     # output_id: items/design_descriptions.json
@@ -627,7 +633,12 @@ view:
         unique: true
         compact: true
         sort: true
-
+        remove:
+          - CHECK
+          - EPINGL
+          - JACQUARD
+          - SOLI
+          - STRI
   use:
     type: list
     # output_id: items/use.json
