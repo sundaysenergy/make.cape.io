@@ -564,7 +564,9 @@ view:
         unique: true
         compact: true
         sort: true
-
+        remove:
+          - MINT
+          - BRASS
   color_ops_passementerie:
     type: list
     # output_id: items/color_ops_passementerie.json
