@@ -7,11 +7,14 @@ cape_version: 2.1.7 # Current version of cape can be found in Kai's head. Future
 load:
   - "/_api/items/_load.json"
   - "/_api/gh_repo/_load.json"
-  - "/_model/items/model_fields_add.json"
-  - "/_model/files/model_fields_reload.json"
-  - "/_model/template/model_fields_reload.json"
-  - "/_model/pages/model_fields_reload.json"
+  - "/_api/cdn/_load.json"
+  - "/_dropbox/_poll/photos"
+  # - "/_model/items/model_fields_add.json"
+  # - "/_model/files/model_fields_reload.json"
+  # - "/_model/template/model_fields_reload.json"
+  # - "/_model/pages/model_fields_reload.json"
   - "/_view/_all/_output"
+
 
 api: # An API as a collection of content.
   cdn:
@@ -56,13 +59,10 @@ api: # An API as a collection of content.
   items: # Get item content from a json file.
     provider: order-track
     arg:
-      id: rg
+      uid: 5
     load:
-      provider: order-track
       resource: items
       _id: itemNumber
-      arg:
-        uid: 5
       field:
         _source: _self
 
