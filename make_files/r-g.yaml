@@ -603,6 +603,7 @@ view:
         remove:
           - BASKET
           - CHI
+          - DAMASK
           - FLAM
           - FLOR
           - FLOWER

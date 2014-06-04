@@ -14,7 +14,9 @@ api:
 
   fb:
     provider: facebook
-
+    load:
+      arg:
+        page_id: 436620656417436
   jobs_indeed:
     provider: wget
     load:
