@@ -150,7 +150,11 @@ model:
               height: null
               name: large
               save_size: true
-
+            -
+              destination: 'items/{{itemNumber}}/2560.jpg'
+              width: '2560'
+              height: null
+              name: xlarge
   photos_leather:
     filter:
       api: photos
@@ -191,6 +195,11 @@ model:
               width: '1536'
               height: null
               name: large
+            -
+              destination: 'items/{{itemNumber}}/2560.jpg'
+              width: '2560'
+              height: null
+              name: xlarge
 
   photos_textiles:
     filter:
@@ -239,7 +248,11 @@ model:
               width: '1536'
               height: null
               name: large
-
+            -
+              destination: 'items/{{itemNumber}}/2560.jpg'
+              width: '2560'
+              height: null
+              name: xlarge
   data:
     type: object
     filter:
@@ -565,6 +578,9 @@ view:
         unique: true
         compact: true
         sort: true
+        remove:
+          - MINT
+          - BRASS
 
   color_ops_passementerie:
     type: list
@@ -577,6 +593,9 @@ view:
         unique: true
         compact: true
         sort: true
+        remove:
+          - SKY
+          - BRASS
 
   color_ops_leather:
     type: list
@@ -589,7 +608,9 @@ view:
         unique: true
         compact: true
         sort: true
-
+        remove:
+          - OFF-WHITE
+          - "ROBIN'S EGG"
   design_descriptions:
     type: list
     # output_id: items/design_descriptions.json
@@ -601,6 +622,19 @@ view:
         unique: true
         compact: true
         sort: true
+        remove:
+          - BASKET
+          - CHI
+          - DAMASK
+          - FLAM
+          - FLOR
+          - FLOWER
+          - JACQUAR
+          - SATI
+          - SO
+          - STRIE
+          - TATTERSAL
+          - WEAVE
 
   design_descriptions_passementerie:
     type: list
@@ -613,7 +647,12 @@ view:
         unique: true
         compact: true
         sort: true
-
+        remove:
+          - CHECK
+          - EPINGL
+          - JACQUARD
+          - SOLI
+          - STRI
   use:
     type: list
     # output_id: items/use.json
