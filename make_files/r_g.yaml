@@ -117,6 +117,7 @@ model:
         resource: raw_api
         file_id: '{{&_id}}'
         type: any
+        cdn: true
         arg:
           path: '{{&_id}}'
 
