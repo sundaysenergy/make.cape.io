@@ -689,7 +689,7 @@ view:
           contents: '{{contents.0}}'
           design_descriptions: '{{design_descriptions}}'
           use: '{{use}}'
-          img: 'http://img.rg.cape.io/{{_file.small.path}}{{^_file.small.path}}{{_file.large.path}}{{^_file.large.path}}items/{{id}}/1170.jpg{{/_file.large.path}}{{/_file.small.path}}'
+          img: 'http://img.rg.cape.io/{{_file.small.path}}{{^_file.small.path}}{{_file.large.path}}{{^_file.large.path}}items/{{itemNumber}}/1170.jpg{{/_file.large.path}}{{/_file.small.path}}'
       templates: mini_templates
 
   cdn_files:
