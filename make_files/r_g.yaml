@@ -50,7 +50,7 @@ api: # An API as a collection of content.
         recursive: true
         sha: master
 
-  theme: # Used to get content from the big heavy github repo.
+  theme:
     provider: github
     arg:
       owner: sundaysenergy
@@ -62,6 +62,19 @@ api: # An API as a collection of content.
       arg:
         recursive: true
         sha: master
+
+  theme_bootstrap:
+    provider: github
+    arg:
+      owner: twbs
+      repo: bootstrap
+      branch: master
+    load:
+      resource: tree
+      _id: path
+      arg:
+        recursive: true
+        sha: a365d8689c3f3cee7f1acf86b61270ecca8e106d
 
   db: # Accept any post with make_id rg...
     provider: post
