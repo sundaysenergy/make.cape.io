@@ -30,7 +30,6 @@ api: # An API is a set of default information. Think of an API as a collection o
     load:
       arg:
         sha: gh-pages
-    without: _dirname
 
   github_hook:
     provider: github
@@ -40,47 +39,50 @@ api: # An API is a set of default information. Think of an API as a collection o
       name: update_hook
 
 model:
+  make_files:
+    api: gh_content
+    must:
+      _dirname: make_files
+    sort: _filename
+
+  data:
+    api: gh_content
+    get: data.yaml
+
+  readme:
+    api: gh_content
+    get: README.md
 
 view:
   documentation:
-    type: string
     file_id: 'index.html'
     field:
       data: true
-      readme: true
+      content:
+        model: readme
+        pluck: content
     template:
-      model: template
-      _id: default.mustache
-      partial:
-        page_html:
-          model: template # Load same way as you load a template.
-          _id: readme.html
+      api: gh_theme
+      get: default.mustache
 
   index_html:
-    type: string
     file_id: 'make_files/index.html'
+    output_id: 'make_files/index.json'
     field:
-      data: true # when value is true use key as the model_id and just get its data.
+      data: true
       make_files:
-        model: make_files
-        emit:
-          link: 'http://make.cape.io/make_files/{{_filename}}.json'# link to json file
-          edit: 'https://github.com/sundaysenergy/make.cape.io/edit/master/{{&_id}}'
+        pluck: [_filename, _file, cape_version, domain, uid, cdn]
     template:
-      model: template
-      _id: default.mustache
+      api: gh_theme
+      get: default.mustache
       partial:
         page_html:
-          model: template # Load same way as you load a template.
-          _id: make_index.html
+          api: gh_theme # Load same way as you load a template.
+          get: make_index.html
 
   index_json:
-    type: list
-    field:
-      make_files: true
-    pager:
-      iterate: make_files
-      field_id: make
-    emit: '{{make._filename}}' # similar to processing a template.
-    output_id: index.json # This should move to /make_files/
+    field: make_files
+    pluck: _filename
+    file_id: index.json
+    return_all: true # Otherwise will just return the first unless iterate is iset.
 
