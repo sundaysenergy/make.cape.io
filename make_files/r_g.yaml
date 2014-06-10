@@ -15,7 +15,6 @@ load:
   # - "/_model/pages/model_fields_reload.json"
   - "/_view/_all/_output"
 
-
 api: # An API as a collection of content.
   cdn:
     provider: cloudfiles
@@ -37,9 +36,14 @@ api: # An API as a collection of content.
       branch: master
     load:
       resource: raw_api
+      recursive: true
+    field:
+      dir_i: true
     filter:
+      must:
+        type: file
       must_not:
-        _dir1: reference
+        dir1: reference
 
   theme:
     provider: github
@@ -73,7 +77,11 @@ api: # An API as a collection of content.
       resource: items
       _id: itemNumber
       cache: true
-    without: [inventory, comments, itemComments, freightCode, purchaseOrders, webComments, manufacturer, char1, char1int, serialNumber, miscellaneous]
+    filter:
+      must_not:
+        itemNumber: 'TRIMBOOK'
+    without: [alternatePrice, inventory, comments, finish, freightCode, itemComments, miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int, serialNumber, sampleType]
+    clean: true
     field:
       color_id:
         func: last_dash
@@ -123,7 +131,8 @@ api: # An API as a collection of content.
         arg: itemNumber
       char1int:
         arg: itemNumber
-      textile:
+    fields:
+      -
         filter:
           must:
             char1int: true
@@ -138,13 +147,13 @@ api: # An API as a collection of content.
               toUpperCase: true
               trim: true
               replace: ''
-      passementerie:
+      -
         filter:
           must:
             char1: P
         field:
           collection: passementerie
-      leather:
+      -
         filter:
           must:
             char1: L
@@ -155,13 +164,13 @@ model:
   template:
     api: gh_repo
     must:
-      _dirname: templates
+      dirname: templates
 
   mini_templates:
     api: gh_repo
     index_by: _filename
     must:
-      _dirname: templates/mini
+      dirname: templates/mini
 
   files:
     type: files
@@ -175,7 +184,7 @@ model:
     api: photos
     must:
       mime_type: "image/jpeg"
-      _dir2: Passementrie
+      dir2: Passementrie
     field:
       itemNumber: '{{_filename}}'
     file:
@@ -206,11 +215,10 @@ model:
               name: xlarge
 
   photos_leather:
-    filter:
-      api: photos
-      must:
-        mime_type: "image/jpeg"
-        _dir2: leather
+    api: photos
+    must:
+      mime_type: "image/jpeg"
+      dir2: leather
     field:
       itemNumber:
         app: map
@@ -219,7 +227,6 @@ model:
           string: '{{path}}'
           regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
           replace: '$1'
-      distance: '{{_dir2}}'
     file:
       source_file:
         overwrite: false
@@ -252,12 +259,11 @@ model:
               name: xlarge
 
   photos_textiles:
-    filter:
-      api: photos
-      must:
-        mime_type: "image/jpeg"
-      should:
-        _dir2: [normal, far]
+    api: photos
+    must:
+      mime_type: "image/jpeg"
+    should:
+      _dir2: [normal, far]
     field:
       itemNumber:
         app: map
@@ -320,12 +326,6 @@ model:
     must:
       _dir1: content
       _ext: .md
-
-  items:
-    filter:
-      api: items
-      must_not:
-        _id: TRIMBOOK
 
 view:
 
