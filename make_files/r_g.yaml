@@ -34,14 +34,11 @@ api: # An API as a collection of content.
       owner: bjornmeansbear
       repo: rogers-and-goffigon
       branch: master
-    load:
-      resource: raw_api
-      recursive: true
     field:
       dir_i: true
+      _self:
+        resource: raw_api
     filter:
-      must:
-        type: file
       must_not:
         dir1: reference
 
