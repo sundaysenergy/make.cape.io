@@ -29,6 +29,8 @@ api: # An API as a collection of content.
         path_prefix: /rg
 
   gh_repo: # Used to get content from the big heavy github repo.
+    load:
+      cache: true
     provider: github
     arg:
       owner: bjornmeansbear
@@ -162,12 +164,6 @@ model:
     api: gh_repo
     must:
       dirname: templates
-
-  mini_templates:
-    api: gh_repo
-    index_by: _filename
-    must:
-      dirname: templates/mini
 
   files:
     type: files
@@ -321,10 +317,105 @@ model:
   pages:
     api: gh_repo
     must:
-      _dir1: content
+      dir1: content
       _ext: .md
 
+  price:
+    api: items
+    pluck: price
+    index_by: itemNumber
+    merge: true
+
+  mini_templates:
+    api: gh_repo
+    must:
+      dirname: templates/mini
+    field:
+      filename: true
+    index_by: filename
+    pluck: content
+    merge: true
+
+  colors:
+    api: items
+    group_by: patternNumber
+    pluck: color_id
+    merge: true
+
+  color_ops:
+    api: items
+    group_by: collection
+    flatten: colors
+    unique: true
+    merge: true
+
+  design_descriptions:
+    api: items
+    must:
+      collection: textile
+    flatten: design_descriptions
+    unique: true
+    without:
+      - CHI
+      - DAMASK
+      - FLAM
+      - FLOR
+      - 'FLOWER,'
+      - JACQUAR
+      - 'JACQUARD,'
+      - SATI
+      - SO
+      - STRIE
+      - TATTERSAL
+      - WEAVE
+
+  design_descriptions_passementerie:
+    api: items
+    must:
+      collection: passementerie
+    flatten: design_descriptions
+    unique: true
+    without:
+      - CHECK
+      - EPINGL
+      - JACQUARD
+      - SOLI
+      - STRI
+
+  content_ops:
+    api: items
+    must:
+      collection: textile
+    flatten: content_arr
+    unique: true
+
+  use:
+    api: items
+    must:
+      collection: textile
+    flatten: use
+    unique: true
+
+  # no_content:
+  #   api: items
+  #   pluck: itemNumber
+  #   field:
+  #     _data:
+  #       view: items
+  #       filter:
+  #         must:
+  #           collection: textile
+  #           name: '*'
+  #           dropbox_img: true
+  #         must_not:
+  #           content: '*'
+  #       pluck: itemNumber
+
 view:
+
+  price:
+    output_id: items/price.json
+    cdn: false
 
   pages: # These are the pages besides items.
     type: string
@@ -361,178 +452,8 @@ view:
       model: template
       _id: default.html
 
-  price:
-    type: set
-    output_id: items/price.json
-    field:
-      _data:
-        model: items
-        pluck: price
-        index_by: _id
 
-  mini_templates:
-    type: set
-    field:
-      _data:
-        model: mini_templates
-        pluck: content
 
-  colors:
-    type: set
-    field:
-      _data:
-        model: items
-        group_by: patternNumber
-        pluck: color_id
-
-  content_ops:
-    type: list
-    # output_id: items/content_ops.json
-    field:
-      _data:
-        view: items
-        filter:
-          must:
-            collection: textile
-            name: '*'
-            dropbox_img: true
-        pluck: content_arr
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove: "%"
-
-  contents:
-    type: list
-    # output_id: items/content_ops.json
-    field:
-      _data:
-        view: items
-        filter:
-          must:
-            collection: textile
-            name: '*'
-            dropbox_img: true
-        pluck: itemNumber
-        group_by: content
-        # flatten: true
-        # unique: true
-        # compact: true
-        # sort: true
-        # remove: "%"
-
-  no_content:
-    type: list
-    field:
-      _data:
-        view: items
-        filter:
-          must:
-            collection: textile
-            name: '*'
-            dropbox_img: true
-          must_not:
-            content: '*'
-        pluck: itemNumber
-
-  color_ops_textile:
-    type: list
-    # output_id: items/color_ops_textile.json
-    field:
-      _data:
-        model: textile
-        pluck: colors
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove:
-          - MINT
-          - BRASS
-
-  color_ops_passementerie:
-    type: list
-    # output_id: items/color_ops_passementerie.json
-    field:
-      _data:
-        model: passementerie
-        pluck: colors
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove:
-          - SKY
-          - BRASS
-
-  color_ops_leather:
-    type: list
-    # output_id: items/color_ops_leather.json
-    field:
-      _data:
-        model: leather
-        pluck: colors
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove:
-          - OFF-WHITE
-          - "ROBIN'S EGG"
-  design_descriptions:
-    type: list
-    # output_id: items/design_descriptions.json
-    field:
-      _data:
-        model: textile
-        pluck: design_descriptions
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove:
-          - BASKET
-          - CHI
-          - DAMASK
-          - FLAM
-          - FLOR
-          - FLOWER
-          - JACQUAR
-          - SATI
-          - SO
-          - STRIE
-          - TATTERSAL
-          - WEAVE
-
-  design_descriptions_passementerie:
-    type: list
-    # output_id: items/design_descriptions.json
-    field:
-      _data:
-        model: passementerie
-        pluck: design_descriptions
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
-        remove:
-          - CHECK
-          - EPINGL
-          - JACQUARD
-          - SOLI
-          - STRI
-  use:
-    type: list
-    # output_id: items/use.json
-    field:
-      _data:
-        model: textile
-        pluck: use
-        flatten: true
-        unique: true
-        compact: true
-        sort: true
 
   # Big huge thing used client side for database.
   client_data:
@@ -643,45 +564,4 @@ view:
             name: '*'
           must_not:
             dropbox_img: true
-
-  # far:
-  #   type: list
-  #   field:
-  #     _data:
-  #       view: dropbox_files
-  #       filter:
-  #         must:
-  #           far: true
-
-  # items_no_cdn:
-  #   type: list
-  #   output_id: items/no_cdn.json
-  #   field:
-  #     _data:
-  #       view: items
-  #       pluck: dropbox_id
-  #       filter:
-  #         must:
-  #           name: '*'
-  #           dropbox_img: true
-  #         must_not:
-  #           cdn_files: '*'
-
-  # width:
-  #   type: list
-  #   field:
-  #     _data:
-  #       view: items
-  #       pluck: itemNumber
-  #       # unique: true
-  #       group_by: approx_width
-
-  # beautyshots:
-  #   type: set
-  #   field:
-  #     _data:
-  #       model: beautyshots
-  #       map:
-  #         app: rg
-  #         func: beautyshots
 
