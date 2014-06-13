@@ -1,7 +1,7 @@
 ---
 domain: mfa.cape.io # This is the comple server CNAME.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.1.7 # Current version of cape can be found at http://v2.cape.io/version
+cape_version: 2.2.1 # Current version of cape can be found at http://v2.cape.io/version
 
 load:
   - "/_api/gh_repo/_load.json"
@@ -17,12 +17,12 @@ api: # An API as a collection of content.
       owner: bjornmeansbear
       repo: mfathesis2014
       branch: master
+    field:
+      _self:
+        overwrite_file: false
+        html_as_file: true
     load:
-      resource: tree
-      _id: path
-      arg:
-        recursive: true
-        sha: master
+      cache: true
 
   student: # Get item content from a json file.
     provider: gsheet
@@ -31,6 +31,15 @@ api: # An API as a collection of content.
     load:
       resource: rows
       _id: id
+    filter:
+      must_not:
+        disable: x
+    without: [_links, content, title, disable, _d415a]
+    field:
+      statement:
+        app: map
+        func: markdown
+        arg: websitelongstatementupto500words
 
   student_gallery: # Get item content from a json file.
     provider: gsheet
@@ -39,126 +48,8 @@ api: # An API as a collection of content.
     load:
       resource: rows
       _id: studentid
-
-  # gallery:
-  #   provider: gsheet
-  #   arg:
-  #     id: 0Al-kEdVYvxtGdDNBZHFWZjB1YnVFX19CSWpHLWczb1E
-  #   load:
-  #     resource: rows
-  #     _id: id
-
-  # show:
-  #   provider: gsheet
-  #   arg:
-  #     id: 0Al-kEdVYvxtGdHZiZ2lQQjA1bkl0cGpGb0ZSZHJVRkE
-  #   load:
-  #     resource: rows
-  #     _id: id
-
-  photos:
-    provider: dropbox
-    load:
-      resource: delta
-      _id: path
-      arg:
-        cursor: AAEJPObauoYaiLrm4srbR1pacMEOJ9W3TA3aviK24OA0SQj2tCmy2pcdAUE94xGZQ4WOApe41EaAnJhyeAoKmODpzhZ9CX37EOwxqU9REn21HyaH5N55itwhzYouYU5pNZKpYjYB59cVbCCr8Kj86a7mFbglojCo2Ab7IaSzIdLqgg
-        root: dropbox
-        path_prefix: /GradShow2014GPAs
-
-model:
-
-  template:
+    without: [_links, content, id, title]
     filter:
-      api: gh_repo
-      must:
-        _dirname: templates
-    field:
-      _self:
-        api: gh_repo
-        resource: raw
-        type: yaml_front
-        default: default.html
-        arg:
-          path: '{{&_id}}'
-
-  mini_templates:
-    type: set
-    set_key: _filename
-    filter:
-      api: gh_repo
-      must:
-        _dirname: templates/mini
-    field:
-      _self:
-        api: gh_repo
-        resource: raw
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  files:
-    type: files
-    filter:
-      api: gh_repo
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
-      must_not:
-        _dir1: reference
-    file:
-      source_file:
-        api: gh_repo
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  content:
-    type: set
-    set_key: _filename
-    filter:
-      api: gh_repo
-      should:
-        _ext: ['.md', '.markdown']
-    field:
-      _self:
-        api: gh_repo
-        resource: raw
-        type: md
-        arg:
-          path: '{{&_id}}'
-
-  data:
-    type: set
-    set_key: _filename
-    filter:
-      api: gh_repo
-      should:
-        _ext: ['.yaml', '.yml']
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        api: gh_repo # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
-
-  student:
-    filter:
-      api: student
-      must_not:
-        disable: x
-    field:
-      statement:
-        app: map
-        func: markdown
-        arg: websitelongstatementupto500words
-
-  student_gallery: # Get item content from a json file.
-    filter:
-      api: student_gallery
       must_not:
         studentid:
           - "443278"
@@ -207,13 +98,68 @@ model:
           - "536518"
           - "538221"
           - "540707"
-  gallery:
-    filter:
-      api: gallery
 
-  show:
+  photos:
+    provider: dropbox
+    ext_types:
+      '.txt': 'yaml'
+    insert_only: false
+    load:
+      arg:
+        path_prefix: /GradShow2014GPAs
     filter:
-      api: show
+      must_not:
+        ext: ['.doc', '.rtf', '.docx', '.tiff', '.mp4', '.tif', '.pages']
+    field:
+      _self:
+        no_files: true
+        overwrite_file: false
+        yaml_to_file: false
+      dir_i: true
+      filename: true
+      studentid:
+        func: substring
+        arg:
+          string: dir3
+          substring: -6
+      sort:
+        func: substring
+        arg:
+          string: filename
+          trim: true
+          rm_ext: true
+          substring: -2
+          allow_empty: false
+    fields:
+      -
+        filter:
+          should:
+            mime_type: ["image/jpeg", "image/png"]
+        field:
+          file_type: 'image'
+      -
+        filter:
+          should:
+            ext: ['.txt', '.yml', '.yaml']
+        field:
+          file_type: 'info'
+    rename:
+      dir2: program
+    without: [dir1, dir3, dirsplit]
+
+model:
+
+  students:
+    api: student
+    pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, studentid, personalemail, exhibitionlocation]
+    eqJoin:
+      table: student_gallery
+      key: id
+      zip: true
+
+  student_gallery: # Get item content from a json file.
+    api: student_gallery
+    pluck: [studentid, exhibitionlocation]
 
   # photo_groups:
   #   filter:
@@ -228,166 +174,89 @@ model:
   #         root: dropbox
   #         path: '{{&path}}'
 
-  photos:
-    filter:
-      api: photos
-      should:
-        mime_type: ["image/jpeg", "image/png"]
-    field:
-      program: "{{_dir2}}"
-      studentid:
-        app: map
-        func: substring
-        arg:
-          string: "{{_dir3}}"
-          substring: -6
-      sort:
-        app: map
-        func: substring
-        arg:
-          string: "{{_filename}}"
-          substring: -2
-          tonumber: false
-    file:
-      source_file:
-        api: photos
-        resource: files
-        file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
-        type: any
-        arg:
-          root: dropbox
-          path: "{{path}}"
-        img_size:
-          delete_source: true
-          sizes:
-            -
-              destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
-              width: '850'
-              height: null
+  slideshow:
+    api: photos
+    should:
+      mime_type: ["image/jpeg", "image/png"]
+    group_by: studentid
+    pluck: [sort, ext]
+    sort: sort
+    merge: true
+    map:
+      add: [sort, ext]
+    #count: true
+    # file:
+    #   source_file:
+    #     api: photos
+    #     resource: files
+    #     file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
+    #     type: any
+    #     arg:
+    #       root: dropbox
+    #       path: "{{path}}"
+    #     img_size:
+    #       delete_source: true
+    #       sizes:
+    #         -
+    #           destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
+    #           width: '850'
+    #           height: null
 
   photo_info:
-    filter:
-      api: photos
-      should:
-        _ext: ['.txt', '.yml', '.yaml']
-    field:
-      program: "{{_dir2}}"
-      studentid:
-        app: map
-        func: substring
-        arg:
-          string: "{{_dir3}}"
-          substring: -6
-      text:
-        api: photos
-        resource: files
-        type: yaml
-        arg:
-          root: dropbox
-          path: "{{path}}"
-img:
-  slideshow:
-    views: [photo_list]
+    api: photos
+    must:
+      file_type: info
+    pluck: content
+    index_by: studentid
+    merge: true
 
 view:
-  gallery:
-    type: list
-    field:
-      _data:
-        model: gallery
-        pluck: [gallery, building, address, show]
+  # gallery:
+  #   type: list
+  #   field:
+  #     _data:
+  #       model: gallery
+  #       pluck: [gallery, building, address, show]
 
-  show:
-    type: list
-    field:
-      _data:
-        model: show
-        pluck: [program, showopeningpartytime, showopeningpartydate, startdate, enddate]
+  # show:
+  #   type: list
+  #   field:
+  #     _data:
+  #       model: show
+  #       pluck: [program, showopeningpartytime, showopeningpartydate, startdate, enddate]
 
-  photo_info:
-    type: set
-    field:
-      _data:
-        model: photo_info
-        index_by: studentid
-        pluck: text
-        values: true
-    output_id: items/photo_info.json
+  # photo_info:
+  #   field:
+  #     _data:
+  #       model: photo_info
+  #       index_by: studentid
+  #       pluck: text
+  #       values: true
+  #   output_id: items/photo_info.json
 
-  photo_list:
-    type: list
-    field:
-      photos: true
-    pager:
-      iterate: photos
-      field_id: item
-    emit:
-      source: '/img/originals/{{item.studentid}}/{{item.sort}}{{item._ext}}'
-      destination: '/img/slides/{{item.studentid}}/{{item.sort}}{{item._ext}}'
-      width: '850'
-      height: null
+  # photo_list:
+  #   field:
+  #     photos: true
+  #   pager:
+  #     iterate: photos
+  #     field_id: item
+  #   emit:
+  #     source: '/img/originals/{{item.studentid}}/{{item.sort}}{{item._ext}}'
+  #     destination: '/img/slides/{{item.studentid}}/{{item.sort}}{{item._ext}}'
+  #     width: '850'
+  #     height: null
 
-  photos:
-    type: set
-    field:
-      _data:
-        model: photos
-        group_by: studentid
-        emit: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
+  # photos:
+  #   field:
+  #     _data:
+  #       model: photos
 
-  student_info:
-    type: list
-    field:
-      student:
-        model: student
-        omit:
-          - id
-          - _d415a
-          - pleaseselectyourdesiredtemplatelayoutforthecatalogue
-          - shortstatementupto75words
-          - cataloglongstatementupto500words
-          - websitelongstatementupto500words
-          - disable
-          - title
-          - content
-          - _char1
-          - _char1int
-          - _ext
-          - _first
-          - _links
-          - _cape
-          - _models
-          - _source
-          - _last
-      student_gallery:
-        model: student_gallery
-        omit:
-          - id
-          - name
-          - content
-          - _char1
-          - _char1int
-          - _ext
-          - _first
-          - _links
-          - _cape
-          - _models
-          - _source
-          - _last
-          - _i
-    merge: _id
-
-  mini_templates:
-    type: set
-    field:
-      _data:
-        model: mini_templates
-        pluck: content
+  #       emit: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
 
   client_data:
-    type: object
     output_id: items/client_data.json
     field:
-      students: student_info
-      slideshow: photos
-      photo_info: photo_info
+      students:
+        return_all: true
+      slideshow: true
+      photo_info: true
