@@ -19,7 +19,7 @@ api: # An API as a collection of content.
       branch: master
     field:
       _self:
-        overwrite_file: false
+        overwrite_file: true
         html_as_file: true
     load:
       cache: true
@@ -254,7 +254,7 @@ view:
   #       emit: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
 
   client_data:
-    output_id: items/client_data.json
+    output_id: items/data.json
     field:
       students:
         return_all: true
