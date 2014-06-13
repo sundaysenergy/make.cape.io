@@ -155,24 +155,13 @@ model:
     eqJoin:
       table: student_gallery
       key: id
-      zip: true
+      pluck: 'exhibitionlocation'
+      require_match: false
 
-  student_gallery: # Get item content from a json file.
+  # This is just for debugging.
+  student_gallery:
     api: student_gallery
     pluck: [studentid, exhibitionlocation]
-
-  # photo_groups:
-  #   filter:
-  #     api: photos
-  #     must:
-  #       is_dir: true
-  #   field:
-  #     _self:
-  #       api: dropbox
-  #       resource: meta
-  #       arg:
-  #         root: dropbox
-  #         path: '{{&path}}'
 
   slideshow:
     api: photos
@@ -184,7 +173,7 @@ model:
     merge: true
     map:
       add: [sort, ext]
-    #count: true
+
     # file:
     #   source_file:
     #     api: photos
@@ -211,47 +200,6 @@ model:
     merge: true
 
 view:
-  # gallery:
-  #   type: list
-  #   field:
-  #     _data:
-  #       model: gallery
-  #       pluck: [gallery, building, address, show]
-
-  # show:
-  #   type: list
-  #   field:
-  #     _data:
-  #       model: show
-  #       pluck: [program, showopeningpartytime, showopeningpartydate, startdate, enddate]
-
-  # photo_info:
-  #   field:
-  #     _data:
-  #       model: photo_info
-  #       index_by: studentid
-  #       pluck: text
-  #       values: true
-  #   output_id: items/photo_info.json
-
-  # photo_list:
-  #   field:
-  #     photos: true
-  #   pager:
-  #     iterate: photos
-  #     field_id: item
-  #   emit:
-  #     source: '/img/originals/{{item.studentid}}/{{item.sort}}{{item._ext}}'
-  #     destination: '/img/slides/{{item.studentid}}/{{item.sort}}{{item._ext}}'
-  #     width: '850'
-  #     height: null
-
-  # photos:
-  #   field:
-  #     _data:
-  #       model: photos
-
-  #       emit: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
 
   client_data:
     output_id: items/data.json
