@@ -127,12 +127,14 @@ model:
 
   students:
     api: student
-    pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, studentid, personalemail, exhibitionlocation]
+    pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, id, personalemail, exhibitionlocation]
     eqJoin:
       table: student_gallery
       key: id
-      pluck: 'exhibitionlocation'
+      pluck: exhibitionlocation
       require_match: false
+    rename:
+      id: studentid
 
   # This is just for debugging.
   student_gallery:
