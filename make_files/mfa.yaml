@@ -38,8 +38,8 @@ api: # An API as a collection of content.
     field:
       statement:
         app: map
-        func: markdown
-        arg: websitelongstatementupto500words
+        func: md
+        arg_field: websitelongstatementupto500words
 
   student_gallery: # Get item content from a json file.
     provider: gsheet
@@ -88,7 +88,7 @@ api: # An API as a collection of content.
         ext: ['.doc', '.rtf', '.docx', '.tiff', '.mp4', '.tif', '.pages']
     field:
       _self:
-        no_files: true
+        no_files: false
         overwrite_file: false
         yaml_to_file: false
       dir_i: true
@@ -111,19 +111,58 @@ api: # An API as a collection of content.
         filter:
           should:
             mime_type: ["image/jpeg", "image/png"]
+          must:
+            studentid: '*'
         field:
           file_type: 'image'
+          _file:
+            source_file:
+              path: 'img/originals/{{studentid}}/{{sort}}{{ext}}'
+            slide:
+              path: 'img/slides/{{studentid}}/{{sort}}{{ext}}'
+      -
+        filter:
+          should:
+            mime_type: ["image/jpeg", "image/png"]
+          must:
+            sort: '01'
+        field:
+          is_thumb: true
+          _file:
+            thumb:
+              path: 'img/thumbnails/{{studentid}}{{ext}}'
       -
         filter:
           should:
             ext: ['.txt', '.yml', '.yaml']
         field:
           file_type: 'info'
+    img_size:
+      delete_source: false
+      cdn: false
+      sizes:
+        slide:
+          width: 850
+        thumb:
+          width: 200
+          height: 200
+          resize_crop: true
     rename:
       dir2: program
     without: [dir1, dir3, dirsplit]
 
 model:
+
+  # This is just for debugging.
+  student_gallery:
+    api: student_gallery
+    pluck: [studentid, exhibitionlocation]
+
+  # This is only used for re-processing images.
+  photo_list:
+    api: photos
+    must:
+      file_type: 'image'
 
   students:
     api: student
@@ -136,11 +175,6 @@ model:
     rename:
       id: studentid
 
-  # This is just for debugging.
-  student_gallery:
-    api: student_gallery
-    pluck: [studentid, exhibitionlocation]
-
   slideshow:
     api: photos
     should:
@@ -151,23 +185,6 @@ model:
     merge: true
     map:
       add: [sort, ext]
-
-    # file:
-    #   source_file:
-    #     api: photos
-    #     resource: files
-    #     file_id: '/img/originals/{{studentid}}/{{sort}}{{_ext}}'
-    #     type: any
-    #     arg:
-    #       root: dropbox
-    #       path: "{{path}}"
-    #     img_size:
-    #       delete_source: true
-    #       sizes:
-    #         -
-    #           destination: '/img/slides/{{studentid}}/{{sort}}{{_ext}}'
-    #           width: '850'
-    #           height: null
 
   photo_info:
     api: photos
