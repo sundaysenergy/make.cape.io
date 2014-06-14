@@ -19,10 +19,10 @@ api: # An API as a collection of content.
       branch: master
     field:
       _self:
-        overwrite_file: true
+        overwrite_file: false
         html_as_file: true
     load:
-      cache: true
+      cache: false
 
   student: # Get item content from a json file.
     provider: gsheet
