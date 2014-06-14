@@ -19,7 +19,7 @@ api: # An API as a collection of content.
       branch: master
     field:
       _self:
-        overwrite_file: false
+        overwrite_file: true
         html_as_file: true
     load:
       cache: false
