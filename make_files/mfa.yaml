@@ -89,7 +89,7 @@ api: # An API as a collection of content.
     field:
       _self:
         no_files: false
-        overwrite_file: false
+        overwrite_file: true
         yaml_to_file: false
       dir_i: true
       filename: true
@@ -164,6 +164,11 @@ model:
     must:
       file_type: 'image'
 
+  # reprocess:
+  #   api: photos
+  #   getAll:
+
+  # Below is actually used.
   students:
     api: student
     pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, id, personalemail, exhibitionlocation]
