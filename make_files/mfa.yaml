@@ -144,6 +144,7 @@ api: # An API as a collection of content.
         slide:
           width: 850
         thumb:
+          overwrite_file: false
           width: 200
           height: 200
           resize_crop: true
