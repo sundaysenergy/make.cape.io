@@ -1,11 +1,11 @@
 ---
 domain: templates.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.1.6 # Current version of cape can be found at v2.api.cape.io/version
+cape_version: 2.2.2 # Current version of cape can be found at v2.api.cape.io/version
 
 load:
   - "/_api/content/_load.json"
-  - "/_api/gh_theme/_load.json"
+  - "/_view/_all/_output"
 
 api: # An API is a set of default information. Think of an API as a collection of content.
   content: # Used to get content from github.
@@ -15,11 +15,12 @@ api: # An API is a set of default information. Think of an API as a collection o
       repo: templates.cape.io
       branch: gh-pages
     load: # To load previously created content from this API you need to specificy the load param.
-      resource: tree # Github has a nice index of all content in a repo.
-      _id: path
       arg:
-        recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
+    field:
+      _self:
+        html_as_file: true
+    template_default: cape/default.mustache
 
 model:
   files:
@@ -52,73 +53,44 @@ model:
           path: '{{&_id}}'
 
   readme: # process the readme into html. Probably change to a list of pages soon?
-    type: object
-    filter:
-      api: content
-      must:
-        _id: README.md
-    field:
-      _self:
-        api: content
-        resource: raw
-        type: md
-        arg:
-          path: '{{&_id}}'
+    api: content
+    get: README.md
 
   data:
-    type: object
-    filter:
-      api: content
-      must:
-        _id: data.yaml
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: data.json # When the _file field has a value it saves that field as a file.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
+    api: content
+    get: data.yaml
 
 view:
   marked:
-    type: string
     file_id: 'marked.html'
     field:
       data: true
     template:
-      model: template
-      _id: default.mustache
+      api: content
       partial:
         page_html:
-          model: template
-          _id: marked.html
+          api: content
+          get: cape/marked.html
 
   upload:
-    type: string
     file_id: 'upload.html'
     field:
       data: true
-      make_id: files
+      make_id:
+        value: files
     template:
-      model: template
-      _id: default.mustache
+      api: content
       partial:
         page_html:
-          model: template
-          _id: upload.html
+          get: cape/upload.html
 
   index_html:
-    type: string
     file_id: 'index.html'
     field:
       data: true
       readme: true
     template:
-      model: template
-      _id: default.mustache
+      api: content
       partial:
         page_html:
-          model: template # Load same way as you load a template.
-          _id: readme.html
+          get: cape/readme.html

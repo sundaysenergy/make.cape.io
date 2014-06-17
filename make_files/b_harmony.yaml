@@ -1,0 +1,45 @@
+---
+domain: www.building-harmony.co
+uid: 1
+cape_version: 2.2.2
+
+load:
+  - "/_api/gh_content/_load.json"
+  - "/_view/index_html/display"
+
+api:
+  gh_content: # Used to get content from github.
+    provider: github
+    arg:
+      owner: sundaysenergy
+      repo: building-harmony.co.content
+
+model:
+#   # EVERYTHING!
+#   everything:
+#     type: ezle
+#     filter:
+#       api: gh_content
+#       must_not:
+#         _ext: false
+#         _dir1: '.git'
+#     field:
+#       _self: true # MAGIC!
+  readme:
+    api: gh_content
+    get: README.md
+
+view:
+
+  index_html:
+    file_id: 'index.html'
+    field:
+      readme: true
+    template:
+      make_id: templates
+      api: content
+      get: cape/default.mustache
+      partial:
+        page_html:
+          get: cape/readme.html
+

@@ -4,7 +4,7 @@ cdn: www.genuinerepresentation.org
 cdnUri: http://cdn.genuinerepresentation.org
 
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
-cape_version: 2.1.2
+cape_version: 2.2.2
 
 load:
   - "_api/content/_load.json"
@@ -21,221 +21,76 @@ api: # An API is a set of default information. Think of an API as a collection o
     arg:
       repo: ccd-content
       owner: sundaysenergy
-      branch: master
-    # CAPE only listens for new or changed content.
-    load: # To load previously created content from this API you need to specificy the load param.
-      resource: tree # Github has a nice index of all content in a repo.
-      _id: path
-      arg:
-        recursive: true # Thankfully they have an option to get results recursively.
-        sha: master # Try using master branch.
-        # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
+    field:
+      _self:
+        overwrite_file: false
+      dir_i: true
+
   theme: # Used to get content from github.
     provider: github
     arg:
       repo: ccd-theme
       owner: sundaysenergy
-      branch: master
-    # CAPE only listens for new or changed content.
-    load: # To load previously created content from this API you need to specificy the load param.
-      resource: tree # Github has a nice index of all content in a repo.
-      _id: path
-      arg:
-        recursive: true # Thankfully they have an option to get results recursively.
-        sha: master # Only problem is having to update the sha.
-        # Will likely create something to auto get the sha in the future. Perhaps getting the args from another view.
-
-  cape_template: # Used to get content from github.
-    provider: github
-    arg:
-      owner: sundaysenergy
-      repo: templates.cape.io
-      branch: gh-pages
-    load: # To load previously created content from this API you need to specificy the load param.
-      resource: tree # Github has a nice index of all content in a repo.
-      _id: path
-      arg:
-        recursive: true # Thankfully they have an option to get results recursively.
-        sha: gh-pages
+    field:
+      _self:
+        overwrite_file: false
 
 model:
-  template:
-    filter:
-      api: theme
-      must:
-        _dirname: templates
-        type: blob
-    field:
-      _self:
-        api: theme
-        resource: raw
-        type: yaml_front
-        arg:
-          path: '{{&_id}}'
-
-  template_files:
-    filter:
-      api: theme
-      must_not:
-        _dirname: templates
-      must:
-        type: blob
-    file:
-      source_file:
-        api: theme
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  cape_template:
-    filter:
-      api: cape_template
-      must:
-        _dirname: cape
-    field:
-      _self:
-        api: cape_template
-        resource: raw
-        type: yaml_front
-        default: default.html
-        arg:
-          path: '{{&_id}}'
-
-  cape_files:
-    type: files
-    filter:
-      api: cape_template
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache']
-    file:
-      source_file:
-        api: cape_template
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  files:
-    type: files
-    filter:
-      api: content
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.doc']
-    file:
-      source_file:
-        api: content
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  data: # data view #
-    type: object
-    filter:
-      api: content
-      must:
-        _id: data.yaml
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: 'data.json'
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: yaml # This tells CAPE what to do with the file that it gets. This should default to the file extension.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
-      _file: # _self is a special meta-field that will place its own fields within the base context.
-        file_id: '{{&_id}}'
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: any # don't do anything, just save the file.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
-
-  redirects:
-    type: object
-    filter:
-      api: content
-      must:
-        _id: _redirects.yaml
-    field:
-      _self:
-        api: content
-        resource: raw
-        file_id: _redirects.json
-        type: yaml
-        arg:
-          path: '{{&_id}}'
+  data:
+    api: content
+    get: data.yaml
 
   pages: # pages view #
-    type: list
-    filter:
-      api: content
-      must:
-        _ext: .md
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: # _self is a special meta-field that will place its own fields within the base context.
-        api: content # The _self field is processed first.
-        resource: raw # This just defines what API at github to use.
-        type: md # This tells CAPE what to do with the file that it gets. 'md' converts the yaml into an object and content into html.
-        arg:
-          path: '{{&_id}}' # The raw github API call requires a path param.
+    api: content
+    ext: .md
 
 view:
   pages:
-    type: string
     field:
       data: true
       pages: true
     pager: # Style pages requires a pager.
       iterate: pages
       field_id: page # The field name for the iteration.
-      per_pg: 1 # Entities per page. 1 is the default.
-      file_id: '{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
+      _id: no_ext
+      file_id: '{{&page.no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
     template:
-      model: template
-      _id: default.mustache
+      api: theme
+      get: templates/default.mustache
 
   index:
-    type: string
     field:
       data: true
       pages: true
       sitemap: 'yes'
     template:
-      model: template
-      _id: default.mustache
+      api: theme
+      get: templates/default.mustache
     file_id: 'sitemap.html'
 
   upload:
-    type: string
     file_id: 'upload.html'
     field:
       data: true
       make_id: ccd
     template:
-      model: cape_template
-      _id: default.mustache
+      make_id: templates
+      api: content
+      get: cape/default.mustache
       partial:
         page_html:
-          model: cape_template
-          _id: upload.html
+          get: upload.html
 
-  old:
-    type: string
-    field:
-      data: true
-      pages: true
-    pager: # Style pages requires a pager.
-      iterate: pages
-      field_id: page # The field name for the iteration.
-      per_pg: 1 # Entities per page. 1 is the default.
-      file_id: 'old/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
-    template:
-      model: template
-      _id: old.mustache
+  # old:
+  #   type: string
+  #   field:
+  #     data: true
+  #     pages: true
+  #   pager: # Style pages requires a pager.
+  #     iterate: pages
+  #     field_id: page # The field name for the iteration.
+  #     per_pg: 1 # Entities per page. 1 is the default.
+  #     file_id: 'old/{{&page._no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
+  #   template:
+  #     model: template
+  #     _id: old.mustache

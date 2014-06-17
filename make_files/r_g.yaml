@@ -23,10 +23,9 @@ api: # An API as a collection of content.
 
   photos:
     provider: dropbox
-    load:
-      arg:
-        root: sandbox
-        path_prefix: /rg
+    arg:
+      root: sandbox
+      path_prefix: /rg
 
   gh_repo: # Used to get content from the big heavy github repo.
     load:
@@ -451,9 +450,6 @@ view:
     template:
       model: template
       _id: default.html
-
-
-
 
   # Big huge thing used client side for database.
   client_data:

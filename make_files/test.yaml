@@ -1,42 +1,15 @@
 ---
 domain: www.test.org # This is not used for anything yet.
-cdn: www.test.org
+#cdn: www.test.org
 uid: kc2 # The CAPE user ID to use for authenticating against the providers when requesting API resources.
-cape_version: 2.1.9
+cape_version: 2.2.2
 
 api: # An API is just a set of default information.
 
   content:
     provider: dropbox
     arg:
-      root: dropbox
       path_prefix: /test
-    load:
-      resource: delta
-      _id: path
-      arg:
-        cursor: ''
-
-model:
-  files:
-    type: list
-    filter:
-      api: content
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
-
-  content:
-    type: ezle
-    filter:
-      api: content
-      must_not:
-        _ext: false
-    field: # The base "entity" in CAPE is the _id field. That's it.
-      # To get the contents of the file we need to add a "meta-field"
-      _self: true
-
-view:
-  content:
-    type: set
     field:
-      content: true
+      _self:
+        html_as_file: true
