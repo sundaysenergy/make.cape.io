@@ -61,7 +61,7 @@ view:
     field:
       data: true
       make_files:
-        pluck: [filename, _file, cape_version, domain, uid, cdn]
+        pluck: [filename, _file, cape_version, domain, uid, cdn, path]
     template:
       make_id: templates
       api: content

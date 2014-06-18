@@ -99,7 +99,7 @@ view:
       make_id:
         value: ccd
     template:
-      fs: /srv/www/sites/templates.cape.io
+      #fs: /srv/www/sites/templates.cape.io
       make_id: templates
       api: content
       get: cape/default.mustache
