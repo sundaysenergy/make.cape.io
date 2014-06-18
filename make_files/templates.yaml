@@ -23,34 +23,6 @@ api: # An API is a set of default information. Think of an API as a collection o
     template_default: cape/default.mustache
 
 model:
-  files:
-    type: files
-    filter:
-      api: content
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf', '.mustache']
-    file:
-      source_file:
-        api: content
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
-
-  template:
-    filter:
-      api: content
-      must:
-        _dirname: cape
-    field:
-      _self:
-        api: content
-        resource: raw
-        type: yaml_front
-        default: default.html
-        arg:
-          path: '{{&_id}}'
 
   readme: # process the readme into html. Probably change to a list of pages soon?
     api: content
