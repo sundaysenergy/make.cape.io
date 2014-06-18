@@ -9,7 +9,6 @@ cape_version: 2.2.2
 load:
   - "_api/content/_load.json"
   - "_api/theme/_load.json"
-  - "_api/theme/_update.json"
   - "_model/files/model_fields_add.json"
   - "_model/data/model_fields_add.json"
   - "_model/pages/model_fields_add.json"
@@ -23,7 +22,7 @@ api: # An API is a set of default information. Think of an API as a collection o
       owner: sundaysenergy
     field:
       _self:
-        overwrite_file: false
+        overwrite_file: true
       dir_i: true
 
   theme: # Used to get content from github.
@@ -33,24 +32,24 @@ api: # An API is a set of default information. Think of an API as a collection o
       owner: sundaysenergy
     field:
       _self:
-        overwrite_file: false
+        overwrite_file: true
 
 model:
   data:
     api: content
     get: data.yaml
 
-  pages: # pages view #
+  md_pages: # pages view #
     api: content
-    ext: .md
+    must:
+      ext: .md
 
 view:
   pages:
     field:
       data: true
-      pages: true
     pager: # Style pages requires a pager.
-      iterate: pages
+      iterate: md_pages
       field_id: page # The field name for the iteration.
       _id: no_ext
       file_id: '{{&page.no_ext}}.html' # Default is to ID the pages with a number. This overrides that.
@@ -61,8 +60,18 @@ view:
   index:
     field:
       data: true
-      pages: true
-      sitemap: 'yes'
+      pages:
+        model: md_pages
+        return_all: true
+        pluck: ['no_ext', 'title', 'filename']
+        field_map:
+          name:
+            func: humanize
+            arg_field: filename
+        field:
+          filename: true
+      sitemap:
+        value: 'yes'
     template:
       api: theme
       get: templates/default.mustache
@@ -72,14 +81,15 @@ view:
     file_id: 'upload.html'
     field:
       data: true
-      make_id: ccd
+      make_id:
+        value: ccd
     template:
       make_id: templates
       api: content
       get: cape/default.mustache
       partial:
         page_html:
-          get: upload.html
+          get: cape/upload.html
 
   # old:
   #   type: string
