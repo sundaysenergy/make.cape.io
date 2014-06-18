@@ -15,25 +15,10 @@ api: # An API is a set of default information. Think of an API as a collection o
     arg:
       owner: sundaysenergy
       repo: make.cape.io
-      branch: master
     field:
-      dirname:
-        arg: path
-      filename:
-        arg: path
+      dir_i: true
+      filename: true
 
-  gh_theme: # Used to get content from github.
-    provider: github
-    filter:
-      must:
-        dirname: cape
-    arg:
-      owner: sundaysenergy
-      repo: templates.cape.io
-      branch: gh-pages
-    load:
-      arg:
-        sha: gh-pages
 
   github_hook:
     provider: github
@@ -77,12 +62,12 @@ view:
       make_files:
         pluck: [filename, _file, cape_version, domain, uid, cdn]
     template:
-      api: gh_theme
-      get: default.mustache
+      make_id: templates
+      api: content
+      get: cape/default.mustache
       partial:
         page_html:
-          api: gh_theme # Load same way as you load a template.
-          get: make_index.html
+          get: cape/make_index.html
 
   index_json:
     field: make_files
