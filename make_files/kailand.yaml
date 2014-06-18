@@ -67,6 +67,8 @@ view:
           get: cape/readme.html
 
   pages: # These are the pages besides items.
+    field:
+      data: true
     map_field:
       date:
         func: date_obj

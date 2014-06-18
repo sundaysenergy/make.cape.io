@@ -1,0 +1,38 @@
+---
+domain: h28.co # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
+uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
+cape_version: 2.2.2
+
+load:
+  - "/_api/gh_content/_load.json"
+  - "/_view/index_html/display"
+
+api: # An API is a set of default information. Think of an API as a collection of content.
+  gh_content: # Used to get content from github.
+    provider: github
+    arg:
+      owner: sundaysenergy
+      repo: h28.content
+
+model:
+  data:
+    api: gh_content
+    get: data.yaml
+
+  readme:
+    api: gh_content
+    get: README.md
+
+view:
+  index_html:
+    file_id: 'index.html'
+    field:
+      data: true
+      readme: true
+    template:
+      make_id: templates
+      api: content
+      get: cape/default.mustache
+      partial:
+        page_html:
+          get: cape/readme.html
