@@ -51,8 +51,9 @@ view:
         model: readme
         pluck: content
     template:
-      api: gh_theme
-      get: default.mustache
+      make_id: templates
+      api: content
+      get: cape/default.mustache
 
   index_html:
     file_id: 'make_files/index.html'
