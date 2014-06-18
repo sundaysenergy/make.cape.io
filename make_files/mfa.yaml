@@ -89,7 +89,7 @@ api: # An API as a collection of content.
     field:
       _self:
         no_files: false
-        overwrite_file: true
+        overwrite_file: false
         yaml_to_file: false
       dir_i: true
       filename: true
