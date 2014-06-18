@@ -9,9 +9,9 @@ cape_version: 2.2.2
 load:
   - "_api/content/_load.json"
   - "_api/theme/_load.json"
-  - "_model/files/model_fields_add.json"
-  - "_model/data/model_fields_add.json"
-  - "_model/pages/model_fields_add.json"
+  # - "_model/files/model_fields_add.json"
+  # - "_model/data/model_fields_add.json"
+  # - "_model/pages/model_fields_add.json"
 
 # Updated and new content must match an API before it checks the views.
 api: # An API is a set of default information. Think of an API as a collection of content.
