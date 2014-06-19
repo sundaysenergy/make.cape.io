@@ -67,16 +67,16 @@ model:
       dirname: staff
       ext: .md
     sort: sort
-    field:
-      pic:
-        func: add
-        arg:
-          -
-            field: dirname
-          -
-            value: '/'
-          -
-            field: photo
+    # field:
+    #   pic:
+    #     func: add
+    #     arg:
+    #       -
+    #         field: dirname
+    #       -
+    #         value: '/'
+    #       -
+    #         field: photo
     eqJoin:
       table: content
       key: pic
