@@ -9,7 +9,7 @@ load:
 
 api: # An API is just a set of default information.
   content: # Machine name. This is where most of our content should live.
-    insert_only: false
+    #insert_only: false
     provider: github
     arg:
       repo: integral-therapy
@@ -105,7 +105,7 @@ view:
       data: true # Define the field data as...
       nav: true # The navigation variable will be the output from the default display on the navigation view.
     template: # Send the field variables through the mustache converter.
-      fs: /Users/kc/Sites/therapy.content
+      #fs: /Users/kc/Sites/therapy.content
       api: content
       get: theme/layouts/default.html
       partial:
@@ -121,6 +121,7 @@ view:
       field_id: page
       file_id: '{{&page.no_ext}}.html'
     template:
+      #fs: /Users/kc/Sites/therapy.content
       api: content
       get: theme/layouts/default.html
       partial:
