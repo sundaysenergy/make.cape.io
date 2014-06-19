@@ -1,6 +1,6 @@
 ---
 domain: www.integral-therapy.com
-cdn: www.integral-therapy.com
+#cdn: www.integral-therapy.com
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
 cape_version: 2.2.2
 
@@ -9,6 +9,7 @@ load:
 
 api: # An API is just a set of default information.
   content: # Machine name. This is where most of our content should live.
+    insert_only: false
     provider: github
     arg:
       repo: integral-therapy
@@ -23,10 +24,10 @@ api: # An API is just a set of default information.
             dir1: staff
           should:
             ext: ['.jpg', '.png', '.gif', '.jpeg']
-          field:
-            _file:
-              thumb:
-                path: '{{dirname}}/{{filename}}_thumb{{ext}}'
+        field:
+          _file:
+            thumb:
+              path: '{{dirname}}/{{filename}}_thumb{{ext}}'
       -
         filter:
           must:
@@ -34,6 +35,8 @@ api: # An API is just a set of default information.
             ext: '.md'
         default:
           sort: 0
+        field:
+          pic: '{{dirname}}/{{photo}}'
 
     img_size:
       sizes:
@@ -46,10 +49,10 @@ model:
     api: content
     get: data.yaml
 
-  navigation:
+  nav:
     api: content
     get: navigation.yaml
-    pluck: navigation
+    pluck: [title, navigation]
 
   staff_pics:
     api: content
@@ -64,30 +67,26 @@ model:
       dirname: staff
       ext: .md
     sort: sort
-
-    # file:
-    #   source_file:
-    #     api: content
-    #     file_id: 'staff/original/{{photo}}'
-    #     resource: raw
-    #     type: any
-    #     arg:
-    #       path: 'staff/{{photo}}'
-    #     img_size:
-    #       overwrite: true
-    #       delete_source: true
-    #       cdn: false
-    #       sizes:
-    #         -
-    #           destination: 'staff/{{photo}}'
-    #           width: '115'
-    #           height: '155'
-    #           name: normal
-    #           save_size: true
-    # sort: # Define how to sort the view entities.
-    #   field: sort # Look for the order field.
-    #   default: 1 # Default sort value.
-    #   order: ascending
+    field:
+      pic:
+        func: add
+        arg:
+          -
+            field: dirname
+          -
+            value: '/'
+          -
+            field: photo
+    eqJoin:
+      table: content
+      key: pic
+      pluck:
+        _file:
+          thumb: true
+      require_match: false
+    rename:
+      _file: photo
+    pluck: [content, name, photo, title, published]
 
   md_pages:
     api: content
@@ -96,45 +95,27 @@ model:
     empty_fields: dirname
 
 view:
-  staff: # the machine name of the display.
-    file_id: credentials_stub.html
-    field:
-      data: true
-      md_staff: true
-    template: # The page style requires the template attribute.
-      api: content
-      get: theme/layouts/staff.html
 
-  wufoo:
-    file_id: contact_stub.html
-    field:
-      data: true
-    template:
-      api: content
-      get: theme/layouts/wufoo.html
-
-  # navigation: # Machine name of the display.
-  #   file_id: navigation.html
-  #   field:
-  #     navigation: true
-  #   template: # The page style requires the template attribute.
-  #     api: content # Where do we get the layout file from?
-  #     get: theme/layouts/navigation.html # What ID does the layout file have?
-
-  staff_index:
+  staff:
     file_id: credentials.html
     field: # You can add fields to a specific display. These fields are not available during filtering.
-      content: true
+      staff:
+        model: md_staff
+        return_all: true
       data: true # Define the field data as...
-      navigation: true # The navigation variable will be the output from the default display on the navigation view.
+      nav: true # The navigation variable will be the output from the default display on the navigation view.
     template: # Send the field variables through the mustache converter.
+      fs: /Users/kc/Sites/therapy.content
       api: content
       get: theme/layouts/default.html
+      partial:
+        page_html:
+          get: theme/layouts/staff.html
 
   pages:
     field:
       data: true
-      wufoo: true
+      nav: true
     pager:
       iterate: md_pages
       field_id: page
@@ -142,4 +123,6 @@ view:
     template:
       api: content
       get: theme/layouts/default.html
-
+      partial:
+        wufoo:
+          get: theme/layouts/wufoo.html
