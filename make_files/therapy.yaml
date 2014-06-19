@@ -1,207 +1,145 @@
 ---
-domain: www.integral-therapy.com # This is not used for anything yet.
+domain: www.integral-therapy.com
+cdn: www.integral-therapy.com
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
-cape_version: 2.1.7
+cape_version: 2.2.2
+
+load:
+  - "/_api/content/_load.json"
 
 api: # An API is just a set of default information.
-  cloudfiles: # Machine name of the API
-    provider: cloudfiles # CAPE provider that is defined in providers.yml
-    arg: # Default arguments to send to the provider.
-      container: www.integral-therapy.com # Cloudfiles container to use.
   content: # Machine name. This is where most of our content should live.
     provider: github
     arg:
       repo: integral-therapy
       owner: sundaysenergy
-      branch: master
-    load: # Define a way to load the data initially or if data needs to be processed again.
-      resource: tree # Resource to use for the provider listed in this API.
-      _id: path # Define the _id field. Required. If set as true it expects an array of id values.
-      arg:
-        recursive: true # We want the entire repo.
-        sha: master # Instead of the sha, try putting in the branch name. Seems to work!
+    field:
+      dir_i: true
+      filename: true
+    fields:
+      -
+        filter:
+          must:
+            dir1: staff
+          should:
+            ext: ['.jpg', '.png', '.gif', '.jpeg']
+          field:
+            _file:
+              thumb:
+                path: '{{dirname}}/{{filename}}_thumb{{ext}}'
+      -
+        filter:
+          must:
+            dirname: staff
+            ext: '.md'
+        default:
+          sort: 0
 
-# As content is added or updated it is sent through the make file.
-model: # This is the most important part.
+    img_size:
+      sizes:
+        thumb:
+          width: 155
+          height: 155
 
-  # CAPE checks to see if content belongs to a view based on the filter criteria.
-  data: # Machine name of the view.
-    type: object # Possibly random entity is used as the data value. Default when filter must _id is single value.
-    filter:
-      api: content # An API is a bunch of default values about where the content comes from.
-      must: # If you filter against a field that isn't set it will try to find it (and load) that field.
-        _id: data.yaml # The most basic. Match the path field with the value 'data.yaml'.
-    field: # We need to load the raw file and parse it.
-      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
-        file_id: 'data.json'
-        api: content # Default values for provider and arguments to load the stuff.
-        resource: raw # What provider resource should we use.
-        type: yaml # What to do with the result. Parse the yaml into a native hash/object/dict.
-        arg:
-          path: '{{&_id}}'
+model:
+  data:
+    api: content
+    get: data.yaml
 
   navigation:
-    type: object # Possibly random entity is used as the data value. Default when filter must _id is single value.
-    filter:
-      api: content
-      must:
-        _id: navigation.yaml
-    field: # We need to load the raw file and parse it.
-      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
-        file_id: 'navigation.json'
-        api: content # Default values for provider and arguments to load the stuff.
-        resource: raw # What provider resource should we use.
-        type: yaml # What to do with the result. Parse the yaml into a native hash/object/dict.
-        arg:
-          path: '{{&_id}}'
+    api: content
+    get: navigation.yaml
+    pluck: navigation
 
-  template:
-    filter:
-      api: content
-      must:
-        _dirname: theme/layouts
-    field:
-      _self:
-        api: content
-        resource: raw
-        type: yaml_front
-        default: default.html
-        arg:
-          path: '{{&_id}}'
+  staff_pics:
+    api: content
+    must:
+      dir1: staff
+    must_not:
+      ext: .md
 
-  files:
-    type: files
-    filter:
-      api: content
-      should:
-        _ext: ['.jpg', '.jpeg', '.png', '.css', '.js', '.ico', '.gif', '.html', '.ttf', '.pdf']
-    file:
-      source_file:
-        api: content
-        resource: raw
-        file_id: '{{&_id}}'
-        type: any
-        arg:
-          path: '{{&_id}}'
+  md_staff: # A listing of staff profiles.
+    api: content
+    must:
+      dirname: staff
+      ext: .md
+    sort: sort
 
-  staff: # A listing of staff profiles.
-    type: list
-    filter:
-      api: content # github content repo for the site.
-      must:
-        _dirname: staff # The ID is the only required field.
-        _ext: .md
-    field: # These fields should be what is required for filtering or what is needed in more than one display.
-      _self: # _self is used to overwrite the object passed to cape (since it need only be an ID).
-        file_id: '{{&_no_ext}}.json' # Default is to ID the pages with a number. This overrides that.
-        api: content # Default values for provider and arguments to load the stuff.
-        resource: raw # What provider resource should we use.
-        type: md # What to do with the result. Markdown with YAML frontmatter processor.
-        arg:
-          path: '{{&_id}}'
-      img_url: '/staff/{{photo}}'
-    file:
-      source_file:
-        api: content
-        file_id: 'staff/original/{{photo}}'
-        resource: raw
-        type: any
-        arg:
-          path: 'staff/{{photo}}'
-        img_size:
-          overwrite: true
-          delete_source: true
-          cdn: false
-          sizes:
-            -
-              destination: 'staff/{{photo}}'
-              width: '115'
-              height: '155'
-              name: normal
-              save_size: true
+    # file:
+    #   source_file:
+    #     api: content
+    #     file_id: 'staff/original/{{photo}}'
+    #     resource: raw
+    #     type: any
+    #     arg:
+    #       path: 'staff/{{photo}}'
+    #     img_size:
+    #       overwrite: true
+    #       delete_source: true
+    #       cdn: false
+    #       sizes:
+    #         -
+    #           destination: 'staff/{{photo}}'
+    #           width: '115'
+    #           height: '155'
+    #           name: normal
+    #           save_size: true
+    # sort: # Define how to sort the view entities.
+    #   field: sort # Look for the order field.
+    #   default: 1 # Default sort value.
+    #   order: ascending
 
-    sort: # Define how to sort the view entities.
-      field: sort # Look for the order field.
-      default: 1 # Default sort value.
-      order: ascending
-
-  pages:
-    type: list
-    filter:
-      api: content
-      must:
-        _ext: .md
-        _dirname: .
-    field:
-      _self:
-        api: content
-        resource: raw
-        type: md
-        arg:
-          path: '{{&_id}}'
+  md_pages:
+    api: content
+    must:
+      ext: .md
+    empty_fields: dirname
 
 view:
   staff: # the machine name of the display.
-    type: string # Type of page. html allows a template variable. See below.
+    file_id: credentials_stub.html
     field:
       data: true
-      staff: true
-    filter: # You can refine the model to output just the entities you want.
-      must: # Only publish nodes that are in the 'added' list.
-        _list: true
+      md_staff: true
     template: # The page style requires the template attribute.
-      model: template # Where do we get the layout file from?
-      _id: staff.html
-      convert: mustache # What type of conversion should we do?
-    file_id: credentials_stub.html
+      api: content
+      get: theme/layouts/staff.html
 
   wufoo:
-    type: string
+    file_id: contact_stub.html
     field:
       data: true
     template:
-      model: template
-      _id: wufoo.html
-      convert: mustache
-    file_id: contact_stub.html
+      api: content
+      get: theme/layouts/wufoo.html
 
-  navigation: # Machine name of the display.
-    type: string # What format to save the data in.
-    template: # The page style requires the template attribute.
-      model: template # Where do we get the layout file from?
-      _id: navigation.html # What ID does the layout file have?
-      convert: mustache # What type of conversion should we do?
-    field:
-      navigation: true
-    file_id: navigation.html
+  # navigation: # Machine name of the display.
+  #   file_id: navigation.html
+  #   field:
+  #     navigation: true
+  #   template: # The page style requires the template attribute.
+  #     api: content # Where do we get the layout file from?
+  #     get: theme/layouts/navigation.html # What ID does the layout file have?
 
   staff_index:
-    type: string
-    field: # You can add fields to a specific display. These fields are not available during filtering.
-      # The most basic field definition is just a text string.
-      #title: Minneapolis Psychologist - Dr. David Thompson
-      content: staff
-      data: true # Define the field data as...
-      navigation: navigation# The navigation variable will be the output from the default display on the navigation view.
     file_id: credentials.html
+    field: # You can add fields to a specific display. These fields are not available during filtering.
+      content: true
+      data: true # Define the field data as...
+      navigation: true # The navigation variable will be the output from the default display on the navigation view.
     template: # Send the field variables through the mustache converter.
-      model: template
-      _id: default.html
-      convert: mustache
+      api: content
+      get: theme/layouts/default.html
 
   pages:
-    type: string
     field:
-      pages: true
       data: true
-      wufoo: wufoo
+      wufoo: true
     pager:
-      iterate: pages
+      iterate: md_pages
       field_id: page
-      per_pg: 1
-      file_id: '{{&page._no_ext}}.html'
+      file_id: '{{&page.no_ext}}.html'
     template:
-      model: template
-      _id: default.html
-      convert: mustache
+      api: content
+      get: theme/layouts/default.html
 
