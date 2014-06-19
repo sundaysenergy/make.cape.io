@@ -9,7 +9,7 @@ load:
 
 api: # An API is just a set of default information.
   content: # Machine name. This is where most of our content should live.
-    #insert_only: false
+    #insert_only: true
     provider: github
     arg:
       repo: integral-therapy
@@ -35,8 +35,8 @@ api: # An API is just a set of default information.
             ext: '.md'
         default:
           sort: 0
-        field:
-          pic: '{{dirname}}/{{photo}}'
+        # field:
+        #   pic: '{{dirname}}/{{photo}}'
 
     img_size:
       sizes:
@@ -67,16 +67,16 @@ model:
       dirname: staff
       ext: .md
     sort: sort
-    # field:
-    #   pic:
-    #     func: add
-    #     arg:
-    #       -
-    #         field: dirname
-    #       -
-    #         value: '/'
-    #       -
-    #         field: photo
+    field:
+      pic:
+        func: add
+        arg:
+          -
+            field: dirname
+          -
+            value: '/'
+          -
+            field: photo
     eqJoin:
       table: content
       key: pic
