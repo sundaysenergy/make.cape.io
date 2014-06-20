@@ -4,11 +4,11 @@ uid: 1 # The CAPE user ID to use for authenticating against the providers when r
 cape_version: 2.2.2
 
 load:
-  - "/_api/gh_content/_load.json"
+  - "/_api/gh/_load.json"
   - "/_view/index_html/display"
 
 api: # An API is a set of default information. Think of an API as a collection of content.
-  gh_content: # Used to get content from github.
+  gh: # Used to get content from github.
     provider: github
     arg:
       owner: sundaysenergy
@@ -16,12 +16,17 @@ api: # An API is a set of default information. Think of an API as a collection o
 
 model:
   data:
-    api: gh_content
+    api: gh
     get: data.yaml
 
   readme:
-    api: gh_content
+    api: gh
     get: README.md
+
+  lead:
+    api: gh
+    get: lead.md
+    pluck: content
 
 view:
   index_html:
@@ -29,10 +34,7 @@ view:
     field:
       data: true
       readme: true
+      lead: true
     template:
-      make_id: templates
-      api: content
-      get: cape/default.mustache
-      partial:
-        page_html:
-          get: cape/readme.html
+      api: gh
+      get: index.html

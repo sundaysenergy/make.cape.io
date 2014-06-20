@@ -6,6 +6,8 @@ cape_version: 2.2.2
 
 load:
   - "/_api/content/_load.json"
+  - "/_view/staff/display"
+  - "/_view/pages/display"
 
 api: # An API is just a set of default information.
   content: # Machine name. This is where most of our content should live.
