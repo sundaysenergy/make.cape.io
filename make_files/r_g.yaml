@@ -27,6 +27,7 @@ api: # An API as a collection of content.
       root: sandbox
       path_prefix: /rg
     field:
+      filename: true
       dir_i: true
       _self:
         overwrite_file: false
