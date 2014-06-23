@@ -28,6 +28,8 @@ api: # An API as a collection of content.
       path_prefix: /rg
     field:
       dir_i: true
+      _self:
+        overwrite_file: false
     fields:
       - # Passementrie
         filter:
