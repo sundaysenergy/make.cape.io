@@ -26,6 +26,80 @@ api: # An API as a collection of content.
     arg:
       root: sandbox
       path_prefix: /rg
+    field:
+      dir_i: true
+    fields:
+      - # Passementrie
+        filter:
+          must:
+            mime_type: "image/jpeg"
+            dir2: Passementrie
+        field:
+          itemNumber:
+            arg_field: filename
+          _file:
+            source_file:
+              path: 'items/{{filename}}/original.jpg'
+            wide:
+              path: 'items/{{filename}}/1170.jpg'
+            xlarge:
+              path: 'items/{{filename}}/2560.jpg'
+      - # Leather
+        filter:
+          must:
+            mime_type: "image/jpeg"
+            dir2: leather
+          field:
+            itemNumber:
+              func: string_replace
+              arg:
+                string: path
+                regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+                replace: '$1'
+      - # Textiles
+        filter:
+          must:
+            mime_type: 'image/jpeg'
+          should:
+            dir2: [normal, far]
+        field:
+          itemNumber:
+            app: map
+            func: string_replace
+            arg:
+              string: path
+              regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+              replace: '$1'
+          distance:
+            arg_field: dir2
+
+      - # Items
+        filter:
+          must:
+            mime_type: 'image/jpeg'
+          should:
+            dir2: [normal, far, leather]
+        field:
+          _file:
+            source_file:
+              path: 'items/{{itemNumber}}/original.jpg'
+            small:
+              path: 'items/{{itemNumber}}/640.jpg'
+            large:
+              path: 'items/{{itemNumber}}/1536.jpg'
+            xlarge:
+              path: 'items/{{itemNumber}}/2560.jpg'
+    img_size:
+      sizes:
+        small:
+          width: 640
+        wide:
+          width: 1170
+        large:
+          width: 1536
+        xlarge:
+          width: 2560
+
 
   gh_repo: # Used to get content from the big heavy github repo.
     load:
@@ -74,7 +148,7 @@ api: # An API as a collection of content.
     load:
       resource: items
       _id: itemNumber
-      cache: true
+      #cache: true
     filter:
       must_not:
         itemNumber: 'TRIMBOOK'
@@ -166,133 +240,13 @@ model:
 
   photos_passementerie:
     api: photos
-    must:
-      mime_type: "image/jpeg"
-      dir2: Passementrie
-    field:
-      itemNumber: '{{_filename}}'
-    file:
-      source_file:
-        overwrite: false
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          delete_source: true
-          cdn: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/1170.jpg'
-              width: '1170'
-              height: null
-              name: large
-              save_size: true
-            -
-              destination: 'items/{{itemNumber}}/2560.jpg'
-              width: '2560'
-              height: null
-              name: xlarge
 
   photos_leather:
     api: photos
-    must:
-      mime_type: "image/jpeg"
-      dir2: leather
-    field:
-      itemNumber:
-        app: map
-        func: string_replace
-        arg:
-          string: '{{path}}'
-          regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
-          replace: '$1'
-    file:
-      source_file:
-        overwrite: false
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          delete_source: true
-          cdn: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/640.jpg'
-              width: '640'
-              height: null
-              name: small
-            -
-              destination: 'items/{{itemNumber}}/1536.jpg'
-              width: '1536'
-              height: null
-              name: large
-            -
-              destination: 'items/{{itemNumber}}/2560.jpg'
-              width: '2560'
-              height: null
-              name: xlarge
 
   photos_textiles:
     api: photos
-    must:
-      mime_type: "image/jpeg"
-    should:
-      _dir2: [normal, far]
-    field:
-      itemNumber:
-        app: map
-        func: string_replace
-        arg:
-          string: '{{path}}'
-          regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
-          replace: '$1'
-      distance: '{{_dir2}}'
-      far:
-        app: map
-        func: compare
-        arg:
-          this: '{{_dir2}}'
-          that: far
-    file:
-      source_file:
-        overwrite: false
-        api: photos
-        resource: files
-        file_id: 'items/{{itemNumber}}/original.jpg'
-        type: any
-        cdn: true
-        arg:
-          root: sandbox
-          path: "{{path}}"
-        img_size:
-          delete_source: true
-          cdn: true
-          sizes:
-            -
-              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}640.jpg'
-              width: '640'
-              height: null
-              name: small
-            -
-              destination: 'items/{{itemNumber}}/{{#far}}far/{{/far}}1536.jpg'
-              width: '1536'
-              height: null
-              name: large
-            -
-              destination: 'items/{{itemNumber}}/2560.jpg'
-              width: '2560'
-              height: null
-              name: xlarge
+
   data:
     api: gh_repo
     get: content/data.yaml
