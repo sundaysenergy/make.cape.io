@@ -33,7 +33,7 @@ api: # An API as a collection of content.
         filter:
           must:
             mime_type: "image/jpeg"
-            dir2: Passementrie
+            dir1: Passementrie
         field:
           collection: passementerie
           itemNumber:
@@ -49,7 +49,7 @@ api: # An API as a collection of content.
         filter:
           must:
             mime_type: "image/jpeg"
-            dir2: leather
+            dir1: leather
         field:
           collection: leather
           itemNumber:
@@ -63,7 +63,7 @@ api: # An API as a collection of content.
           must:
             mime_type: 'image/jpeg'
           should:
-            dir2: [normal, far]
+            dir1: [normal, far]
         field:
           collection: textile
           itemNumber:
@@ -74,14 +74,14 @@ api: # An API as a collection of content.
               regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
               replace: '$1'
           distance:
-            arg_field: dir2
+            arg_field: dir1
 
       - # Items
         filter:
           must:
             mime_type: 'image/jpeg'
           should:
-            dir2: [normal, far, leather]
+            dir1: [normal, far, leather]
         field:
           _file:
             source_file:
