@@ -431,8 +431,7 @@ view:
       design_descriptions: true
       design_descriptions_passementerie: true
       use: true
-      theme_sha:
-        value: 'cc6297f64556493b90c93c8ba5a5e22c0562dd9b'
+      theme_sha: true
     pager:
       cdn: false
       iterate: md_pages # for each item in the list from the model pages
