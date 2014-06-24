@@ -445,7 +445,7 @@ view:
             field_id: template
       file_id: '{{#page.dir2}}{{&page.dir2}}/{{/page.dir2}}{{&page.filename}}.html'
     template:
-      fs: /Users/kc/Sites/rg
+      #fs: /Users/kc/Sites/rg
       api: gh_repo
       get: templates/default.html
 
