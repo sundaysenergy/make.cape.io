@@ -265,24 +265,6 @@ model:
     api: gh_repo
     get: beautyshots/index.yaml
 
-  md_pages:
-    api: gh_repo
-    must:
-      dir1: content
-      ext: .md
-    field:
-      filename: true
-      template:
-        func: add
-        arg:
-          -
-            value: templates/
-          -
-            field: template
-            default_field: filename
-          -
-            value: .html
-
   price:
     api: items
     pluck: price
@@ -359,6 +341,29 @@ model:
     flatten: use
     unique: true
 
+  theme_sha:
+    api: github_hook
+    get: 'sundaysenergy/rg.theme/master'
+    pluck: after
+
+  md_pages:
+    api: gh_repo
+    must:
+      dir1: content
+      ext: .md
+    field:
+      filename: true
+      template:
+        func: add
+        arg:
+          -
+            value: templates/
+          -
+            field: template
+            default_field: filename
+          -
+            value: .html
+
   # no_content:
   #   api: items
   #   pluck: itemNumber
@@ -394,8 +399,7 @@ view:
       design_descriptions: true
       design_descriptions_passementerie: true
       use: true
-      theme_sha:
-        value: d471bc150f6b9440dfa787c19068e2b248507cc8
+      theme_sha: true
     pager:
       iterate: md_pages # for each item in the list from the model pages
       field_id: page # field name for the item
