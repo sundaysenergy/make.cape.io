@@ -1,6 +1,6 @@
 ---
 domain: r-g.cape.io # This is the cache CNAME used for the virtual server on the compile server. CNAME that domain to cache.cape.io and it will serve the compiled website.
-cdn: img.rg.ookb.co
+#cdn: img.rg.ookb.co
 uid: kb # The CAPE user ID to use for authenticating against the providers when requesting API resources. This needs to be updated to the correct uid.
 cape_version: 2.2.2 # Current version of cape can be found in Kai's head. Future at v2.cape.io/version
 
@@ -22,6 +22,7 @@ api: # An API as a collection of content.
       container: img.rg.ookb.co
 
   photos:
+    insert_only: true
     provider: dropbox
     arg:
       root: sandbox
@@ -39,8 +40,6 @@ api: # An API as a collection of content.
             dir1: Passementrie
         field:
           collection: passementerie
-          itemNumber:
-            arg_field: filename
           _file:
             source_file:
               path: 'items/{{filename}}/original.jpg'
@@ -48,6 +47,8 @@ api: # An API as a collection of content.
               path: 'items/{{filename}}/1170.jpg'
             xlarge:
               path: 'items/{{filename}}/2560.jpg'
+        rename:
+          filename: itemNumber
       - # Leather
         filter:
           must:
@@ -119,6 +120,7 @@ api: # An API as a collection of content.
       dir_i: true
       _self:
         resource: raw_api
+        html_as_file: true
     filter:
       must_not:
         dir1: reference
@@ -142,6 +144,8 @@ api: # An API as a collection of content.
 
   db: # Accept any post with make_id r_g...
     provider: post
+    load:
+      _id: _id
     arg:
       make_id: r_g
     load: false
@@ -154,7 +158,7 @@ api: # An API as a collection of content.
     load:
       resource: items
       _id: itemNumber
-      #cache: true
+      cache: false
     filter:
       must_not:
         itemNumber: 'TRIMBOOK'
@@ -171,6 +175,9 @@ api: # An API as a collection of content.
           split_on: ', '
           split_on_sub: ' '
           compact: true
+      contents:
+        func: first
+        arg_field: contents
       colors:
         func: split
         arg:
@@ -239,20 +246,6 @@ api: # An API as a collection of content.
           collection: leather
 model:
 
-  template:
-    api: gh_repo
-    must:
-      dirname: templates
-
-  photos_passementerie:
-    api: photos
-
-  photos_leather:
-    api: photos
-
-  photos_textiles:
-    api: photos
-
   data:
     api: gh_repo
     get: content/data.yaml
@@ -293,6 +286,11 @@ model:
     flatten: colors
     unique: true
     merge: true
+
+  color_words:
+    api: items
+    flatten: colors
+    unique: true
 
   design_descriptions:
     api: items
@@ -379,6 +377,40 @@ model:
   #           content: '*'
   #       pluck: itemNumber
 
+  items:
+    api: items
+    withFields: name
+    pluck: [ name, color, primarycolor, secondarycolor,
+      id, content, contents, repeat, collection,
+      design_descriptions, use, sort,
+      design, img, width]
+    stringify: [design_descriptions, use]
+    eqJoin:
+      table: photos
+      key: itemNumber
+      index: itemNumber
+      #require_match: false
+      #pluck: _file
+    debug: true
+    rename:
+      itemNumber: id
+      primaryColor: primarycolor
+      secondaryColor: secondarycolor
+      approx_width: width
+    field:
+      img:
+        func: default
+        try: _file.small.path
+        arg_field: _file.wide.path
+
+  photos:
+    api: photos
+    withFields: collection
+    should:
+      collection: [passementerie, leather, textile]
+    pluck: [_file, itemNumber]
+
+
 view:
 
   price:
@@ -399,8 +431,10 @@ view:
       design_descriptions: true
       design_descriptions_passementerie: true
       use: true
-      theme_sha: true
+      theme_sha:
+        value: 'cc6297f64556493b90c93c8ba5a5e22c0562dd9b'
     pager:
+      cdn: false
       iterate: md_pages # for each item in the list from the model pages
       field_id: page # field name for the item
       _id: 'path'
@@ -411,6 +445,7 @@ view:
             field_id: template
       file_id: '{{#page.dir2}}{{&page.dir2}}/{{/page.dir2}}{{&page.filename}}.html'
     template:
+      fs: /Users/kc/Sites/rg
       api: gh_repo
       get: templates/default.html
 
@@ -418,68 +453,27 @@ view:
   client_data:
     output_id: items/client_data.json
     field:
-      color_words: color_ops_textile
-      colors: colors
+      color_words: true
+      colors: true
       items:
-        view: items
-        filter:
-          must:
-            name: '*'
-            dropbox_img: true
-        omit: [dropbox_img, cdn_files, dropbox_id, _file, far, contents_arr, content_arr]
-        rename:
-          itemNumber: id
-          primaryColor: primarycolor
-          secondaryColor: secondarycolor
-          approx_width: width
-        emit:
-          content: '{{content_arr}}'
-          contents: '{{contents.0}}'
-          design_descriptions: '{{design_descriptions}}'
-          use: '{{use}}'
-          img: 'http://img.rg.cape.io/{{_file.small.path}}{{^_file.small.path}}{{_file.large.path}}{{^_file.large.path}}items/{{itemNumber}}/1170.jpg{{/_file.large.path}}{{/_file.small.path}}'
-      templates: mini_templates
+        return_all: true
+      templates:
+        model: mini_templates
 
-  cdn_files:
-    type: set
-    field:
-      _data:
-        model: cdn
-        limit: 5000
-        filter:
-          must_not:
-            _dir2: ['rg', 'undefined']
-        pluck: _basename
-        group_by: _dir2
-        group_by_field: cdn_files
+  # cdn_files:
+  #   type: set
+  #   field:
+  #     _data:
+  #       model: cdn
+  #       limit: 5000
+  #       filter:
+  #         must_not:
+  #           _dir2: ['rg', 'undefined']
+  #       pluck: _basename
+  #       group_by: _dir2
+  #       group_by_field: cdn_files
 
-  dropbox_files:
-    type: set
-    field:
-      leather:
-        model: photos_leather
-        pluck:
-          _file: _file
-          dropbox_img: thumb_exists
-          dropbox_id: _id
-        index_by: itemNumber
-      textile:
-        model: photos_textiles
-        limit: 5000
-        pluck:
-          _file: _file
-          dropbox_img: thumb_exists
-          dropbox_id: _id
-          far: far
-        index_by: itemNumber
-      passem:
-        model: photos_passementerie
-        pluck:
-          _file: _file
-          dropbox_img: thumb_exists
-          dropbox_id: _id
-        index_by: itemNumber
-    merge: true
+
 
   # files_no_file:
   #   type: list
@@ -491,35 +485,17 @@ view:
   #         must_not:
   #           _file: '*'
 
-  items:
-    type: list
-    field:
-      cdn_files: cdn_files
-      dropbox_files:
-        view: dropbox_files
-      items:
-        model: items
-        limit: 5000
-        pluck: [
-          name, color, primaryColor, secondaryColor,
-          itemNumber, content, contents, repeat, collection,
-          design_descriptions, use, sort, approx_width, far,
-          design, contents_arr, content_arr]
-        index_by: itemNumber
-    merge:
-      field_id: _data
-      sort: sort
 
-  items_no_dropbox:
-    type: list
-    output_id: items/no_dropbox.json
-    field:
-      _data:
-        view: items
-        pluck: [name, color, itemNumber, _file]
-        filter:
-          must:
-            name: '*'
-          must_not:
-            dropbox_img: true
+  # items_no_dropbox:
+  #   type: list
+  #   output_id: items/no_dropbox.json
+  #   field:
+  #     _data:
+  #       view: items
+  #       pluck: [name, color, itemNumber, _file]
+  #       filter:
+  #         must:
+  #           name: '*'
+  #         must_not:
+  #           dropbox_img: true
 
