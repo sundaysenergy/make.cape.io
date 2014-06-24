@@ -7,8 +7,8 @@ cape_version: 2.2.2 # Current version of cape can be found in Kai's head. Future
 load:
   - "/_api/items/_load.json"
   - "/_api/gh_repo/_load.json"
-  - "/_api/cdn/_load.json"
   - "/_dropbox/_poll/photos"
+  #- "/_api/cdn/_load.json"
   # - "/_model/items/model_fields_add.json"
   # - "/_model/files/model_fields_reload.json"
   # - "/_model/template/model_fields_reload.json"
@@ -265,11 +265,23 @@ model:
     api: gh_repo
     get: beautyshots/index.yaml
 
-  pages:
+  md_pages:
     api: gh_repo
     must:
       dir1: content
-      _ext: .md
+      ext: .md
+    field:
+      filename: true
+      template:
+        func: add
+        arg:
+          -
+            value: templates/
+          -
+            field: template
+            default_field: filename
+          -
+            value: .html
 
   price:
     api: items
@@ -333,7 +345,7 @@ model:
       - SOLI
       - STRI
 
-  content_ops:
+  textile_content_filters:
     api: items
     must:
       collection: textile
@@ -370,38 +382,33 @@ view:
 
   pages: # These are the pages besides items.
     type: string
-    field:
+    map_field:
       date:
-        app: map
         func: date_obj
+        arg: null
+    field:
       data: true
-      pages: true
-      # items: true
       showrooms: true
-      textile_content_filters: content_ops
-      color_ops_textile: color_ops_textile
-      color_ops_passementerie: color_ops_passementerie
-      color_ops_leather: color_ops_leather
-      design_descriptions: design_descriptions
-      design_descriptions_passementerie: design_descriptions_passementerie
-      use: use
-      theme:
-        model: db
-        _id: theme
+      textile_content_filters: true
+      color_ops: true
+      design_descriptions: true
+      design_descriptions_passementerie: true
+      use: true
+      theme_sha:
+        value: d471bc150f6b9440dfa787c19068e2b248507cc8
     pager:
-      iterate: pages # for each item in the list from the model pages
+      iterate: md_pages # for each item in the list from the model pages
       field_id: page # field name for the item
-      map:
-        data: navigation
+      _id: 'path'
       template: # This field will be accessible using this field name in mustache.
         partial: # Add it to the view template as a partial.
           page_template: # If this template is an object the key is field name.
-            model: template # Load same way as you load a template.
-            _id: '{{^page.template}}{{page._filename}}{{/page.template}}{{page.template}}.html'
-      file_id: '{{#page._dir2}}{{&page._dir2}}/{{/page._dir2}}{{&page._filename}}.html'
+            api: gh_repo # Load same way as you load a template.
+            field_id: template
+      file_id: '{{#page.dir2}}{{&page.dir2}}/{{/page.dir2}}{{&page.filename}}.html'
     template:
-      model: template
-      _id: default.html
+      api: gh_repo
+      get: templates/default.html
 
   # Big huge thing used client side for database.
   client_data:
