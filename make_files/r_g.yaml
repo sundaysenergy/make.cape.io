@@ -420,10 +420,12 @@ model:
 
   photos:
     api: photos
-    withFields: collection
-    should:
-      collection: [passementerie, leather, textile]
-    pluck: [_file, itemNumber]
+    pluck: path
+    sort: path
+    # withFields: collection
+    # should:
+    #   collection: [passementerie, leather, textile]
+    # pluck: [_file, itemNumber]
 
 
 view:
