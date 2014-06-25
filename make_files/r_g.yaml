@@ -362,6 +362,18 @@ model:
           -
             value: .html
 
+  items_no_dropbox:
+    debug: true
+    difference:
+      left:
+        table: items
+        field: itemNumber
+      right:
+        table: photos
+        field: itemNumber
+      getAll: true
+    pluck: [name, color, itemNumber]
+
   # no_content:
   #   api: items
   #   pluck: itemNumber
@@ -485,16 +497,7 @@ view:
   #           _file: '*'
 
 
-  # items_no_dropbox:
-  #   type: list
-  #   output_id: items/no_dropbox.json
-  #   field:
-  #     _data:
-  #       view: items
-  #       pluck: [name, color, itemNumber, _file]
-  #       filter:
-  #         must:
-  #           name: '*'
-  #         must_not:
-  #           dropbox_img: true
+  items_no_dropbox:
+    output_id: items/no_dropbox.json
+    return_all: true
 
