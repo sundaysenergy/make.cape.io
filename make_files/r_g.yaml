@@ -448,7 +448,7 @@ view:
       use: true
       theme_sha: true
     pager:
-      cdn: false
+      #cdn: false
       iterate: md_pages # for each item in the list from the model pages
       field_id: page # field name for the item
       _id: 'path'
@@ -473,32 +473,6 @@ view:
         return_all: true
       templates:
         model: mini_templates
-
-  # cdn_files:
-  #   type: set
-  #   field:
-  #     _data:
-  #       model: cdn
-  #       limit: 5000
-  #       filter:
-  #         must_not:
-  #           _dir2: ['rg', 'undefined']
-  #       pluck: _basename
-  #       group_by: _dir2
-  #       group_by_field: cdn_files
-
-
-
-  # files_no_file:
-  #   type: list
-  #   field:
-  #     _data:
-  #       view: dropbox_files
-  #       pluck: dropbox_id
-  #       filter:
-  #         must_not:
-  #           _file: '*'
-
 
   items_no_dropbox:
     output_id: items/no_dropbox.json
