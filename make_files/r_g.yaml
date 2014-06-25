@@ -164,6 +164,8 @@ api: # An API as a collection of content.
         itemNumber: 'TRIMBOOK'
     without: [alternatePrice, inventory, comments, finish, freightCode, itemComments, miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int, serialNumber, sampleType]
     clean: true
+    default:
+      sort: 900000
     field:
       color_id:
         func: last_dash
@@ -394,7 +396,7 @@ model:
     withFields: name
     pluck: [ name, color, primarycolor, secondarycolor,
       id, content, contents, repeat, collection,
-      design_descriptions, use, sort,
+      design_descriptions, use,
       design, img, width]
     stringify: [design_descriptions, use]
     eqJoin:
@@ -414,6 +416,7 @@ model:
         func: default
         try: _file.small.path
         arg_field: _file.wide.path
+    sort: sort
 
   photos:
     api: photos
