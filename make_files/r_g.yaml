@@ -440,7 +440,7 @@ model:
 view:
 
   price:
-    output_id: items/price.json
+    output_id: _/items/price.json
     cdn: false
 
   pages: # These are the pages besides items.
