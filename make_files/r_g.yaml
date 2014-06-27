@@ -16,6 +16,14 @@ load:
   - "/_view/_all/_output"
 
 api: # An API as a collection of content.
+  user:
+    provider: order-track
+    arg:
+      uid: 5
+    load:
+      _id: customerNumber
+      resource: user
+
   cdn:
     provider: cloudfiles
     arg:
@@ -246,6 +254,7 @@ api: # An API as a collection of content.
             char1: L
         field:
           collection: leather
+
 model:
 
   data:
