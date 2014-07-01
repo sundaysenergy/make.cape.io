@@ -24,6 +24,27 @@ api: # An API as a collection of content.
       _id: customerNumber
       resource: user
 
+  list:
+    provider: cape
+    primary_key: id
+    props:
+      name:
+        type: string
+        required: true
+      api_id:
+        type: string
+        required: true
+        default: items
+      uid:
+        type: string
+        required: true
+      entities:
+        type: array
+        required: true
+        default: []
+    index:
+      - uid
+
   cdn:
     provider: cloudfiles
     arg:
@@ -377,13 +398,29 @@ model:
     debug: true
     difference:
       left:
-        table: items
-        field: itemNumber
+        api: items
+        pluck: itemNumber
       right:
-        table: photos
-        field: itemNumber
+        api: photos
+        pluck: itemNumber
       getAll: true
     pluck: [name, color, itemNumber]
+
+  items_in_dropbox:
+    debug: true
+    intersection:
+      left:
+        api: items
+        pluck: itemNumber
+        must:
+          collection: textile
+      right:
+        api: photos
+        pluck: itemNumber
+        must:
+          collection: textile
+    #pluck: true
+    count: true
 
   # no_content:
   #   api: items
@@ -399,6 +436,15 @@ model:
   #         must_not:
   #           content: '*'
   #       pluck: itemNumber
+  item_count:
+    debug: true
+    api: items
+    eqJoin:
+      table: photos
+      key: itemNumber
+      index: itemNumber
+    #unique: true
+    count: true
 
   items:
     api: items
