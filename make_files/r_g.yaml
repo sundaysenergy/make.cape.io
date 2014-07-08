@@ -449,11 +449,11 @@ model:
   items:
     api: items
     withFields: name
-    pluck: [ name, color, primarycolor, secondarycolor,
+    pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
       design, img, width]
-    stringify: [design_descriptions, use]
+    stringify: [design_descriptions, use, colors]
     eqJoin:
       table: photos
       key: itemNumber
@@ -463,7 +463,7 @@ model:
     debug: true
     rename:
       itemNumber: id
-      primaryColor: primarycolor
+      colors: primarycolor
       secondaryColor: secondarycolor
       approx_width: width
     field:
