@@ -314,6 +314,10 @@ model:
 
   color_ops:
     api: items
+    eqJoin:
+      table: photos
+      key: itemNumber
+      index: itemNumber
     group_by: collection
     flatten: colors
     unique: true
