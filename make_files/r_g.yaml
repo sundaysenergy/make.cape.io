@@ -338,16 +338,14 @@ model:
 
   colors:
     api: items
+    has: _file
     group_by: patternNumber
     pluck: color_id
     merge: true
 
   color_ops:
     api: items
-    eqJoin:
-      table: photos
-      key: itemNumber
-      index: itemNumber
+    has: _file
     group_by: collection
     flatten: colors
     unique: true
@@ -478,7 +476,7 @@ model:
 
   items:
     api: items
-    hasFields: name
+    has: name
     pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
