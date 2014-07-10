@@ -89,7 +89,7 @@ api: # An API as a collection of content.
             func: string_replace
             arg:
               string: path
-              regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+              regex: '.*[\_/]([^_]*[-][^_]*)[\_\.].*'
               replace: '$1'
       - # Textiles
         filter:
@@ -104,7 +104,7 @@ api: # An API as a collection of content.
             func: string_replace
             arg:
               string: path
-              regex: '.*[\_]([^_]*[-][^_]*)[\_].*'
+              regex: '.*[\_/]([^_]*[-][^_]*)[\_\.].*'
               replace: '$1'
           distance:
             arg_field: dir1
