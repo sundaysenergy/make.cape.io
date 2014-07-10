@@ -441,20 +441,16 @@ model:
     pluck: [name, color, itemNumber]
 
   items_in_dropbox:
-    debug: true
-    intersection:
+    #debug: true
+    difference:
       left:
-        api: items
-        pluck: itemNumber
-        must:
-          collection: textile
-      right:
         api: photos
         pluck: itemNumber
-        must:
-          collection: textile
+      right:
+        api: items
+        pluck: itemNumber
     #pluck: true
-    count: true
+    #count: true
 
   # no_content:
   #   api: items
