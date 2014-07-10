@@ -194,7 +194,10 @@ api: # An API as a collection of content.
     without: [alternatePrice, inventory, comments, finish, freightCode, itemComments, miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int, serialNumber, sampleType]
     clean: true
     default:
-      sort: 900000
+      order: 900000
+    merge:
+      -
+        view: items_merge
     field:
       color_id:
         func: last_dash
@@ -277,6 +280,35 @@ api: # An API as a collection of content.
           collection: leather
 
 model:
+  order_trim:
+    api: list
+    get: order_trim
+    pluck: entities
+    rename:
+      id: itemNumber
+    index_by: itemNumber
+    merge: true
+
+  order_textile:
+    api: list
+    get: order_textile
+    pluck: entities
+    rename:
+      id: itemNumber
+    index_by: itemNumber
+    merge: true
+
+  item_photos:
+    api: photos
+    with:
+      - itemNumber
+      -
+        _file:
+          xlarge:
+            height: true
+    index_by: itemNumber
+    merge: true
+    #return_all: true
 
   data:
     api: gh_repo
@@ -452,7 +484,7 @@ model:
 
   items:
     api: items
-    withFields: name
+    hasFields: name
     pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
@@ -475,7 +507,7 @@ model:
         func: default
         try: _file.small.path
         arg_field: _file.wide.path
-    sort: sort
+    sort: order
 
   photos:
     api: photos
@@ -488,6 +520,11 @@ model:
 
 
 view:
+
+  items_merge:
+    field: [order_trim, order_textile, item_photos]
+    merge_fields: true
+    debug: true
 
   price:
     output_id: _/items/price.json
