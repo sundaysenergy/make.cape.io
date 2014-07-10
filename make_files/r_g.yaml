@@ -188,6 +188,7 @@ api: # An API as a collection of content.
       resource: items
       _id: itemNumber
       cache: false
+      merge_view: items_merge
     filter:
       must_not:
         itemNumber: 'TRIMBOOK'
@@ -195,9 +196,6 @@ api: # An API as a collection of content.
     clean: true
     default:
       order: 900000
-    merge:
-      -
-        view: items_merge
     field:
       color_id:
         func: last_dash
