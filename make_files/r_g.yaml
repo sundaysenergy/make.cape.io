@@ -199,7 +199,7 @@ api: # An API as a collection of content.
     field:
       color_id:
         func: last_dash
-        arg: itemNumber
+        arg_field: itemNumber
       content_arr:
         func: split
         arg:
@@ -319,6 +319,12 @@ model:
   beautyshots:
     api: gh_repo
     get: beautyshots/index.yaml
+
+  about_imgs:
+    api: gh_repo
+    must:
+      dirname: media/about
+    pluck: _file.source_file
 
   price:
     api: items
@@ -510,7 +516,6 @@ model:
     #   collection: [passementerie, leather, textile]
     # pluck: [_file, itemNumber]
 
-
 view:
 
   items_merge:
@@ -537,6 +542,7 @@ view:
       design_descriptions_passementerie: true
       use: true
       theme_sha: true
+      about_imgs: true
     pager:
       #cdn: false
       iterate: md_pages # for each item in the list from the model pages
