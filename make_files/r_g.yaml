@@ -325,6 +325,7 @@ model:
     must:
       dirname: media/about
     pluck: _file.source_file
+    sort: path
 
   price:
     api: items
