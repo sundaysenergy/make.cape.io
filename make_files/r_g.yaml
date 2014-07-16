@@ -60,7 +60,8 @@ api: # An API as a collection of content.
       filename: true
       dir_i: true
       _self:
-        overwrite_file: false
+        overwrite_file: true
+        no_files: false
     fields:
       - # Passementrie
         filter:
@@ -130,7 +131,8 @@ api: # An API as a collection of content.
         filter:
           must:
             mime_type: 'image/jpeg'
-          must: far
+          must:
+            dir1: far
         field:
           _file:
             source_file:
