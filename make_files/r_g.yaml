@@ -255,6 +255,7 @@ api: # An API as a collection of content.
             char1int: true
         field:
           collection: textile
+          ruler: textile
           approx_width:
             app: map
             func: string_replace
@@ -270,12 +271,14 @@ api: # An API as a collection of content.
             char1: P
         field:
           collection: passementerie
+          ruler: false
       -
         filter:
           must:
             char1: L
         field:
           collection: leather
+          ruler: leather
 
 model:
   order_trim:
@@ -487,7 +490,7 @@ model:
     pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
-      design, img, width]
+      design, img, width, ruler, far]
     stringify: [design_descriptions, use, colors]
     eqJoin:
       table: photos
