@@ -114,7 +114,7 @@ api: # An API as a collection of content.
           must:
             mime_type: 'image/jpeg'
           should:
-            dir1: [normal, far, leather]
+            dir1: [normal, leather]
         field:
           _file:
             source_file:
@@ -125,6 +125,23 @@ api: # An API as a collection of content.
               path: 'items/{{itemNumber}}/1536.jpg'
             xlarge:
               path: 'items/{{itemNumber}}/2560.jpg'
+
+      - # Far Textiles
+        filter:
+          must:
+            mime_type: 'image/jpeg'
+          must: far
+        field:
+          _file:
+            source_file:
+              path: 'items/{{itemNumber}}/far/original.jpg'
+            small:
+              path: 'items/{{itemNumber}}/far/640.jpg'
+            large:
+              path: 'items/{{itemNumber}}/far/1536.jpg'
+            xlarge:
+              path: 'items/{{itemNumber}}/far/2560.jpg'
+
     img_size:
       sizes:
         small:
