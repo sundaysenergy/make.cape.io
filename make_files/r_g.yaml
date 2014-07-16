@@ -196,6 +196,7 @@ api: # An API as a collection of content.
     clean: true
     default:
       order: 900000
+      far: false
     field:
       color_id:
         func: last_dash
