@@ -384,7 +384,6 @@ model:
       - SO
       - STRIE
       - TATTERSAL
-      - WEAVE
 
   design_descriptions_passementerie:
     api: items
