@@ -537,7 +537,7 @@ model:
       far: true
       ruler: textile-detail
     index_by: group
-    pluck: [far]
+    pluck: [far, ruler]
     merge: true
 
   item_photos:
