@@ -535,6 +535,7 @@ model:
       reduction: 2
     merge_with:
       far: true
+      ruler: textile-detail
     index_by: group
     pluck: [far]
     merge: true
