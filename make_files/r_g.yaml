@@ -320,19 +320,6 @@ model:
     index_by: itemNumber
     merge: true
 
-  item_photos:
-    api: photos
-    with:
-      - itemNumber
-      -
-        _file:
-          xlarge:
-            height: true
-    group_by: itemNumber
-    merge: true
-    debug: true
-    #return_all: true
-
   data:
     api: gh_repo
     get: content/data.yaml
@@ -551,6 +538,23 @@ model:
     index_by: group
     pluck: [far]
     merge: true
+
+  item_photos:
+    api: photos
+    with:
+      - dir1
+      - itemNumber
+      -
+        _file:
+          xlarge:
+            height: true
+    should:
+      dir1: [normal, leather, Passementrie]
+    index_by: itemNumber
+    pluck: [_file]
+    merge: true
+    debug: true
+    #return_all: true
 
 view:
 
