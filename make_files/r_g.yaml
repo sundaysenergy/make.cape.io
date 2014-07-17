@@ -493,16 +493,16 @@ model:
 
   items:
     api: items
-    has: name
+    has: [name, _file]
     pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
       design, img, width, ruler, far]
     stringify: [design_descriptions, use, colors]
-    eqJoin:
-      table: photos
-      key: itemNumber
-      index: itemNumber
+    # eqJoin:
+    #   table: photos
+    #   key: itemNumber
+    #   index: itemNumber
       #require_match: false
       #pluck: _file
     debug: true
@@ -544,6 +544,8 @@ model:
     with:
       - dir1
       - itemNumber
+      - _file
+    has:
       -
         _file:
           xlarge:
