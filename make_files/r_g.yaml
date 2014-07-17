@@ -274,9 +274,10 @@ api: # An API as a collection of content.
         filter:
           must:
             char1int: true
+        default:
+          ruler: textile
         field:
           collection: textile
-          ruler: textile
           approx_width:
             app: map
             func: string_replace
