@@ -92,7 +92,8 @@ api: # An API as a collection of content.
               string: path
               regex: '.*[\_/]([^_]*[-][^_]*)[\_\.].*'
               replace: '$1'
-      - # Textiles
+
+      - # All Textiles
         filter:
           must:
             mime_type: 'image/jpeg'
@@ -327,8 +328,9 @@ model:
         _file:
           xlarge:
             height: true
-    index_by: itemNumber
+    group_by: itemNumber
     merge: true
+    debug: true
     #return_all: true
 
   data:
@@ -537,11 +539,23 @@ model:
     # should:
     #   collection: [passementerie, leather, textile]
     # pluck: [_file, itemNumber]
+  far:
+    api: photos
+    group_by:
+      field: itemNumber
+      count: true
+    must:
+      reduction: 2
+    merge_with:
+      far: true
+    index_by: group
+    pluck: [far]
+    merge: true
 
 view:
 
   items_merge:
-    field: [order_trim, order_textile, item_photos]
+    field: [order_trim, order_textile, item_photos, far]
     merge_fields: true
     debug: true
 
