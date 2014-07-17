@@ -73,6 +73,8 @@ api: # An API as a collection of content.
           _file:
             source_file:
               path: 'items/{{filename}}/original.jpg'
+            tiny:
+              path: 'items/{{itemNumber}}/far/100.jpg'
             wide:
               path: 'items/{{filename}}/1170.jpg'
             xlarge:
@@ -121,6 +123,8 @@ api: # An API as a collection of content.
           _file:
             source_file:
               path: 'items/{{itemNumber}}/original.jpg'
+            tiny:
+              path: 'items/{{itemNumber}}/far/100.jpg'
             small:
               path: 'items/{{itemNumber}}/640.jpg'
             large:
@@ -138,6 +142,8 @@ api: # An API as a collection of content.
           _file:
             source_file:
               path: 'items/{{itemNumber}}/far/original.jpg'
+            tiny:
+              path: 'items/{{itemNumber}}/far/100.jpg'
             small:
               path: 'items/{{itemNumber}}/far/640.jpg'
             large:
@@ -147,6 +153,10 @@ api: # An API as a collection of content.
 
     img_size:
       sizes:
+        tiny:
+          thumb:
+            width: 100
+            height: 100
         small:
           width: 640
         wide:
