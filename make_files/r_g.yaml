@@ -74,7 +74,7 @@ api: # An API as a collection of content.
             source_file:
               path: 'items/{{filename}}/original.jpg'
             tiny:
-              path: 'items/{{filename}}/far/100.jpg'
+              path: 'items/{{filename}}/100.jpg'
             wide:
               path: 'items/{{filename}}/1170.jpg'
             xlarge:
@@ -124,7 +124,7 @@ api: # An API as a collection of content.
             source_file:
               path: 'items/{{itemNumber}}/original.jpg'
             tiny:
-              path: 'items/{{itemNumber}}/far/100.jpg'
+              path: 'items/{{itemNumber}}/100.jpg'
             small:
               path: 'items/{{itemNumber}}/640.jpg'
             large:
