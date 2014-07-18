@@ -60,7 +60,7 @@ api: # An API as a collection of content.
       filename: true
       dir_i: true
       _self:
-        overwrite_file: true
+        overwrite_file: false
         no_files: false
     fields:
       - # Passementrie
