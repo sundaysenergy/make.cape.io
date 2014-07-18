@@ -154,16 +154,20 @@ api: # An API as a collection of content.
     img_size:
       sizes:
         tiny:
-          thumb:
-            width: 100
-            height: 100
+          overwrite_file: true
+          resize_crop: true
+          width: 100
+          height: 100
         small:
           width: 640
         wide:
           width: 1170
         large:
           width: 1536
+          no_profile: false
+          overwrite_file: true
         xlarge:
+          no_profile: false
           width: 2560
 
 
