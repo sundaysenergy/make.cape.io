@@ -529,6 +529,12 @@ model:
         arg_field: _file.wide.path
     sort: order
 
+  items_sort:
+    api: items
+    group_by: collection
+    pluck: [itemNumber, name, color, order]
+    sort: order
+
   photos:
     api: photos
     pluck: path
@@ -597,6 +603,7 @@ view:
       use: true
       theme_sha: true
       about_imgs: true
+      items_sort: true
     pager:
       #cdn: false
       iterate: md_pages # for each item in the list from the model pages
