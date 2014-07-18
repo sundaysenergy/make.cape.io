@@ -279,7 +279,22 @@ api: # An API as a collection of content.
         arg: itemNumber
       char1int:
         arg: itemNumber
+
     fields:
+      -
+        filter:
+          must:
+            width: '*'
+        field:
+          approx_width:
+            app: map
+            func: string_replace
+            arg:
+              string: width
+              regex: ' ?APP?R?R?O?X?\.? ?'
+              toUpperCase: true
+              trim: true
+              replace: ''
       -
         filter:
           must:
@@ -288,15 +303,6 @@ api: # An API as a collection of content.
           ruler: textile
         field:
           collection: textile
-          approx_width:
-            app: map
-            func: string_replace
-            arg:
-              string: '{{&width}}'
-              regex: ' ?APP?R?R?O?X\.? ?'
-              toUpperCase: true
-              trim: true
-              replace: ''
       -
         filter:
           must:
