@@ -172,7 +172,7 @@ model:
   # Below is actually used.
   students:
     api: student
-    pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, id, personalemail, exhibitionlocation]
+    pluck: [statement, program, firstname, lastname, urlofpersonalwebsite, id, studentid, personalemail, exhibitionlocation]
     eqJoin:
       table: student_gallery
       key: id
