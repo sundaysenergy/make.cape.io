@@ -24,7 +24,7 @@ model:
     api: gh_content
     get: README.md
 
-  apply:
+  apply_md:
     api: gh_content
     get: apply.md
 
@@ -44,7 +44,8 @@ view:
     file_id: 'apply.html'
     field:
       data: true
-      content: apply
+      content:
+        model: apply_md
     template:
       make_id: templates
       api: content
