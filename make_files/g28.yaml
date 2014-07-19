@@ -16,7 +16,7 @@ api: # An API is a set of default information. Think of an API as a collection o
 
 model:
   data:
-    make_id: tsuga
+    #make_id: tsuga
     api: gh_content
     get: data.yaml
 
