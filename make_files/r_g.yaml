@@ -309,6 +309,7 @@ api: # An API as a collection of content.
           ruler: textile
         field:
           collection: textile
+          label: fabric
       -
         filter:
           must:
@@ -316,6 +317,7 @@ api: # An API as a collection of content.
         field:
           collection: passementerie
           ruler: false
+          label: trim
       -
         filter:
           must:
@@ -522,7 +524,7 @@ model:
     pluck: [ name, color, primarycolor,
       id, content, contents, repeat, collection,
       design_descriptions, use,
-      design, img, width, ruler, far]
+      design, img, width, ruler, far, label]
     stringify: [design_descriptions, use, colors]
     # eqJoin:
     #   table: photos
@@ -625,6 +627,7 @@ view:
       field_id: page # field name for the item
       _id: 'path'
       template: # This field will be accessible using this field name in mustache.
+        #fs: /Users/kc/Sites/rg
         partial: # Add it to the view template as a partial.
           page_template: # If this template is an object the key is field name.
             api: gh_repo # Load same way as you load a template.
