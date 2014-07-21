@@ -408,6 +408,7 @@ model:
     unique: true
     without:
       - CHI
+      - DAMASK
       - FLAM
       - FLOR
       - 'FLOWER,'
