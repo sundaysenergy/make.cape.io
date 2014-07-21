@@ -159,8 +159,10 @@ api: # An API as a collection of content.
           width: 100
           height: 100
         small:
+          no_profile: false
           width: 640
         wide:
+          no_profile: false
           width: 1170
         large:
           width: 1536
@@ -464,8 +466,9 @@ model:
           -
             value: .html
 
+  # List files in order-track but not dropbox.
   items_no_dropbox:
-    debug: true
+    #debug: true
     difference:
       left:
         api: items
@@ -476,6 +479,7 @@ model:
       getAll: true
     pluck: [name, color, itemNumber]
 
+  # List of files that are not in order_track
   items_in_dropbox:
     #debug: true
     difference:
