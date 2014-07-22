@@ -279,8 +279,15 @@ api: # An API as a collection of content.
         func: second
         arg: descriptions
       name:
-        func: first
-        arg: descriptions
+        -
+          arg_field: descriptions
+          func: first
+        -
+          func: string_replace
+          arg:
+            string: true
+            regex: "e'^"
+            replace: 'é'
       char1:
         arg: itemNumber
       char1int:
@@ -619,7 +626,8 @@ view:
       design_descriptions: true
       design_descriptions_passementerie: true
       use: true
-      theme_sha: true
+      #theme_sha: true
+      theme_sha: bd0c64e1d2168d3d8418303162e68058340b96b0
       about_imgs: true
       items_sort: true
     pager:
