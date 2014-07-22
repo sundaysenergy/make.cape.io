@@ -632,7 +632,7 @@ view:
       about_imgs: true
       items_sort: true
     pager:
-      #cdn: false
+      cdn: false
       iterate: md_pages # for each item in the list from the model pages
       field_id: page # field name for the item
       _id: 'path'
