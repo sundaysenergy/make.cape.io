@@ -286,7 +286,7 @@ api: # An API as a collection of content.
           func: string_replace
           arg:
             string: true
-            regex: "e'^"
+            regex: "e'$"
             replace: 'é'
       char1:
         arg: itemNumber
