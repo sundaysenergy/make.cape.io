@@ -631,6 +631,7 @@ view:
       #   value: bd0c64e1d2168d3d8418303162e68058340b96b0
       about_imgs: true
       items_sort: true
+    cdn: false
     pager:
       cdn: false
       iterate: md_pages # for each item in the list from the model pages
