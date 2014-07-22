@@ -626,9 +626,9 @@ view:
       design_descriptions: true
       design_descriptions_passementerie: true
       use: true
-      #theme_sha: true
-      theme_sha:
-        value: bd0c64e1d2168d3d8418303162e68058340b96b0
+      theme_sha: true
+      # theme_sha:
+      #   value: bd0c64e1d2168d3d8418303162e68058340b96b0
       about_imgs: true
       items_sort: true
     pager:
