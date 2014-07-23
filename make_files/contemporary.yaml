@@ -14,6 +14,9 @@ api: # An API is a set of default information. Think of an API as a collection o
       owner: sundaysenergy
       repo: h28.content
 
+  facebook:
+    primary_key: id
+
 model:
   data:
     api: gh_content

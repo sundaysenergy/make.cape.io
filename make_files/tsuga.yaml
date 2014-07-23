@@ -36,6 +36,9 @@ api: # An API is a set of default information. Think of an API as a collection o
         recursive: true # Thankfully they have an option to get results recursively.
         sha: gh-pages
 
+  facebook:
+    primary_key: id
+
 model:
   files:
     type: files
