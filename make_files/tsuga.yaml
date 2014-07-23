@@ -37,6 +37,7 @@ api: # An API is a set of default information. Think of an API as a collection o
         sha: gh-pages
 
   facebook:
+    provider: facebook
     primary_key: id
 
 model:
