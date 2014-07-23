@@ -18,6 +18,10 @@ api: # An API is a set of default information. Think of an API as a collection o
     provider: facebook
     primary_key: id
 
+  twitter:
+    provider: twitter
+    primary_key: id
+
 model:
   data:
     api: gh_content
