@@ -175,7 +175,7 @@ api: # An API as a collection of content.
 
   gh_repo: # Used to get content from the big heavy github repo.
     load:
-      cache: true
+      cache: false
     provider: github
     arg:
       owner: bjornmeansbear
@@ -223,7 +223,7 @@ api: # An API as a collection of content.
     load:
       resource: items
       _id: itemNumber
-      cache: true
+      cache: false
       merge_view: items_merge
     filter:
       must_not:
