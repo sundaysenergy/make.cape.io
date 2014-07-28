@@ -223,12 +223,14 @@ api: # An API as a collection of content.
     load:
       resource: items
       _id: itemNumber
-      cache: false
+      cache: true
       merge_view: items_merge
     filter:
       must_not:
         itemNumber: 'TRIMBOOK'
-    without: [alternatePrice, inventory, comments, finish, freightCode, itemComments, miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int, serialNumber, sampleType]
+    without: [alternatePrice, discontinued, inventory, comments, finish, freightCode, itemComments,
+      miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int,
+      serialNumber, sampleType]
     clean: true
     default:
       order: 900000
@@ -238,46 +240,59 @@ api: # An API as a collection of content.
         func: last_dash
         arg_field: itemNumber
       content_arr:
-        func: split
-        arg:
-          string: content
-          split_on: ', '
-          split_on_sub: ' '
-          compact: true
+        -
+          func: split
+          arg:
+            string: content
+            split_on: ', '
+            split_on_sub: ' '
+        - compact
       contents:
         func: first
         arg_field: contents
       colors:
-        func: split
-        arg:
-          string: '{{&primaryColor}}, {{&secondaryColor}}'
-          split_on: ', '
-          unique: true
-          compact: true
+        -
+          arg: '{{&primaryColor}}, {{&secondaryColor}}'
+          func: token_replace
+        -
+          func: split
+          arg:
+            string: true
+            split_on: ', '
+        - unique
+        - compact
       design_descriptions:
-        func: split
-        arg:
-          string: design
-          split_on: ', '
-          unique: true
-          compact: true
+        -
+          func: split
+          arg:
+            string: design
+            split_on: ', '
+        - unique
+        - compact
       use:
-        func: string_replace
-        arg:
-          string: miscellaneous
-          split_on: ','
-          toUpperCase: true
-          trim: true
-          find_replace:
-            A: Accessories
-            D: Draperies
-            U: Upholstery
-            WC: Wall Covering
-            SC: Slip Covers
-            S: Sheer
+        -
+          func: upper
+          arg_field: miscellaneous
+        -
+          func: split
+          arg:
+            string: true
+            split_on: ','
+            trim: true
+        -
+          func: array_replace
+          arg:
+            value: true
+            find_replace:
+              A: Accessories
+              D: Draperies
+              U: Upholstery
+              WC: Wall Covering
+              SC: Slip Covers
+              S: Sheer
       color:
         func: second
-        arg: descriptions
+        arg_field: descriptions
       name:
         -
           arg_field: descriptions
@@ -290,8 +305,14 @@ api: # An API as a collection of content.
             replace: 'é'
       char1:
         arg: itemNumber
+        func: first
       char1int:
-        arg: itemNumber
+        -
+          arg_field: itemNumber
+          func: first
+        - toNumber
+        - isNaN
+        - not
 
     fields:
       -
