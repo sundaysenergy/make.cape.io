@@ -304,8 +304,8 @@ api: # An API as a collection of content.
           func: string_replace
           arg:
             string: true
-            regex: "e'$"
-            replace: 'é'
+            regex: "E'$"
+            replace: 'É'
       char1:
         arg_field: itemNumber
         func: first
@@ -676,7 +676,7 @@ view:
   # Big huge thing used client side for database.
   client_data:
     output_id: items/client_data.json
-    cdn: false
+    cdn: true
     field:
       color_words: true
       colors: true
