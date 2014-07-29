@@ -263,9 +263,12 @@ api: # An API as a collection of content.
         - compact
       design_descriptions:
         -
+          func: trim
+          arg_field: design
+        -
           func: split
           arg:
-            string: design
+            string: true
             split_on: ', '
         - unique
         - compact
@@ -304,7 +307,7 @@ api: # An API as a collection of content.
             regex: "e'$"
             replace: 'é'
       char1:
-        arg: itemNumber
+        arg_field: itemNumber
         func: first
       char1int:
         -
