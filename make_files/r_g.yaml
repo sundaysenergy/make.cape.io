@@ -577,6 +577,12 @@ model:
         arg_field: _file.wide.path
     sort: order
 
+  pricelist:
+    api: items
+    pluck: [name, patternNumber, color_id, color, price, approx_width, collection]
+    sort:
+      index: nameColor
+
   items_sort:
     api: items
     group_by: collection
