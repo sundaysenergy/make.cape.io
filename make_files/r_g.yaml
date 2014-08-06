@@ -589,10 +589,12 @@ model:
       - content # What to search against.
       - contents # User viewable content.
       - design_descriptions # Array of designs. Sheer, Check, Tattersal.
+      - far
       -
         _file :
           small: true
           wide: true
+      - label # Fabric, Trim, Leather
       - name
       - patternNumber
       - price
