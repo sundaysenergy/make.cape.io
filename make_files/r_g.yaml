@@ -261,6 +261,7 @@ api: # An API as a collection of content.
             split_on: ', '
         - unique
         - compact
+      # Why is this needed? Just to get it into an array perhaps.
       design_descriptions:
         -
           func: trim
@@ -579,9 +580,29 @@ model:
 
   pricelist:
     api: items
-    pluck: [name, patternNumber, color_id, color, price, approx_width, collection]
+    pluck:
+      - approx_width
+      - color_id
+      - color
+      - colors
+      - category
+      - content # What to search against.
+      - contents # User viewable content.
+      - design_descriptions # Array of designs. Sheer, Check, Tattersal.
+      -
+        _file :
+          small: true
+          wide: true
+      - name
+      - patternNumber
+      - price
+      - repeat
+      - use
+    rename:
+      collection: category
     sort:
       index: nameColor
+    #debug: true
 
   items_sort:
     api: items
