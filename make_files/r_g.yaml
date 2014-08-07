@@ -599,6 +599,7 @@ model:
       - patternNumber
       - price
       - repeat
+      - ruler
       - use
     rename:
       collection: category
