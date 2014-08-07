@@ -592,8 +592,14 @@ model:
       - far
       -
         _file :
-          small: true
-          wide: true
+          small:
+            height: true
+          wide:
+            height: true
+          large:
+            height: true
+          xlarge:
+            height: true
       - label # Fabric, Trim, Leather
       - name
       - patternNumber
