@@ -316,6 +316,9 @@ api: # An API as a collection of content.
       char1:
         arg_field: itemNumber
         func: first
+      repeat:
+        arg_field: repeat
+        func: titleize
       char1int:
         -
           arg_field: itemNumber
