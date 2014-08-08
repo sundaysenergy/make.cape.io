@@ -248,8 +248,10 @@ api: # An API as a collection of content.
             split_on_sub: ' '
         - compact
       contents:
-        func: first
-        arg_field: contents
+        -
+          func: first
+          arg_field: contents
+        - titleize
       colors:
         -
           arg: '{{&primaryColor}}, {{&secondaryColor}}'
@@ -295,8 +297,10 @@ api: # An API as a collection of content.
               SC: Slip Covers
               S: Sheer
       color:
-        func: second
-        arg_field: descriptions
+        -
+          func: second
+          arg_field: descriptions
+        - titleize
       name:
         -
           arg_field: descriptions
@@ -307,6 +311,8 @@ api: # An API as a collection of content.
             string: true
             regex: "E'$"
             replace: 'É'
+        - titleize
+        - romanize
       char1:
         arg_field: itemNumber
         func: first
