@@ -228,8 +228,8 @@ api: # An API as a collection of content.
     filter:
       must_not:
         itemNumber: 'TRIMBOOK'
-    without: [alternatePrice, discontinued, inventory, comments, finish, freightCode, itemComments,
-      miscellaneous, purchaseOrders, webComments, manufacturer, char1, char1int,
+    without: [alternatePrice, discontinued, inventory, finish, freightCode,
+      miscellaneous, purchaseOrders, manufacturer, char1, char1int,
       serialNumber, sampleType]
     clean: true
     default:
