@@ -611,6 +611,7 @@ model:
             height: true
       - label # Fabric, Trim, Leather
       - name
+      - order # Used for collection page.
       - patternNumber
       - price
       - repeat
