@@ -366,6 +366,36 @@ api: # An API as a collection of content.
         field:
           collection: leather
           ruler: leather
+      -
+        filter:
+          must:
+            char1: L
+            comments: *
+        field:
+          approx_size:
+            -
+              arg_field: comments
+              func: first
+            -
+              func: string_replace
+              arg:
+                string: width
+                regex: 'AVERAGE HIDE SIZE: ?APP?R?R?O?X?\.? ?'
+                toUpperCase: true
+                trim: true
+                replace: ''
+          approx_thick:
+            -
+              arg_field: comments
+              func: second
+            -
+              func: string_replace
+              arg:
+                string: width
+                regex: 'AVERAGE THICKNESS: ?'
+                toUpperCase: true
+                trim: true
+                replace: ''
 
 model:
   order_trim:
@@ -590,6 +620,8 @@ model:
   pricelist:
     api: items
     pluck:
+      - approx_size
+      - approx_thick
       - approx_width
       - color_id
       - color
