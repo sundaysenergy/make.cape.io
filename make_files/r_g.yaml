@@ -379,7 +379,7 @@ api: # An API as a collection of content.
             -
               func: string_replace
               arg:
-                string: width
+                string: true
                 regex: 'AVERAGE HIDE SIZE: ?APP?R?R?O?X?\.? ?'
                 toUpperCase: true
                 trim: true
@@ -391,7 +391,7 @@ api: # An API as a collection of content.
             -
               func: string_replace
               arg:
-                string: width
+                string: true
                 regex: 'AVERAGE THICKNESS: ?'
                 toUpperCase: true
                 trim: true
