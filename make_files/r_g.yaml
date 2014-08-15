@@ -384,6 +384,7 @@ api: # An API as a collection of content.
                 toUpperCase: true
                 trim: true
                 replace: ''
+            - titleize
           approx_thick:
             -
               arg_field: comments
@@ -396,6 +397,7 @@ api: # An API as a collection of content.
                 toUpperCase: true
                 trim: true
                 replace: ''
+            - titleize
 
 model:
   order_trim:
