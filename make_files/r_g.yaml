@@ -370,7 +370,7 @@ api: # An API as a collection of content.
         filter:
           must:
             char1: L
-            comments: *
+            comments: '*'
         field:
           approx_size:
             -
