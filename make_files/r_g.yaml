@@ -653,6 +653,7 @@ model:
       - use
     rename:
       collection: category
+      content_arr: content
     sort:
       index: nameColor
     #debug: true
