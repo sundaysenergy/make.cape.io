@@ -756,15 +756,12 @@ view:
 
   # Big huge thing used client side for database.
   client_data:
-    output_id: items/client_data.json
-    cdn: true
+    #output_id: items/client_data.json
+    #cdn: true
     field:
-      color_words: true
       colors: true
       items:
-        return_all: true
-      templates:
-        model: mini_templates
+        model: pricelist
 
   items_no_dropbox:
     output_id: items/no_dropbox.json
