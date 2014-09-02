@@ -28,9 +28,10 @@ api: # An API is just a set of default information.
             ext: ['.jpg', '.png', '.gif', '.jpeg']
         field:
           _file:
+            source_file:
+              path: '{{dirname}}/{{filename}}{{ext}}'
             thumb:
-              func: token_replace
-              arg: '{{dirname}}/{{filename}}_thumb{{ext}}'
+              path: '{{dirname}}/{{filename}}_thumb{{ext}}'
       -
         filter:
           must:
