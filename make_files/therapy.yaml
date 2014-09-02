@@ -29,7 +29,8 @@ api: # An API is just a set of default information.
         field:
           _file:
             thumb:
-              path: '{{dirname}}/{{filename}}_thumb{{ext}}'
+              func: token_replace
+              arg: '{{dirname}}/{{filename}}_thumb{{ext}}'
       -
         filter:
           must:
