@@ -72,25 +72,23 @@ model:
       dirname: staff
       ext: .md
     sort: sort
-    # field:
-    #   pic:
-    #     func: add
-    #     arg:
-    #       -
-    #         field: dirname
-    #       -
-    #         value: '/'
-    #       -
-    #         field: photo
+    field:
+      pic:
+        func: add
+        arg:
+          -
+            field: dirname
+          -
+            value: '/'
+          -
+            field: photo
     eqJoin:
       table: content
       key: pic
-      pluck:
-        _file:
-          thumb: true
+      pluck: '_file'
       require_match: false
-    rename:
-      _file: photo
+    # rename:
+    #   _file: photo
     pluck: [content, name, photo, title, published, sort]
 
   md_pages:
