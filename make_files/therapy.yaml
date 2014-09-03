@@ -82,15 +82,15 @@ model:
     #         value: '/'
     #       -
     #         field: photo
-    # eqJoin:
-    #   table: content
-    #   key: pic
-    #   pluck:
-    #     _file:
-    #       thumb: true
-    #   require_match: false
-    # rename:
-    #   _file: photo
+    eqJoin:
+      table: content
+      key: pic
+      pluck:
+        _file:
+          thumb: true
+      require_match: false
+    rename:
+      _file: photo
     pluck: [content, name, photo, title, published, sort]
 
   md_pages:
