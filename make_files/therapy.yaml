@@ -89,7 +89,7 @@ model:
       require_match: false
     rename:
       _file: photo
-    pluck: [content, name, photo, title, published, sort]
+    pluck: [content, name, photo, title, published, sort, pic]
 
   md_pages:
     api: content
