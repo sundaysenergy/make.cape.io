@@ -87,8 +87,8 @@ model:
       key: pic
       pluck: '_file'
       require_match: false
-    # rename:
-    #   _file: photo
+    rename:
+      _file: photo
     pluck: [content, name, photo, title, published, sort]
 
   md_pages:
