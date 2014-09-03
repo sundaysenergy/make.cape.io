@@ -19,6 +19,7 @@ api: # An API is just a set of default information.
     field:
       dir_i: true
       filename: true
+      no_ext: true
     fields:
       -
         filter:
@@ -71,26 +72,26 @@ model:
       dirname: staff
       ext: .md
     sort: sort
-    field:
-      pic:
-        func: add
-        arg:
-          -
-            field: dirname
-          -
-            value: '/'
-          -
-            field: photo
-    eqJoin:
-      table: content
-      key: pic
-      pluck:
-        _file:
-          thumb: true
-      require_match: false
-    rename:
-      _file: photo
-    pluck: [content, name, photo, title, published]
+    # field:
+    #   pic:
+    #     func: add
+    #     arg:
+    #       -
+    #         field: dirname
+    #       -
+    #         value: '/'
+    #       -
+    #         field: photo
+    # eqJoin:
+    #   table: content
+    #   key: pic
+    #   pluck:
+    #     _file:
+    #       thumb: true
+    #   require_match: false
+    # rename:
+    #   _file: photo
+    pluck: [content, name, photo, title, published, sort]
 
   md_pages:
     api: content
