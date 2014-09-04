@@ -32,7 +32,7 @@ api: # An API is just a set of default information.
             source_file:
               path: '{{dirname}}/{{filename}}{{ext}}'
             thumb:
-              path: '{{dirname}}/{{filename}}_thumb{{ext}}'
+              path: '{{dirname}}/thumb_{{filename}}{{ext}}'
       -
         filter:
           must:
