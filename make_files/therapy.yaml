@@ -2,7 +2,7 @@
 domain: www.integral-therapy.com
 cdn: www.integral-therapy.com
 uid: 1 # The CAPE user ID to use for authenticating against the providers when requesting resources.
-cape_version: 2.2.3
+cape_version: 2.2.5
 
 load:
   - "/_api/content/_load.json"
