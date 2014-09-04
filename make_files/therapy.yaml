@@ -79,7 +79,7 @@ model:
           -
             field: dirname
           -
-            value: '/'
+            value: '/thumb_'
           -
             field: photo
     eqJoin:
