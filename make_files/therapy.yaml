@@ -95,7 +95,7 @@ model:
     api: content
     must:
       ext: .md
-    empty_fields: dirname
+      dirname: '.'
 
 view:
 
