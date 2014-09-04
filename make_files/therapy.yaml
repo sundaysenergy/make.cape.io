@@ -90,7 +90,7 @@ model:
     rename:
       _file: photo
     pluck: [content, name, photo, title, published, sort, pic, filename]
-
+    debug: true
   md_pages:
     api: content
     must:
