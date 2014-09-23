@@ -643,6 +643,7 @@ model:
             height: true
           xlarge:
             height: true
+      - itemComments
       - label # Fabric, Trim, Leather
       - name
       - order # Used for collection page.
