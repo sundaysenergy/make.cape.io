@@ -404,6 +404,7 @@ api: # An API as a collection of content.
             - titleize
 
 model:
+
   item_order:
     api: itemOrder
     pluck: order
