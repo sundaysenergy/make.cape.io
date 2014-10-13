@@ -406,7 +406,8 @@ api: # An API as a collection of content.
 model:
   item_order:
     api: itemOrder
-    pluck: [id, order]
+    pluck: order
+    index_by: id
 
   order_trim:
     api: list
