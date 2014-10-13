@@ -245,9 +245,12 @@ api: # An API as a collection of content.
         arg_field: itemNumber
       content_arr:
         -
+          func: trim
+          arg_field: content
+        -
           func: split
           arg:
-            string: content
+            string: true
             split_on: ', '
             split_on_sub: ' '
         - compact
