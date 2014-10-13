@@ -45,6 +45,10 @@ api: # An API as a collection of content.
     index:
       - uid
 
+  itemOrder:
+    provider: cape
+    primary_key: id
+
   cdn:
     provider: cloudfiles
     arg:
