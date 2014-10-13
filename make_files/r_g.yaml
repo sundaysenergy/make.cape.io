@@ -404,6 +404,10 @@ api: # An API as a collection of content.
             - titleize
 
 model:
+  item_order:
+    api: itemOrder
+    pluck: [id, order]
+
   order_trim:
     api: list
     get: order_trim
