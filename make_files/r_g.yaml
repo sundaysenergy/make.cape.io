@@ -409,6 +409,7 @@ model:
     api: itemOrder
     pluck: order
     index_by: id
+    merge: true
 
   order_trim:
     api: list
