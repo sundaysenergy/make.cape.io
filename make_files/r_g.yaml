@@ -703,6 +703,20 @@ model:
     pluck: [far, ruler]
     merge: true
 
+  notfar:
+    api: photos
+    group_by:
+      field: itemNumber
+      count: true
+    must:
+      reduction: 1
+    merge_with:
+      far: true
+      ruler: textile-detail
+    index_by: group
+    pluck: [far, ruler]
+    merge: true
+
   item_photos:
     api: photos
     with:
